@@ -11,7 +11,7 @@ services:
     volumes:
       - ./api:/app
 
-  ghi:
+  react:
     image: node:lts-bullseye
     command: /bin/bash run.sh
     working_dir: /app
