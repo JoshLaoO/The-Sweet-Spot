@@ -1,3 +1,4 @@
 fastapi[all]==0.78.0
 uvicorn[standard]==0.17.6
+psycopg2[all]==2.9.9
 pytest
