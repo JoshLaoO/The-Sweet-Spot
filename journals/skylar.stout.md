@@ -20,4 +20,4 @@ Week 1
 - Completed API endpoint plan
 
 **Day 5**
-- TBA
+- Completed week 13 checkpoints
