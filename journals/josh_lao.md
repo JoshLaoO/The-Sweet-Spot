@@ -14,4 +14,4 @@ WEEK 1
         re-vamped the API endpoints
         fixed gitlab stuff
     DAY 5
-        stuff(will probably change later)
+        
