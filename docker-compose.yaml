@@ -1,6 +1,6 @@
 volumes:
   sweet-spot-data:
-    external: true
+    external: false
 
 services:
   fastapi:
@@ -41,3 +41,4 @@ services:
       - "5432:5432"
     volumes:
       - sweet-spot-data:/var/lib/postgresql/data
+      - ./db:/docker-entrypoint-initdb.d
