@@ -21,3 +21,13 @@ Week 1
 
 **Day 5**
 - Completed week 13 checkpoints
+
+
+Week 2
+---
+
+**Day 1**
+
+- Reworkind endpoints
+
+**Day 2**
