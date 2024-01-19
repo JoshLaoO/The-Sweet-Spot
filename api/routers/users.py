@@ -10,7 +10,7 @@ from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 
 from pydantic import BaseModel
-from typing import List, Union
+from typing import List, Union, Optional
 from queries.users import (
     Error,
     AccountIn,
@@ -70,7 +70,7 @@ async def create_account(
             detail="Cannot create an account with those credentials",
         )
     form = AccountForm(
-        username=info.username,
+        username=info.email,
         password=info.password,
         business=info.business,
         email=info.email,
@@ -94,3 +94,22 @@ def get_all_businesses(
     repo: AccountRepo = Depends(),
 ):
     return repo.get_all_businesses()
+
+
+@router.get(
+    "/users/{user_id}", response_model=Union[Optional[AccountOut], Error]
+)
+async def get_one_user(
+    user_id: int,
+    response: Response,
+    repo: AccountRepo = Depends(),
+    account_data: Optional[dict] = Depends(
+        authenticator.try_get_current_account_data
+    ),
+):
+
+    if account_data:
+        user = repo.get_one(user_id)
+        if user is None:
+            response.status_code = 404
+        return user
