@@ -120,4 +120,19 @@ class AccountRepo:
         except Exception:
             return {"message": "Could not get account"}
 
+    def delete(self, id: str) -> bool:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        DELETE FROM users
+                        WHERE id = %s
+                        """,
+                        [id],
+                    )
+                    return True
+        except Exception:
+            return True
+
     pass
