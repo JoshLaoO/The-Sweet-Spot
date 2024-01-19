@@ -31,3 +31,14 @@ Week 2
 - Reworkind endpoints
 
 **Day 2**
+
+- Finalized endpoints
+- Created SQL query tables
+- Created issues in gitlabs
+
+
+**Day 3**
+
+- Created the /user endpoint so users can create account
+- Created a user table utilizing the /user endpoint
+- Generate token after user authenthicates
