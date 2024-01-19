@@ -78,3 +78,10 @@ async def create_account(
     token = await authenticator.login(response, request, form, repo)
     print("token", token)
     return AccountToken(account=account, **token.dict())
+
+@router.delete("/users/{id}", response_model=bool)
+async def delete_user(
+    id: int,
+    repo: AccountRepo = Depends(),
+) -> bool:
+    return repo.delete(id=id)
