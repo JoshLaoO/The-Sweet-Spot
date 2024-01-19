@@ -135,10 +135,11 @@ class AccountRepo:
         except Exception:
             return {"message": "Could not get all businesses"}
 
-    def get_one(self, user_id: int) -> AccountOut:
+    def get_one(self, user_id: int) -> Union[Optional[AccountOut], Error]:
         try:
+
             with pool.connection() as conn:
-                with conn.cursor as db:
+                with conn.cursor() as db:
                     result = db.execute(
                         """
                         SELECT
