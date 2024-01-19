@@ -88,15 +88,20 @@ def get_all_businesses(
     return repo.get_all_businesses()
 
 
-@router.get("/users/{user_id}", response_model=AccountOut | HttpError)
-def get_one_user(
+@router.get(
+    "/users/{user_id}", response_model=Union[Optional[AccountOut], Error]
+)
+async def get_one_user(
     user_id: int,
     response: Response,
     repo: AccountRepo = Depends(),
-    account_data: dict = Depends(authenticator.get_current_account_data),
-) -> AccountOut:
+    account_data: Optional[dict] = Depends(
+        authenticator.try_get_current_account_data
+    ),
+):
 
-    user = repo.get_one(user_id)
-    if user is None:
-        response.status_code = 404
-    return user
+    if account_data:
+        user = repo.get_one(user_id)
+        if user is None:
+            response.status_code = 404
+        return user
