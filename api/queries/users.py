@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Union, List
+from typing import Union, List, Optional
 from queries.pool import pool
 
 
@@ -149,3 +149,31 @@ class AccountRepo:
                     ]
         except Exception:
             return {"message": "Could not get all businesses"}
+
+    def get_one(self, user_id: int) -> Union[Optional[AccountOut], Error]:
+        try:
+
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT
+                        id,
+                        business,
+                        email,
+                        picture_url,
+                        username,
+                        hashed_password
+                        FROM users
+                        WHERE id = %s
+                        """,
+                        [user_id],
+                    )
+                    record = result.fetchone()
+                    if record is None:
+                        return None
+
+                    return self.record_to_account_out(record)
+        except Exception as e:
+            print(e)
+            return {"message": "could not get user information"}
