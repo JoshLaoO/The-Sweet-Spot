@@ -44,12 +44,12 @@ class AccountRepo:
 
         return account_dict
 
-
-    def create(self, user: AccountIn,
-               hashed_password: str) -> AccountOutWithPassword:
+    def create(
+        self, user: AccountIn, hashed_password: str
+    ) -> AccountOutWithPassword:
         try:
-            print("USER",user)
-            print("HASHED",hashed_password)
+            print("USER", user)
+            print("HASHED", hashed_password)
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
@@ -76,11 +76,11 @@ class AccountRepo:
                             user.picture_url,
                             user.username,
                             hashed_password,
-                        ]
+                        ],
                     )
                     print("insert worked?")
                     id = result.fetchone()[0]
-                    print("ID GOTTEN",id)
+                    print("ID GOTTEN", id)
                     return AccountOutWithPassword(
                         id=id,
                         business=user.business,
@@ -94,7 +94,7 @@ class AccountRepo:
 
     def get(self, email: str) -> AccountOutWithPassword:
         try:
-            print("email",email)
+            print("email", email)
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
@@ -112,14 +112,29 @@ class AccountRepo:
                         [email],
                     )
                     record = result.fetchone()
-                    print("record found",record)
+                    print("record found", record)
                     if record is None:
                         return None
                     return self.record_to_account_out(record)
         except Exception:
             return {"message": "Could not get account"}
 
-    def get_all_businesses(self) -> Union[Error,List[AccountOut]]:
+    def delete(self, id: str) -> bool:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        DELETE FROM users
+                        WHERE id = %s
+                        """,
+                        [id],
+                    )
+                    return True
+        except Exception:
+            return True
+
+    def get_all_businesses(self) -> Union[Error, List[AccountOut]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -130,8 +145,7 @@ class AccountRepo:
                         """
                     )
                     return [
-                        self.record_to_account_out(record)
-                        for record in db
+                        self.record_to_account_out(record) for record in db
                     ]
         except Exception:
-            return {"message": "Could not get all businesses" }
+            return {"message": "Could not get all businesses"}
