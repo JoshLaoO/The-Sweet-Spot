@@ -10,8 +10,9 @@ from jwtdown_fastapi.authentication import Token
 from authenticator import authenticator
 
 from pydantic import BaseModel
-
+from typing import List, Union
 from queries.users import (
+    Error,
     AccountIn,
     AccountOut,
     AccountRepo,
@@ -66,3 +67,9 @@ async def create_account(
     token = await authenticator.login(response, request, form, repo)
     print("token",token)
     return AccountToken(account=account, **token.dict())
+
+@router.get("/businesses", response_model=Union[List[AccountOut],Error])
+def get_all_businesses(
+    repo: AccountRepo = Depends(),
+):
+    return repo.get_all_businesses()
