@@ -26,7 +26,5 @@ def launch_details():
             "min": "00",
         }
     }
-
-
 app.include_router(users.router)
 app.include_router(authenticator.router)
