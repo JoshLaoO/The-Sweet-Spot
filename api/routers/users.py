@@ -17,6 +17,7 @@ from queries.users import (
     AccountOut,
     AccountRepo,
     DuplicateAccountError,
+    AccountUpdate,
 )
 
 
@@ -113,3 +114,26 @@ async def get_one_user(
         if user is None:
             response.status_code = 404
         return user
+
+
+
+
+
+
+
+
+
+@router.put("/user/{id}", response_model=AccountOut)
+async def update_user(
+    id: int,
+    update_form: AccountUpdate,
+    repo: AccountRepo = Depends()
+):
+    try:
+        updated_account = repo.update_user(id, update_form)
+        return updated_account
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )

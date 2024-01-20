@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 from typing import Union, List, Optional
 from queries.pool import pool
+import hashlib
+
 
 
 class Error(BaseModel):
@@ -29,6 +31,18 @@ class AccountOut(BaseModel):
 
 class AccountOutWithPassword(AccountOut):
     hashed_password: str
+
+
+class AccountUpdate(BaseModel):
+
+    business: int
+    picture_url: str
+    username: str
+    email: str
+    password:str
+
+
+
 
 
 class AccountRepo:
@@ -177,3 +191,56 @@ class AccountRepo:
         except Exception as e:
             print(e)
             return {"message": "could not get user information"}
+
+
+
+    #anna
+    def update_user(self, id: int, user: AccountUpdate) -> AccountOut:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    hashed_password = hashlib.sha256(user.password.encode()).hexdigest()
+
+                    db.execute(
+                        """
+                        UPDATE users
+                        SET
+                            picture_url = %s,
+                            username = %s,
+                            email = %s,
+                            hashed_password = %s
+
+                        WHERE id = %s
+                        RETURNING
+                            id,
+                            business,
+                            email,
+                            picture_url,
+                            username;
+
+                        """,
+                        [
+                            user.picture_url,
+                            user.username,
+                            user.email,
+                            hashed_password,
+                            id,
+                        ]
+                    )
+                    record = db.fetchone()
+                    print(record)
+                    if record is None:
+                        raise Exception("User not found or no change made")
+
+                    if len(record) < 5:
+                        raise Exception("Unexpected record format from database. Record does not contain enough elements.")
+                    return AccountOut(
+                    id=record[0],
+                    business=record[1],
+                    email=record[2],
+                    picture_url=record[3],
+                    username=record[4],
+                )
+        except Exception as e:
+            print(f"Error updating user: {e}")
+            raise
