@@ -28,6 +28,23 @@ Week 2
 
 **Day 1**
 
-- Reworkind endpoints
+- Reworked endpoints
 
 **Day 2**
+
+- Created users table
+- Completed Auth
+
+**Day 3**
+
+- Created delete endpoint for users that can be accessed in FastAPI
+
+**Day 4**
+
+- Brainstorming about business model
+
+
+Week 3
+---
+
+**Day 1**

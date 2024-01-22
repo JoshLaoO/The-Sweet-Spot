@@ -108,7 +108,6 @@ async def get_one_user(
         authenticator.try_get_current_account_data
     ),
 ):
-
     if account_data:
         user = repo.get_one(user_id)
         if user is None:
@@ -116,24 +115,14 @@ async def get_one_user(
         return user
 
 
-
-
-
-
-
-
-
 @router.put("/user/{id}", response_model=AccountOut)
 async def update_user(
-    id: int,
-    update_form: AccountUpdate,
-    repo: AccountRepo = Depends()
+    id: int, update_form: AccountUpdate, repo: AccountRepo = Depends()
 ):
     try:
         updated_account = repo.update_user(id, update_form)
         return updated_account
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)
         )
