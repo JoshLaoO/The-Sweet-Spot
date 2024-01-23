@@ -16,6 +16,7 @@ from queries.users import (
     AccountIn,
     AccountOut,
     AccountRepo,
+    BusinessOut,
     DuplicateAccountError,
     AccountUpdate,
 )
@@ -94,11 +95,12 @@ async def delete_user(
     return repo.delete(id=id)
 
 
-@router.get("/businesses", response_model=Union[List[AccountOut], Error])
+@router.get("/businesses", response_model=Union[List[BusinessOut], Error])
 def get_all_businesses(
     repo: AccountRepo = Depends(),
 ):
-    return repo.get_all_businesses()
+    businesses = repo.get_all_businesses()
+    return businesses
 
 
 @router.get(
