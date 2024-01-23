@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 from typing import Union, List, Optional
 from queries.pool import pool
+from psycopg.rows import dict_row
 import hashlib
-
 
 
 class Error(BaseModel):
@@ -45,15 +45,11 @@ class AccountOutWithPassword(AccountOut):
 
 
 class AccountUpdate(BaseModel):
-
     business: int
     picture_url: str
     username: str
     email: str
-    password:str
-
-
-
+    password: str
 
 
 class AccountRepo:
@@ -94,13 +90,15 @@ class AccountRepo:
         }
 
         return account_dict
+
     def record_to_business_out(self, record) -> BusinessOut:
         business_dict = {
             "business_id": record[0],
             "business_name": record[1],
-            "business_email": record[2]
+            "business_email": record[2],
         }
         return BusinessOut(**business_dict)
+
     def create(
         self, user: AccountIn, hashed_password: str
     ) -> AccountOutWithPassword:
@@ -153,7 +151,7 @@ class AccountRepo:
         try:
             print("email", email)
             with pool.connection() as conn:
-                with conn.cursor() as db:
+                with conn.cursor(row_factory=dict_row) as db:
                     result = db.execute(
                         """
                         SELECT
@@ -172,7 +170,7 @@ class AccountRepo:
                     print("record found", record)
                     if record is None:
                         return None
-                    return self.record_to_account_out(record)
+                    return AccountOutWithPassword(**record)
         except Exception:
             return {"message": "Could not get account"}
 
@@ -205,7 +203,7 @@ class AccountRepo:
                         self.record_to_business_out(record) for record in db
                     ]
         except Exception as e:
-            print("THIS IS THE ERROR: ",e)
+            print("THIS IS THE ERROR: ", e)
             return {"message": "Could not get all businesses"}
 
     def get_one(self, user_id: int) -> Union[Optional[AccountOut], Error]:
@@ -236,14 +234,14 @@ class AccountRepo:
             print(e)
             return {"message": "could not get user information"}
 
-
-
-    #anna
+    # anna
     def update_user(self, id: int, user: AccountUpdate) -> AccountOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    hashed_password = hashlib.sha256(user.password.encode()).hexdigest()
+                    hashed_password = hashlib.sha256(
+                        user.password.encode()
+                    ).hexdigest()
 
                     db.execute(
                         """
@@ -268,7 +266,7 @@ class AccountRepo:
                             user.email,
                             hashed_password,
                             id,
-                        ]
+                        ],
                     )
                     record = db.fetchone()
                     print(record)
@@ -276,14 +274,17 @@ class AccountRepo:
                         raise Exception("User not found or no change made")
 
                     if len(record) < 5:
-                        raise Exception("Unexpected record format from database. Record does not contain enough elements.")
+                        raise Exception(
+                            "Unexpected record format from database."
+                            "Record does not contain enough elements."
+                        )
                     return AccountOut(
-                    id=record[0],
-                    business=record[1],
-                    email=record[2],
-                    picture_url=record[3],
-                    username=record[4],
-                )
+                        id=record[0],
+                        business=record[1],
+                        email=record[2],
+                        picture_url=record[3],
+                        username=record[4],
+                    )
         except Exception as e:
             print(f"Error updating user: {e}")
             raise

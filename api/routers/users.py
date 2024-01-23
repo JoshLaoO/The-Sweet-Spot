@@ -75,7 +75,7 @@ async def create_account(
         "username": info.email,
         "password": info.password,
         "email": info.email,
-        "picture_url": info.picture_url
+        "picture_url": info.picture_url,
     }
 
     if info.business is not None:
@@ -102,6 +102,7 @@ def get_all_businesses(
     businesses = repo.get_all_businesses()
     print(businesses)
     return businesses
+
 
 @router.get(
     "/users/{user_id}", response_model=Union[Optional[AccountOut], Error]
