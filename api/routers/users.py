@@ -74,7 +74,7 @@ async def create_account(
         "username": info.username,
         "password": info.password,
         "email": info.email,
-        "picture_url": info.picture_url
+        "picture_url": info.picture_url,
     }
 
     if info.business is not None:
