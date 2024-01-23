@@ -45,7 +45,7 @@ class AccountOutWithPassword(AccountOut):
 
 
 class AccountUpdate(BaseModel):
-    business: int
+    business: Optional[BusinessOut]
     picture_url: str
     username: str
     email: str
@@ -235,7 +235,7 @@ class AccountRepo:
             return {"message": "could not get user information"}
 
     # anna
-    def update_user(self, id: int, user: AccountUpdate) -> AccountOut:
+    def update_user(self, id: int, user: AccountUpdate) -> Optional[AccountOut]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -247,6 +247,7 @@ class AccountRepo:
                         """
                         UPDATE users
                         SET
+                            business= %s,
                             email = %s,
                             picture_url = %s,
                             username = %s,
@@ -261,6 +262,7 @@ class AccountRepo:
 
                         """,
                         [
+                            user.business,
                             user.picture_url,
                             user.username,
                             user.email,
