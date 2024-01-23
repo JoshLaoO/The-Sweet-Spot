@@ -164,17 +164,17 @@ class AccountRepo:
                     records = db.fetchall()
                     users = []
                     for record in records:
-                        user_data = {
+                        u_data = {
                             "id": record[0],
                             "email": record[1],
                             "picture_url": record[2],
                             "username": record[3],
-                            "business": None
+                            "business": None,
                         }
                         if record[4] is not None:
-                            business_data = self.get_business_data(record[4])
-                            user_data["business"] = business_data.dict() if business_data else None
-                        users.append(AccountOut(**user_data))
+                            data = self.get_business_data(record[4])
+                            u_data["business"] = data.dict() if data else None
+                        users.append(AccountOut(**u_data))
                     return users
         except Exception:
             return {"message": "Could not get users"}
@@ -306,7 +306,7 @@ class AccountRepo:
 
                     if len(record) < 5:
                         raise Exception(
-                            "Unexpected record format from database. Record does not contain enough elements."
+                            "Unexpected record format from database."
                         )
                     return AccountOut(
                         id=record[0],
