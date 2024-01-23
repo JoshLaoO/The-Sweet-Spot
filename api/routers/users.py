@@ -72,7 +72,7 @@ async def create_account(
             detail="Cannot create an account with those credentials",
         )
     form_data = {
-        "username": info.username,
+        "username": info.email,
         "password": info.password,
         "email": info.email,
         "picture_url": info.picture_url
