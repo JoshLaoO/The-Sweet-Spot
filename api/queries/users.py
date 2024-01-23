@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Union, List, Optional
 from queries.pool import pool
+from psycopg.rows import dict_row
 import hashlib
 
 
@@ -90,6 +91,14 @@ class AccountRepo:
 
         return account_dict
 
+    def record_to_business_out(self, record) -> BusinessOut:
+        business_dict = {
+            "business_id": record[0],
+            "business_name": record[1],
+            "business_email": record[2],
+        }
+        return BusinessOut(**business_dict)
+
     def create(
         self, user: AccountIn, hashed_password: str
     ) -> AccountOutWithPassword:
@@ -142,16 +151,16 @@ class AccountRepo:
         try:
             print("email", email)
             with pool.connection() as conn:
-                with conn.cursor() as db:
+                with conn.cursor(row_factory=dict_row) as db:
                     result = db.execute(
                         """
                         SELECT
                         id,
-                        business,
                         email,
                         picture_url,
                         username,
-                        hashed_password
+                        hashed_password,
+                        business
                         FROM users
                         WHERE email = %s
                         """,
@@ -161,7 +170,7 @@ class AccountRepo:
                     print("record found", record)
                     if record is None:
                         return None
-                    return self.record_to_account_out(record)
+                    return AccountOutWithPassword(**record)
         except Exception:
             return {"message": "Could not get account"}
 
@@ -180,20 +189,21 @@ class AccountRepo:
         except Exception:
             return True
 
-    def get_all_businesses(self) -> Union[Error, List[AccountOut]]:
+    def get_all_businesses(self) -> Union[Error, List[BusinessOut]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
+                    db.execute(
                         """
-                        SELECT * FROM users
-                        WHERE business = 1
+                        SELECT * FROM businesses
                         """
                     )
+
                     return [
-                        self.record_to_account_out(record) for record in db
+                        self.record_to_business_out(record) for record in db
                     ]
-        except Exception:
+        except Exception as e:
+            print("THIS IS THE ERROR: ", e)
             return {"message": "Could not get all businesses"}
 
     def get_one(self, user_id: int) -> Union[Optional[AccountOut], Error]:
@@ -265,7 +275,8 @@ class AccountRepo:
 
                     if len(record) < 5:
                         raise Exception(
-                            "Unexpected record format from database. Record does not contain enough elements."
+                            "Unexpected record format from database."
+                            "Record does not contain enough elements."
                         )
                     return AccountOut(
                         id=record[0],
