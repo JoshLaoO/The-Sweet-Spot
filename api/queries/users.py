@@ -147,11 +147,11 @@ class AccountRepo:
                         """
                         SELECT
                         id,
-                        business,
                         email,
                         picture_url,
                         username,
-                        hashed_password
+                        hashed_password,
+                        business
                         FROM users
                         WHERE email = %s
                         """,
