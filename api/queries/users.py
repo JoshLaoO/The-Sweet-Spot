@@ -13,20 +13,31 @@ class DuplicateAccountError(ValueError):
     pass
 
 
+class BusinessIn(BaseModel):
+    business_name: str
+    business_email: str
+
+
+class BusinessOut(BaseModel):
+    business_id: int
+    business_name: str
+    business_email: str
+
+
 class AccountIn(BaseModel):
-    business: int
     email: str
     picture_url: str
     username: str
     password: str
+    business: Optional[Union[int, None]]
 
 
 class AccountOut(BaseModel):
     id: int
-    business: int
     email: str
     picture_url: str
     username: str
+    business: Optional[BusinessOut]
 
 
 class AccountOutWithPassword(AccountOut):
@@ -46,6 +57,32 @@ class AccountUpdate(BaseModel):
 
 
 class AccountRepo:
+    def get_business_data(self, business_id: int) -> Optional[BusinessOut]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT
+                        business_id,
+                        business_name,
+                        business_email
+                        FROM businesses
+                        WHERE business_id = %s
+                        """,
+                        [business_id],
+                    )
+                    record = result.fetchone()
+                    if record is None:
+                        return None
+                    return BusinessOut(
+                        business_id=record[0],
+                        business_name=record[1],
+                        business_email=record[2],
+                    )
+        except Exception:
+            return None
+
     def record_to_account_out(self, record) -> AccountOutWithPassword:
         account_dict = {
             "id": record[0],
@@ -69,27 +106,27 @@ class AccountRepo:
                     result = db.execute(
                         """
                         INSERT INTO users
-                            (business,
-                            email,
+                            (email,
                             picture_url,
                             username,
-                            hashed_password)
+                            hashed_password,
+                            business)
                         VALUES
                             (%s, %s, %s, %s, %s)
                         RETURNING
                         id,
-                        business,
                         email,
                         picture_url,
                         username,
-                        hashed_password;
+                        hashed_password,
+                        business;
                         """,
                         [
-                            user.business,
                             user.email,
                             user.picture_url,
                             user.username,
                             hashed_password,
+                            user.business,
                         ],
                     )
                     print("insert worked?")
@@ -97,11 +134,11 @@ class AccountRepo:
                     print("ID GOTTEN", id)
                     return AccountOutWithPassword(
                         id=id,
-                        business=user.business,
                         email=user.email,
                         picture_url=user.picture_url,
                         username=user.username,
                         hashed_password=hashed_password,
+                        business=user.business,
                     )
         except Exception:
             return {"message": "Could not create a user"}
