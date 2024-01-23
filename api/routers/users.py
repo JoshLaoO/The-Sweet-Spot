@@ -22,11 +22,11 @@ from queries.users import (
 
 
 class AccountForm(BaseModel):
-    business: int
     email: str
     picture_url: str
     username: str
     password: str
+    business: Optional[int] = None
 
 
 class AccountToken(Token):
@@ -70,13 +70,17 @@ async def create_account(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Cannot create an account with those credentials",
         )
-    form = AccountForm(
-        username=info.email,
-        password=info.password,
-        business=info.business,
-        email=info.email,
-        picture_url=info.picture_url,
-    )
+    form_data = {
+        "username": info.username,
+        "password": info.password,
+        "email": info.email,
+        "picture_url": info.picture_url
+    }
+
+    if info.business is not None:
+        form_data["business"] = info.business
+
+    form = AccountForm(**form_data)
     token = await authenticator.login(response, request, form, repo)
     print("token", token)
     return AccountToken(account=account, **token.dict())
