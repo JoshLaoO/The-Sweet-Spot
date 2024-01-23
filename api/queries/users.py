@@ -94,7 +94,13 @@ class AccountRepo:
         }
 
         return account_dict
-
+    def record_to_business_out(self, record) -> BusinessOut:
+        business_dict = {
+            "business_id": record[0],
+            "business_name": record[1],
+            "business_email": record[2]
+        }
+        return BusinessOut(**business_dict)
     def create(
         self, user: AccountIn, hashed_password: str
     ) -> AccountOutWithPassword:
@@ -185,20 +191,21 @@ class AccountRepo:
         except Exception:
             return True
 
-    def get_all_businesses(self) -> Union[Error, List[AccountOut]]:
+    def get_all_businesses(self) -> Union[Error, List[BusinessOut]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
+                    db.execute(
                         """
-                        SELECT * FROM users
-                        WHERE business = 1
+                        SELECT * FROM businesses
                         """
                     )
+
                     return [
-                        self.record_to_account_out(record) for record in db
+                        self.record_to_business_out(record) for record in db
                     ]
-        except Exception:
+        except Exception as e:
+            print("THIS IS THE ERROR: ",e)
             return {"message": "Could not get all businesses"}
 
     def get_one(self, user_id: int) -> Union[Optional[AccountOut], Error]:

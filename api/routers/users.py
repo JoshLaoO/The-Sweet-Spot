@@ -13,6 +13,7 @@ from pydantic import BaseModel
 from typing import List, Union, Optional
 from queries.users import (
     Error,
+    BusinessOut,
     AccountIn,
     AccountOut,
     AccountRepo,
@@ -94,12 +95,13 @@ async def delete_user(
     return repo.delete(id=id)
 
 
-@router.get("/businesses", response_model=Union[List[AccountOut], Error])
+@router.get("/businesses", response_model=Union[List[BusinessOut], Error])
 def get_all_businesses(
     repo: AccountRepo = Depends(),
 ):
-    return repo.get_all_businesses()
-
+    businesses = repo.get_all_businesses()
+    print(businesses)
+    return businesses
 
 @router.get(
     "/users/{user_id}", response_model=Union[Optional[AccountOut], Error]
