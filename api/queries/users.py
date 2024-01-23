@@ -4,6 +4,7 @@ from queries.pool import pool
 import hashlib
 
 
+
 class Error(BaseModel):
     message: str
 
@@ -33,11 +34,15 @@ class AccountOutWithPassword(AccountOut):
 
 
 class AccountUpdate(BaseModel):
+
     business: int
     picture_url: str
     username: str
     email: str
-    password: str
+    password:str
+
+
+
 
 
 class AccountRepo:
@@ -161,6 +166,7 @@ class AccountRepo:
 
     def get_one(self, user_id: int) -> Union[Optional[AccountOut], Error]:
         try:
+
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
@@ -186,24 +192,23 @@ class AccountRepo:
             print(e)
             return {"message": "could not get user information"}
 
-    # anna
+
+
+    #anna
     def update_user(self, id: int, user: AccountUpdate) -> AccountOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    hashed_password = hashlib.sha256(
-                        user.password.encode()
-                    ).hexdigest()
+                    hashed_password = hashlib.sha256(user.password.encode()).hexdigest()
 
                     db.execute(
                         """
                         UPDATE users
                         SET
+                            email = %s,
                             picture_url = %s,
                             username = %s,
-                            email = %s,
                             hashed_password = %s
-
                         WHERE id = %s
                         RETURNING
                             id,
@@ -219,7 +224,7 @@ class AccountRepo:
                             user.email,
                             hashed_password,
                             id,
-                        ],
+                        ]
                     )
                     record = db.fetchone()
                     print(record)
@@ -227,16 +232,14 @@ class AccountRepo:
                         raise Exception("User not found or no change made")
 
                     if len(record) < 5:
-                        raise Exception(
-                            "Unexpected record format from database. Record does not contain enough elements."
-                        )
+                        raise Exception("Unexpected record format from database. Record does not contain enough elements.")
                     return AccountOut(
-                        id=record[0],
-                        business=record[1],
-                        email=record[2],
-                        picture_url=record[3],
-                        username=record[4],
-                    )
+                    id=record[0],
+                    business=record[1],
+                    email=record[2],
+                    picture_url=record[3],
+                    username=record[4],
+                )
         except Exception as e:
             print(f"Error updating user: {e}")
             raise
