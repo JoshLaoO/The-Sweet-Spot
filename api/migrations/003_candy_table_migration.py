@@ -27,4 +27,13 @@ steps = [
         DROP TABLE orders;
         """,
     ],
+    [
+        """
+        ALTER TABLE users
+        ADD COLUMN order_id INT REFERENCES orders(id);
+        """,
+        """
+        DROP TABLE users;
+        """
+    ]
 ]
