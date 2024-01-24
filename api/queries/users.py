@@ -179,39 +179,6 @@ class AccountRepo:
         except Exception:
             return {"message": "Could not get users"}
 
-    def list_all_users(self) -> List[AccountOut]:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as db:
-                    db.execute(
-                        """
-                        SELECT
-                        id,
-                        email,
-                        picture_url,
-                        username,
-                        business
-                        FROM users
-                        """
-                    )
-                    records = db.fetchall()
-                    users = []
-                    for record in records:
-                        u_data = {
-                            "id": record[0],
-                            "email": record[1],
-                            "picture_url": record[2],
-                            "username": record[3],
-                            "business": None,
-                        }
-                        if record[4] is not None:
-                            data = self.get_business_data(record[4])
-                            u_data["business"] = data.dict() if data else None
-                        users.append(AccountOut(**u_data))
-                    return users
-        except Exception:
-            return {"message": "Could not get users"}
-
     def get(self, email: str) -> AccountOutWithPassword:
         try:
             print("email", email)
@@ -272,7 +239,7 @@ class AccountRepo:
             return {"message": "Could not get all businesses"}
 
     def create_business(
-            self, business_data: BusinessIn
+        self, business_data: BusinessIn
     ) -> Optional[BusinessOut]:
         try:
             with pool.connection() as conn:
