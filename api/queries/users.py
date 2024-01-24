@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import Union, List, Optional
 from queries.pool import pool
-from psycopg.rows import dict_row
 import hashlib
 
 
@@ -184,16 +183,16 @@ class AccountRepo:
         try:
             print("email", email)
             with pool.connection() as conn:
-                with conn.cursor(row_factory=dict_row) as db:
+                with conn.cursor() as db:
                     result = db.execute(
                         """
                         SELECT
                         id,
+                        business,
                         email,
                         picture_url,
                         username,
-                        hashed_password,
-                        business
+                        hashed_password
                         FROM users
                         WHERE email = %s
                         """,
@@ -203,7 +202,7 @@ class AccountRepo:
                     print("record found", record)
                     if record is None:
                         return None
-                    return AccountOutWithPassword(**record)
+                    return self.record_to_account_out(record)
         except Exception:
             return {"message": "Could not get account"}
 
@@ -238,6 +237,39 @@ class AccountRepo:
         except Exception as e:
             print("THIS IS THE ERROR: ", e)
             return {"message": "Could not get all businesses"}
+
+    def create_business(
+        self, business_data: BusinessIn
+    ) -> Optional[BusinessOut]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        INSERT INTO businesses
+                            (business_name, business_email)
+                        VALUES
+                            (%s, %s)
+                        RETURNING
+                            business_id,
+                            business_name,
+                            business_email;
+                        """,
+                        [
+                            business_data.business_name,
+                            business_data.business_email,
+                        ],
+                    )
+                    record = result.fetchone()
+                    if record is None:
+                        return None
+                    return BusinessOut(
+                        business_id=record[0],
+                        business_name=record[1],
+                        business_email=record[2],
+                    )
+        except Exception:
+            return None
 
     def get_one(self, user_id: int) -> Union[Optional[AccountOut], Error]:
         try:
