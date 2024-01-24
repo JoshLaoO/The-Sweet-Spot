@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Union, List, Optional
 from queries.pool import pool
+from psycopg.rows import dict_row
 import hashlib
 
 
@@ -183,16 +184,16 @@ class AccountRepo:
         try:
             print("email", email)
             with pool.connection() as conn:
-                with conn.cursor() as db:
+                with conn.cursor(row_factory=dict_row) as db:
                     result = db.execute(
                         """
                         SELECT
                         id,
-                        business,
                         email,
                         picture_url,
                         username,
-                        hashed_password
+                        hashed_password,
+                        business
                         FROM users
                         WHERE email = %s
                         """,
@@ -202,7 +203,7 @@ class AccountRepo:
                     print("record found", record)
                     if record is None:
                         return None
-                    return self.record_to_account_out(record)
+                    return AccountOutWithPassword(**record)
         except Exception:
             return {"message": "Could not get account"}
 
@@ -278,10 +279,11 @@ class AccountRepo:
                         """
                         UPDATE users
                         SET
-                            email = %s,
                             picture_url = %s,
                             username = %s,
+                            email = %s,
                             hashed_password = %s
+
                         WHERE id = %s
                         RETURNING
                             id,
