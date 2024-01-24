@@ -14,7 +14,6 @@ steps = [
         """
         DROP TABLE candy;
         """,
-
     ],
     [
         """
