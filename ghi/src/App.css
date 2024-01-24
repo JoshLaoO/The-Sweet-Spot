@@ -12,3 +12,44 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+
+
+.footer-container {
+    background-color: #f8c6d1;
+    color: #333;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer-link {
+    color: #333;
+    margin: 0 10px;
+}
+
+.footer-link:hover {
+    color: #555;
+}
+
+
+
+
+.header-container {
+    background-color: #f8c6d1;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.header-title {
+    font-family: 'Cursive', sans-serif;
+    font-size: 24px;
+}
+
+.search-box {
+    border: 2px solid #333;
+    padding: 5px 10px;
+    font-size: 16px;
+}

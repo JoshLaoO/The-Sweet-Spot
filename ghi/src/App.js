@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 import Construct from "./Construct.js";
 import ErrorNotification from "./ErrorNotification";
 import "./App.css";
+import SignUpPage from "./signuppage.js";
+import Header from "./header.js";
+import Footer from "./footer.js";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
@@ -25,13 +30,27 @@ function App() {
     }
     getData();
   }, []);
-
   return (
-    <div>
-      <ErrorNotification error={error} />
-      <Construct info={launchInfo} />
-    </div>
-  );
+        <Router>
+            <Header />
+            <ErrorNotification error={error} />
+            <Routes>
+                <Route path="/signup/" element={<SignUpPage />} />
+
+                <Route path="/" element={<Construct info={launchInfo} />} />
+            </Routes>
+            <Footer />
+        </Router>
+    );
+
+
+
+  // return (
+  //   <div>
+  //     <ErrorNotification error={error} />
+  //     <Construct info={launchInfo} />
+  //   </div>
+  // );
 }
 
 export default App;
