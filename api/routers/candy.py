@@ -7,5 +7,5 @@ router = APIRouter()
 
 @router.post("/candy")
 def create_candy(candy: CandyIn):
-    print('candy', candy.name)
+    print("candy", candy.name)
     return candy
