@@ -271,6 +271,21 @@ class AccountRepo:
         except Exception:
             return None
 
+    def delete_business(self, business_id: int) -> bool:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        DELETE FROM businesses
+                        WHERE business_id = %s
+                        """,
+                        [business_id],
+                    )
+                    return True
+        except Exception:
+            return False
+
     def get_one(self, user_id: int) -> Union[Optional[AccountOut], Error]:
         try:
             with pool.connection() as conn:
