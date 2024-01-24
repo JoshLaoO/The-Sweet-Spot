@@ -87,6 +87,13 @@ async def create_account(
     return AccountToken(account=account, **token.dict())
 
 
+@router.get("/users", response_model=List[AccountOut] | Error)
+def list_all_users(
+    repo: AccountRepo = Depends(),
+):
+    return repo.list_all_users()
+
+
 @router.delete("/users/{id}", response_model=bool)
 async def delete_user(
     id: int,
