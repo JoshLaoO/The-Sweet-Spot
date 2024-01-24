@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import Union, List, Optional
 from queries.pool import pool
-from psycopg.rows import dict_row
 import hashlib
 
 
@@ -147,20 +146,53 @@ class AccountRepo:
         except Exception:
             return {"message": "Could not create a user"}
 
-    def get(self, email: str) -> AccountOutWithPassword:
+    def list_all_users(self) -> List[AccountOut]:
         try:
-            print("email", email)
             with pool.connection() as conn:
-                with conn.cursor(row_factory=dict_row) as db:
-                    result = db.execute(
+                with conn.cursor() as db:
+                    db.execute(
                         """
                         SELECT
                         id,
                         email,
                         picture_url,
                         username,
-                        hashed_password,
                         business
+                        FROM users
+                        """
+                    )
+                    records = db.fetchall()
+                    users = []
+                    for record in records:
+                        u_data = {
+                            "id": record[0],
+                            "email": record[1],
+                            "picture_url": record[2],
+                            "username": record[3],
+                            "business": None,
+                        }
+                        if record[4] is not None:
+                            data = self.get_business_data(record[4])
+                            u_data["business"] = data.dict() if data else None
+                        users.append(AccountOut(**u_data))
+                    return users
+        except Exception:
+            return {"message": "Could not get users"}
+
+    def get(self, email: str) -> AccountOutWithPassword:
+        try:
+            print("email", email)
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT
+                        id,
+                        business,
+                        email,
+                        picture_url,
+                        username,
+                        hashed_password
                         FROM users
                         WHERE email = %s
                         """,
@@ -170,7 +202,7 @@ class AccountRepo:
                     print("record found", record)
                     if record is None:
                         return None
-                    return AccountOutWithPassword(**record)
+                    return self.record_to_account_out(record)
         except Exception:
             return {"message": "Could not get account"}
 
@@ -208,7 +240,6 @@ class AccountRepo:
 
     def get_one(self, user_id: int) -> Union[Optional[AccountOut], Error]:
         try:
-
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
@@ -276,7 +307,6 @@ class AccountRepo:
                     if len(record) < 5:
                         raise Exception(
                             "Unexpected record format from database."
-                            "Record does not contain enough elements."
                         )
                     return AccountOut(
                         id=record[0],
