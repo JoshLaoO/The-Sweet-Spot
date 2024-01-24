@@ -13,12 +13,13 @@ from pydantic import BaseModel
 from typing import List, Union, Optional
 from queries.users import (
     Error,
-    BusinessOut,
     AccountIn,
     AccountOut,
     AccountRepo,
     DuplicateAccountError,
     AccountUpdate,
+    BusinessIn,
+    BusinessOut,
 )
 
 
@@ -140,3 +141,11 @@ async def update_user(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)
         )
+
+
+@router.post("/business", response_model=Union[BusinessOut, Error])
+async def create_business(
+    business_data: BusinessIn,
+    repo: AccountRepo = Depends(),
+):
+    return repo.create_business(business_data)
