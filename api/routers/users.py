@@ -75,7 +75,7 @@ async def create_account(
         "username": info.email,
         "password": info.password,
         "email": info.email,
-        "picture_url": info.picture_url
+        "picture_url": info.picture_url,
     }
 
     if info.business is not None:
@@ -85,6 +85,13 @@ async def create_account(
     token = await authenticator.login(response, request, form, repo)
     print("token", token)
     return AccountToken(account=account, **token.dict())
+
+
+@router.get("/users", response_model=List[AccountOut] | Error)
+def list_all_users(
+    repo: AccountRepo = Depends(),
+):
+    return repo.list_all_users()
 
 
 @router.delete("/users/{id}", response_model=bool)
@@ -102,6 +109,7 @@ def get_all_businesses(
     businesses = repo.get_all_businesses()
     print(businesses)
     return businesses
+
 
 @router.get(
     "/users/{user_id}", response_model=Union[Optional[AccountOut], Error]

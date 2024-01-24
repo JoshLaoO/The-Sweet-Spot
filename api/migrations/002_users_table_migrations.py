@@ -9,7 +9,7 @@ steps = [
         """,
         """
         DROP TABLE businesses;
-        """
+        """,
     ],
     [
         """
@@ -24,6 +24,6 @@ steps = [
         """,
         """
         DROP TABLE users;
-        """
-    ]
+        """,
+    ],
 ]

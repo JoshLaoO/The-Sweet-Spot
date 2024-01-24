@@ -4,7 +4,6 @@ from queries.pool import pool
 import hashlib
 
 
-
 class Error(BaseModel):
     message: str
 
@@ -96,13 +95,15 @@ class AccountRepo:
         }
 
         return account_dict
+
     def record_to_business_out(self, record) -> BusinessOut:
         business_dict = {
             "business_id": record[0],
             "business_name": record[1],
-            "business_email": record[2]
+            "business_email": record[2],
         }
         return BusinessOut(**business_dict)
+
     def create(
         self, user: AccountIn, hashed_password: str
     ) -> AccountOutWithPassword:
@@ -150,6 +151,39 @@ class AccountRepo:
                     )
         except Exception:
             return {"message": "Could not create a user"}
+
+    def list_all_users(self) -> List[AccountOut]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT
+                        id,
+                        email,
+                        picture_url,
+                        username,
+                        business
+                        FROM users
+                        """
+                    )
+                    records = db.fetchall()
+                    users = []
+                    for record in records:
+                        u_data = {
+                            "id": record[0],
+                            "email": record[1],
+                            "picture_url": record[2],
+                            "username": record[3],
+                            "business": None,
+                        }
+                        if record[4] is not None:
+                            data = self.get_business_data(record[4])
+                            u_data["business"] = data.dict() if data else None
+                        users.append(AccountOut(**u_data))
+                    return users
+        except Exception:
+            return {"message": "Could not get users"}
 
     def get(self, email: str) -> AccountOutWithPassword:
         try:
@@ -207,12 +241,11 @@ class AccountRepo:
                         self.record_to_business_out(record) for record in db
                     ]
         except Exception as e:
-            print("THIS IS THE ERROR: ",e)
+            print("THIS IS THE ERROR: ", e)
             return {"message": "Could not get all businesses"}
 
     def get_one(self, user_id: int) -> Union[Optional[AccountOut], Error]:
         try:
-
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
@@ -238,45 +271,54 @@ class AccountRepo:
             print(e)
             return {"message": "could not get user information"}
 
+    # anna
+    def update_user(self, id: int, user: AccountUpdate) -> AccountOut:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    hashed_password = hashlib.sha256(
+                        user.password.encode()
+                    ).hexdigest()
 
-def update_user(self, id: int, user: AccountUpdate) -> Union[Optional[AccountOut], Error]:
-    try:
-        with pool.connection() as conn:
-            with conn.cursor() as db:
-                hashed_password = hashlib.sha256(user.password.encode()).hexdigest()
+                    db.execute(
+                        """
+                        UPDATE users
+                        SET
+                            email = %s,
+                            picture_url = %s,
+                            username = %s,
+                            hashed_password = %s
+                        WHERE id = %s
+                        RETURNING
+                            id,
+                            business,
+                            email,
+                            picture_url,
+                            username;
 
-                db.execute(
-                    """
-                    UPDATE users
-                    SET
-                        picture_url = %s,
-                        username = %s,
-                        email = %s,
-                        hashed_password = %s
-                    WHERE id = %s
-                    RETURNING
-                        id,
-                        business,
-                        email,
-                        picture_url,
-                        username;
-                    """,
-                    [user.picture_url, user.username, user.email, hashed_password, id]
-                )
-                record = db.fetchone()
+                        """,
+                        [
+                            user.picture_url,
+                            user.username,
+                            user.email,
+                            hashed_password,
+                            id,
+                        ],
+                    )
+                    record = db.fetchone()
+                    print(record)
+                    if record is None:
+                        raise Exception("User not found or no change made")
 
-                if record is None:
-                    return Error("User not found or no change made")
-
-                if len(record) < 5:
-                    return Error("Unexpected record format from database. Record does not contain enough elements.")
-
-                return AccountOut(
+                    if len(record) < 5:
+                        raise Exception("Unexpected record format from database. Record does not contain enough elements.")
+                    return AccountOut(
                     id=record[0],
                     business=record[1],
                     email=record[2],
                     picture_url=record[3],
                     username=record[4],
                 )
-    except Exception as e:
-        return Error(f"Error updating user: {e}")
+        except Exception as e:
+            print(f"Error updating user: {e}")
+            raise
