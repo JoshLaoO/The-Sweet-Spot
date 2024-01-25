@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Union, List
+from typing import Union, List, Optional
 from queries.pool import pool
 
 
@@ -16,6 +16,7 @@ class OrderOut(BaseModel):
     id: int
     candy_id: Union[int, None]
     quantity: int
+
 
 class OrderRepo:
     def create(self, order: OrderIn) -> Union[OrderOut, Error]:
@@ -37,7 +38,7 @@ class OrderRepo:
         except Exception as e:
             return {"Error": e}
 
-    def get_all(self) -> Union[List[OrderOut],Error]:
+    def get_all(self) -> Union[List[OrderOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -46,10 +47,7 @@ class OrderRepo:
                         SELECT * FROM orders
                         """
                     )
-                    return [
-                        self.record_to_out(record)
-                        for record in db
-                    ]
+                    return [self.record_to_out(record) for record in db]
         except Exception as e:
             return {"Error": e}
 
@@ -75,11 +73,7 @@ class OrderRepo:
             return {"Error": e}
 
     def record_to_out(self, record):
-        return OrderOut(
-            id=record[0],
-            candy_id=record[1],
-            quantity=record[2]
-        )
+        return OrderOut(id=record[0], candy_id=record[1], quantity=record[2])
 
     def order_into_out(self, id: int, order: OrderIn):
         old_data = order.dict()
