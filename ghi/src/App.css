@@ -53,3 +53,36 @@
     padding: 5px 10px;
     font-size: 16px;
 }
+
+
+
+
+.sign-up-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.sign-up-form {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+}
+
+.sign-up-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.sign-up-form input[type="text"],
+.sign-up-form input[type="password"] {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+.sign-up-form button {
+    margin-top: 10px;
+}
