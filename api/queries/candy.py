@@ -1,6 +1,10 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List, Union
 from queries.pool import pool
+
+
+class Error(BaseModel):
+    message: str
 
 
 class CandyIn(BaseModel):
@@ -12,8 +16,49 @@ class CandyIn(BaseModel):
     stock: int
 
 
+class CandyOut(BaseModel):
+    id: int
+    name: str
+    business: Optional[int]
+    picture_url: str
+    description: str
+    price: float
+    stock: int
+
+
 class CandyRepository:
-    def create(candy: CandyIn):
+    def get_all(self) -> Union[Error, List[CandyOut]]:
+        try:
+            # connect
+            with pool.connection() as conn:
+                # cursor
+                with conn.cursor() as db:
+                    # run SELECT
+                    db.execute(
+                        """
+                        SELECT id, name, business,  picture_url,
+                        description, price, stock
+                        FROM candy;
+                        """
+                    )
+
+                    return [
+                        CandyOut(
+                            id=record[0],
+                            name=record[1],
+                            business=record[2],
+                            picture_url=record[3],
+                            description=record[4],
+                            price=record[5],
+                            stock=record[6],
+                        )
+                        for record in db
+                    ]
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get all candies"}
+
+    def create(self, candy: CandyIn) -> CandyOut:
         # connect
         with pool.connection() as conn:
             # cursor
@@ -35,5 +80,7 @@ class CandyRepository:
                         candy.stock,
                     ],
                 )
-                print(result)
+                id = result.fetchone()[0]
                 # return data
+                old_data = candy.dict()
+                return CandyOut(id=id, **old_data)
