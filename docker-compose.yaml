@@ -9,6 +9,7 @@ services:
       DATABASE_URL: postgresql://sweet_user:secret@db/sweet
       WAIT_HOST: db:5432
       PORT: 8000
+      SIGNING_KEY: "sweet"
     build:
       context: api
       dockerfile: Dockerfile.dev
