@@ -98,6 +98,22 @@ class OrderRepo:
         except Exception as e:
             return {"Error": e}
 
+    def delete(self, order_id: int) -> bool:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+
+                    db.execute(
+                        """
+                        DELETE FROM orders
+                        WHERE id = %s
+                        """,
+                        [order_id],
+                    )
+                    return True
+        except Exception:
+            return False
+
     def record_to_out(self, record):
         return OrderOut(id=record[0], candy_id=record[1], quantity=record[2])
 
