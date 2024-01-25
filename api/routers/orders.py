@@ -25,3 +25,10 @@ def get_one_order(
     if order is None:
         response.status_code = 404
     return order
+
+
+@router.put("/orders/{order_id}", response_model=Union[OrderOut, Error])
+def update_order(order_id: int, order: OrderIn, repo: OrderRepo = Depends()):
+    update = repo.update(order_id, order)
+    print(update)
+    return update

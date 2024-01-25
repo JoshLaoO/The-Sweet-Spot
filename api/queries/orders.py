@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Union, List, Optional
 from queries.pool import pool
-
+from queries.candy import CandyOut
 
 class Error(BaseModel):
     message: str
@@ -68,6 +68,32 @@ class OrderRepo:
                     record = result.fetchone()
                     if record is None:
                         return None
+                    return self.record_to_out(record)
+        except Exception as e:
+            return {"Error": e}
+
+    def update(self, order_id: int, order: OrderIn) -> Union[OrderOut, Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        UPDATE orders
+                        SET candy_id = %s,
+                            quantity = %s
+                        WHERE id = %s
+                        RETURNING
+                            id,
+                            candy_id,
+                            quantity
+                        """,
+                        [
+                            order.candy_id,
+                            order.quantity,
+                            order_id,
+                        ],
+                    )
+                    record = db.fetchone()
                     return self.record_to_out(record)
         except Exception as e:
             return {"Error": e}

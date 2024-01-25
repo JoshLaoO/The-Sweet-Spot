@@ -2,8 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from authenticator import authenticator
-from routers import users, candy
-from routers import users, orders
+from routers import users, candy, orders
 
 app = FastAPI()
 
