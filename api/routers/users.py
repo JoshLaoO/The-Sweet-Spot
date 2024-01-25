@@ -149,3 +149,17 @@ async def create_business(
     repo: AccountRepo = Depends(),
 ):
     return repo.create_business(business_data)
+
+
+@router.delete("/businesses/{business_id}", response_model=bool)
+async def delete_business(
+    business_id: int,
+    repo: AccountRepo = Depends(),
+):
+    success = repo.delete_business(business_id)
+    if not success:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Business not found",
+        )
+    return success

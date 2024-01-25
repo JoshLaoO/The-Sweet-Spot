@@ -23,5 +23,4 @@ def create_candy(
 def get_all(
     repo: CandyRepository = Depends(),
 ):
-
     return repo.get_all()
