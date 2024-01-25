@@ -27,7 +27,39 @@ class CandyOut(BaseModel):
 
 
 class CandyRepository:
-    def get_all(self) -> Union[Error, List[CandyOut]]:
+    def update(self, candy_id: int, candy: CandyIn) -> Union[CandyOut, Error]:
+        try:
+            # connect
+            with pool.connection() as conn:
+                # cursor
+                with conn.cursor() as db:
+                    # run SELECT
+                    db.execute(
+                        """
+                        UPDATE candy
+                        SET name = %s
+                            , picture_url = %s
+                            , description = %s
+                            , price = %s
+                            , stock = %s
+                            WHERE id =%s
+                        """,
+                        [
+                            candy.name,
+                            candy.picture_url,
+                            candy.description,
+                            candy.price,
+                            candy.stock,
+                            candy_id
+                        ]
+                    )
+                    return self.candy_in_to_out(candy_id, candy)
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get candy"}
+
+
+    def get_all(self) -> Union[List[CandyOut], Error]:
         try:
             # connect
             with pool.connection() as conn:
@@ -81,6 +113,8 @@ class CandyRepository:
                     ],
                 )
                 id = result.fetchone()[0]
-                # return data
-                old_data = candy.dict()
-                return CandyOut(id=id, **old_data)
+                return self.candy_in_to_out(id, candy)
+
+    def candy_in_to_out(self, id: int, candy: CandyIn):
+        old_data = candy.dict()
+        return CandyOut(id=id, **old_data)
