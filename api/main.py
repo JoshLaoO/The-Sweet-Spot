@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from authenticator import authenticator
+from routers import users, candy
 from routers import users, orders
 
 app = FastAPI()
@@ -30,4 +31,5 @@ def launch_details():
 
 app.include_router(users.router)
 app.include_router(authenticator.router)
+app.include_router(candy.router)
 app.include_router(orders.router)
