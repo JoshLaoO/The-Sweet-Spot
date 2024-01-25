@@ -34,6 +34,6 @@ steps = [
         """,
         """
         DROP TABLE users;
-        """
-    ]
+        """,
+    ],
 ]
