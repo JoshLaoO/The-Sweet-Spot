@@ -19,7 +19,7 @@ steps = [
         """
         CREATE TABLE orders (
         id SERIAL PRIMARY KEY NOT NULL,
-        candy_id INT REFERENCES candy(id),
+        candy_id INT REFERENCES candy(id) NOT NULL,
         quantity INT NOT NULL
         );
         """,
