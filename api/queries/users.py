@@ -271,6 +271,41 @@ class AccountRepo:
         except Exception:
             return None
 
+    def update_business(
+        self, business_id: int, business_data: BusinessIn
+    ) -> Optional[BusinessOut]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        UPDATE businesses
+                        SET
+                            business_name = %s,
+                            business_email = %s
+                        WHERE business_id = %s
+                        RETURNING
+                            business_id,
+                            business_name,
+                            business_email;
+                        """,
+                        [
+                            business_data.business_name,
+                            business_data.business_email,
+                            business_id,
+                        ],
+                    )
+                    record = result.fetchone()
+                    if record is None:
+                        return None
+                    return BusinessOut(
+                        business_id=record[0],
+                        business_name=record[1],
+                        business_email=record[2],
+                    )
+        except Exception:
+            return None
+
     def delete_business(self, business_id: int) -> bool:
         try:
             with pool.connection() as conn:
