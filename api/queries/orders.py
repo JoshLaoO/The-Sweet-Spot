@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Union, List, Optional
 from queries.pool import pool
-from queries.candy import CandyOut
+
 
 class Error(BaseModel):
     message: str
