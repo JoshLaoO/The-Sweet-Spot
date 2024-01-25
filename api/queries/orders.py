@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Union, List
+from typing import Union, List, Optional
 from queries.pool import pool
 
 
@@ -48,6 +48,27 @@ class OrderRepo:
                         """
                     )
                     return [self.record_to_out(record) for record in db]
+        except Exception as e:
+            return {"Error": e}
+
+    def get_one(self, order_id: int) -> Optional[OrderOut]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT id
+                             , candy_id
+                             , quantity
+                        FROM orders
+                        WHERE id = %s
+                        """,
+                        [order_id]
+                    )
+                    record = result.fetchone()
+                    if record is None:
+                        return None
+                    return self.record_to_out(record)
         except Exception as e:
             return {"Error": e}
 
