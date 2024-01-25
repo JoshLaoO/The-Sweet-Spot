@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from typing import Union,List
+from typing import Union, List
 from queries.orders import Error, OrderIn, OrderOut, OrderRepo
 
 router = APIRouter()
@@ -9,10 +9,9 @@ router = APIRouter()
 def create_order(order: OrderIn, repo: OrderRepo = Depends()):
     return repo.create(order)
 
-@router.get("/orders",response_model=Union[List[OrderOut],Error])
-def get_all_orders(
-    repo: OrderRepo =  Depends()
-):
+
+@router.get("/orders", response_model=Union[List[OrderOut], Error])
+def get_all_orders(repo: OrderRepo = Depends()):
     orders = repo.get_all()
     print(orders)
     return orders
