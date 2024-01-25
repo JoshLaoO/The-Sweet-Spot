@@ -72,6 +72,32 @@ class OrderRepo:
         except Exception as e:
             return {"Error": e}
 
+    def update(self, order_id: int, order: OrderIn) -> Union[OrderOut, Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        UPDATE orders
+                        SET candy_id = %s,
+                            quantity = %s
+                        WHERE id = %s
+                        RETURNING
+                            id,
+                            candy_id,
+                            quantity
+                        """,
+                        [
+                            order.candy_id,
+                            order.quantity,
+                            order_id,
+                        ],
+                    )
+                    record = db.fetchone()
+                    return self.record_to_out(record)
+        except Exception as e:
+            return {"Error": e}
+
     def record_to_out(self, record):
         return OrderOut(id=record[0], candy_id=record[1], quantity=record[2])
 
