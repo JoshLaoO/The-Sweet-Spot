@@ -50,14 +50,13 @@ class CandyRepository:
                             candy.description,
                             candy.price,
                             candy.stock,
-                            candy_id
-                        ]
+                            candy_id,
+                        ],
                     )
                     return self.candy_in_to_out(candy_id, candy)
         except Exception as e:
             print(e)
             return {"message": "Could not get candy"}
-
 
     def get_all(self) -> Union[List[CandyOut], Error]:
         try:
