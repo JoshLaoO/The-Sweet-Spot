@@ -25,3 +25,12 @@ def get_all(
 ):
 
     return repo.get_all()
+
+
+@router.put("/candy/{id}", response_model=Union[CandyOut, Error])
+def update_candy(
+    candy_id: int,
+    candy: CandyIn,
+    repo: CandyRepository = Depends(),
+) -> Union[Error, CandyOut]:
+    return repo.update(candy_id, candy)
