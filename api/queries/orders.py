@@ -63,7 +63,7 @@ class OrderRepo:
                         FROM orders
                         WHERE id = %s
                         """,
-                        [order_id]
+                        [order_id],
                     )
                     record = result.fetchone()
                     if record is None:

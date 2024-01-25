@@ -16,11 +16,10 @@ def get_all_orders(repo: OrderRepo = Depends()):
     print(orders)
     return orders
 
+
 @router.get("/orders/{order_id}", response_model=Optional[OrderOut])
 def get_one_order(
-    response: Response,
-    order_id: int,
-    repo: OrderRepo = Depends()
+    response: Response, order_id: int, repo: OrderRepo = Depends()
 ) -> OrderOut:
     order = repo.get_one(order_id)
     if order is None:
