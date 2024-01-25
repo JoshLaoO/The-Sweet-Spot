@@ -7,62 +7,56 @@ function SignUpPage() {
     const [password, setPassword] = useState('');
     const [pictureUrl, setPictureUrl] = useState('');
     const [isBusiness, setIsBusiness] = useState(false);
+    const [isSignupSuccessful, setIsSignupSuccessful] = useState(false);
+    const [signupError, setSignupError] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        let response;
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+
         if (isBusiness) {
-            // 处理商业账户注册
+
             const businessData = {
-                business_name: username, // 假设商业名称使用用户名字段
+                business_name: username,
                 business_email: email
             };
-
-            try {
-                const response = await fetch('http://localhost:8000/business', { // 商业账户的后端地址
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(businessData)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.status}`);
-                }
-
-                const data = await response.json();
-                console.log('Business account created:', data);
-            } catch (error) {
-                console.error('Failed to create business account:', error);
-            }
+            response = await fetch('http://localhost:8000/business', {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(businessData)
+            });
         } else {
-            // 处理个人账户注册
+
             const accountData = {
                 email: email,
                 picture_url: pictureUrl,
                 username: username,
                 password: password
             };
+            response = await fetch('http://localhost:8000/users', {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(accountData)
+            });
+        }
 
-            try {
-                const response = await fetch('http://localhost:8000/users', { // 个人账户的后端地址
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(accountData)
-                });
 
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.status}`);
-                }
-
-                const data = await response.json();
-                console.log('Account created:', data);
-            } catch (error) {
-                console.error('Failed to create account:', error);
+        try {
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
             }
+            const data = await response.json();
+            console.log('Account created:', data);
+            setIsSignupSuccessful(true);
+            setSignupError(false);
+        } catch (error) {
+            console.error('Failed to create account:', error);
+            setIsSignupSuccessful(false);
+            setSignupError(true);
         }
     };
 
@@ -70,6 +64,7 @@ function SignUpPage() {
         <div className="sign-up-form-container">
             <form onSubmit={handleSubmit} className="sign-up-form">
                 <div>
+                    <h3>Sign Up </h3>
                     <label>Email:</label>
                     <input
                         type="email"
@@ -113,6 +108,8 @@ function SignUpPage() {
                 </div>
                 <button type="submit">Sign Up</button>
             </form>
+            {isSignupSuccessful && <p className="success-message">Successful, please log in.</p>}
+            {signupError && <p className="error-message">Failed to sign up.</p>}
         </div>
     );
 }

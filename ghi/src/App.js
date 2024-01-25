@@ -6,6 +6,8 @@ import SignUpPage from "./signuppage.js";
 import Header from "./header.js";
 import Footer from "./footer.js";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LoginPage from "./CustomerLogIn.js";
+import MainPage from "./mainpage.js";
 
 
 function App() {
@@ -36,6 +38,8 @@ function App() {
             <ErrorNotification error={error} />
             <Routes>
                 <Route path="/signup/" element={<SignUpPage />} />
+                <Route path="/login/" element={<LoginPage />} />
+                <Route path="/mainpage/" element={<MainPage/>} />
 
                 <Route path="/" element={<Construct info={launchInfo} />} />
             </Routes>
