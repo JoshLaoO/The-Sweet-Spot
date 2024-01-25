@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Union
+from typing import Union, List
 from queries.pool import pool
 
 
@@ -37,6 +37,22 @@ class OrderRepo:
                     return self.order_into_out(id, order)
         except Exception as e:
             return {"Error": e}
+
+    def get_all(self) -> Union[List[OrderOut], Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT * FROM orders
+                        """
+                    )
+                    return [self.record_to_out(record) for record in db]
+        except Exception as e:
+            return {"Error": e}
+
+    def record_to_out(self, record):
+        return OrderOut(id=record[0], candy_id=record[1], quantity=record[2])
 
     def order_into_out(self, id: int, order: OrderIn):
         old_data = order.dict()
