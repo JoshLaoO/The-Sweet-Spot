@@ -172,3 +172,23 @@
 .button-link:hover {
     background-color: #9acfe1;
 }
+
+
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.product-item {
+    flex-basis: calc(25% - 10px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.product-item img {
+    max-width: 100%;
+    height: auto;
+    border-bottom: 1px solid #eee;
+}
