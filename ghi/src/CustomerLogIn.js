@@ -67,7 +67,11 @@ function LoginPage() {
                     </div>
                     <div className="buttons-container">
                         <button type="submit">Log In</button>
-                        <button onClick={() => setIsBusinessLogin(!isBusinessLogin)} className="toggle-login-type">
+                        <button
+                            type="button"
+                            onClick={() => setIsBusinessLogin(!isBusinessLogin)}
+                            className="toggle-login-type"
+                        >
                             {isBusinessLogin ? 'User account? Click here' : 'Business account? Click here'}
                         </button>
                     </div>
