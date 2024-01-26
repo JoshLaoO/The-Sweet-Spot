@@ -10,7 +10,7 @@ function Header() {
 
             <div className="nav-buttons">
 
-                <Link to="/" className="button-link">Main Page</Link>
+                <Link to="/mainpage/" className="button-link">Sweet Home</Link>
 
 
                 <Link to="/signup/" className="button-link">Sign Up</Link>
