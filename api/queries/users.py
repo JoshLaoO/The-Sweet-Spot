@@ -103,8 +103,6 @@ class AccountRepo:
         self, user: AccountIn, hashed_password: str
     ) -> AccountOutWithPassword:
         try:
-            print("USER", user)
-            print("HASHED", hashed_password)
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
@@ -133,9 +131,7 @@ class AccountRepo:
                             user.business,
                         ],
                     )
-                    print("insert worked?")
                     id = result.fetchone()[0]
-                    print("ID GOTTEN", id)
                     return AccountOutWithPassword(
                         id=id,
                         email=user.email,
@@ -182,7 +178,6 @@ class AccountRepo:
 
     def get(self, email: str) -> AccountOutWithPassword:
         try:
-            print("email", email)
             with pool.connection() as conn:
                 with conn.cursor(row_factory=dict_row) as db:
                     result = db.execute(
@@ -200,10 +195,9 @@ class AccountRepo:
                         [email],
                     )
                     record = result.fetchone()
-                    print("record found", record)
                     if record is None:
                         return None
-                    return self.record_to_account_out(record)
+                    return AccountOutWithPassword(**record)
         except Exception:
             return {"message": "Could not get account"}
 
@@ -236,7 +230,7 @@ class AccountRepo:
                         self.record_to_business_out(record) for record in db
                     ]
         except Exception as e:
-            print("THIS IS THE ERROR: ", e)
+            print(e)
             return {"message": "Could not get all businesses"}
 
     def create_business(
@@ -411,7 +405,6 @@ class AccountRepo:
                         ],
                     )
                     record = db.fetchone()
-                    print(record)
                     if record is None:
                         raise Exception("User not found or no change made")
 
