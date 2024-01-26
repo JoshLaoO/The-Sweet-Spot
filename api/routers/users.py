@@ -151,6 +151,20 @@ async def create_business(
     return repo.create_business(business_data)
 
 
+@router.get("/businesses/{business_id}", response_model=BusinessOut)
+async def get_business(
+    business_id: int,
+    repo: AccountRepo = Depends(),
+):
+    business = repo.get_business(business_id)
+    if business is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Business not found",
+        )
+    return business
+
+
 @router.put("/businesses/{business_id}", response_model=BusinessOut)
 async def update_business(
     business_id: int,
