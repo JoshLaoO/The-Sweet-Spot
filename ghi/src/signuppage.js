@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import backgroundImg from './images/background.png';
 
 function SignUpPage() {
     const [email, setEmail] = useState('');
@@ -13,39 +14,26 @@ function SignUpPage() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        let response;
-        const headers = {
-            'Content-Type': 'application/json'
+        const signUpUrl = isBusiness ? 'http://localhost:8000/business' : 'http://localhost:8000/users';
+        const signUpData = isBusiness ? {
+            business_name: username,
+            business_email: email
+        } : {
+            email: email,
+            picture_url: pictureUrl,
+            username: username,
+            password: password
         };
 
-        if (isBusiness) {
-
-            const businessData = {
-                business_name: username,
-                business_email: email
-            };
-            response = await fetch('http://localhost:8000/business', {
-                method: 'POST',
-                headers: headers,
-                body: JSON.stringify(businessData)
-            });
-        } else {
-
-            const accountData = {
-                email: email,
-                picture_url: pictureUrl,
-                username: username,
-                password: password
-            };
-            response = await fetch('http://localhost:8000/users', {
-                method: 'POST',
-                headers: headers,
-                body: JSON.stringify(accountData)
-            });
-        }
-
-
         try {
+            const response = await fetch(signUpUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(signUpData)
+            });
+
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);
             }
@@ -61,10 +49,10 @@ function SignUpPage() {
     };
 
     return (
-        <div className="sign-up-form-container">
+        <div className="sign-up-form-container" style={{ backgroundImage: `url(${backgroundImg})` }}>
             <form onSubmit={handleSubmit} className="sign-up-form">
                 <div>
-                    <h3>Sign Up </h3>
+                    <h3>Sign Up</h3>
                     <label>Email:</label>
                     <input
                         type="email"

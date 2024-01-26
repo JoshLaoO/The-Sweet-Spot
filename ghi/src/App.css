@@ -55,21 +55,29 @@
 }
 
 
-
-
 .sign-up-form-container {
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 80vh;
+
 }
 
+
+
 .sign-up-form {
-    border: 1px solid #ccc;
+    background: rgba(255, 255, 255, 0.8);
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 300px;
+    margin-bottom: 10px;
+    border: none;
 }
+
+
 
 .sign-up-form label {
     display: block;
@@ -108,27 +116,34 @@
 
 
 
-.login-form-container {
+.login-page-container {
+
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 80vh;
 }
 
-
-.login-form {
-    border: 1px solid #ccc;
+.login-form-container {
+    background: rgba(255, 255, 255, 0.8);
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 300px;
 }
 
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
 
 .login-form label {
     display: block;
     margin-bottom: 10px;
 }
-
 
 .login-form input[type="email"],
 .login-form input[type="password"] {
@@ -139,9 +154,7 @@
     border-radius: 4px;
 }
 
-
 .login-form button {
-    width: 100%;
     padding: 10px;
     margin-top: 10px;
     border: none;
@@ -154,6 +167,30 @@
 .login-form button:hover {
     background-color: #0056b3;
 }
+
+
+.login-form .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+
+.toggle-login-type {
+    margin-left: 10px;
+    background-color: transparent;
+    border: none;
+    color: #0056b3;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.toggle-login-type:hover {
+    color: #003366;
+}
+
+
+
 
 
 .button-link {
@@ -191,4 +228,94 @@
     max-width: 100%;
     height: auto;
     border-bottom: 1px solid #eee;
+}
+
+.login-page-container {
+
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form-container {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login-form button {
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #77b2f1;
+    color: white;
+    cursor: pointer;
+}
+
+.login-form button:hover {
+    background-color: #0056b3;
+}
+
+
+.login-form .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+
+.toggle-login-type {
+    margin-left: 10px;
+    background-color: transparent;
+    border: none;
+    color: #0056b3;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.toggle-login-type:hover {
+    color: #003366;
+}
+
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+
+}
+
+.button-link {
+    margin-right: 10px;
+
+}
+
+.fa-shopping-cart {
+    margin-right: 5px;
+
 }
