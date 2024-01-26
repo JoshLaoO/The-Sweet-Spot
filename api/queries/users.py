@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import Union, List, Optional
 from queries.pool import pool
 import hashlib
+from psycopg.rows import dict_row
 
 
 class Error(BaseModel):
@@ -183,7 +184,7 @@ class AccountRepo:
         try:
             print("email", email)
             with pool.connection() as conn:
-                with conn.cursor() as db:
+                with conn.cursor(row_factory=dict_row) as db:
                     result = db.execute(
                         """
                         SELECT
