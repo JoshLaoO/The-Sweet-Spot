@@ -1,29 +1,28 @@
 from pydantic import BaseModel
 from typing import Union, List, Optional
 from queries.pool import pool
-
+from queries.candy import CandyOut, CandyRepository
 
 class Error(BaseModel):
     message: str
 
-
 class OrderIn(BaseModel):
-    candy_id: Union[int, None]
+    candy_id: int
     quantity: int
 
 
 class OrderOut(BaseModel):
     id: int
-    candy_id: Union[int, None]
+    candy_id: CandyOut
     quantity: int
 
 
 class OrderRepo:
-    def create(self, order: OrderIn) -> Union[OrderOut, Error]:
+    def create(self, order: OrderIn, candy_repo: CandyRepository) -> Union[OrderOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
+                    db.execute(
                         """
                         INSERT INTO orders
                             (candy_id,quantity)
@@ -33,12 +32,14 @@ class OrderRepo:
                         """,
                         [order.candy_id, order.quantity],
                     )
-                    id = result.fetchone()[0]
-                    return self.order_into_out(id, order)
-        except Exception as e:
-            return {"Error": e}
 
-    def get_all(self) -> Union[List[OrderOut], Error]:
+                    id = db.fetchone()[0]
+                    return self.order_into_out(id, order, candy_repo)
+        except Exception as e:
+            print(e)
+            return {"Error": "Could not create candy"}
+
+    def get_all(self, candy_repo: CandyRepository) -> Union[Error,List[OrderOut]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -47,11 +48,12 @@ class OrderRepo:
                         SELECT * FROM orders
                         """
                     )
-                    return [self.record_to_out(record) for record in db]
+                    return [self.record_to_out(record, candy_repo) for record in db]
         except Exception as e:
-            return {"Error": e}
+            print(e)
+            return {"Error": "Could not get all orders"}
 
-    def get_one(self, order_id: int) -> Optional[OrderOut]:
+    def get_one(self, order_id: int, candy_repo: CandyRepository) -> Optional[OrderOut]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -68,11 +70,11 @@ class OrderRepo:
                     record = result.fetchone()
                     if record is None:
                         return None
-                    return self.record_to_out(record)
+                    return self.record_to_out(record, candy_repo)
         except Exception as e:
             return {"Error": e}
 
-    def update(self, order_id: int, order: OrderIn) -> Union[OrderOut, Error]:
+    def update(self, order_id: int, order: OrderIn, candy_repo: CandyRepository) -> Union[OrderOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -94,7 +96,7 @@ class OrderRepo:
                         ],
                     )
                     record = db.fetchone()
-                    return self.record_to_out(record)
+                    return self.record_to_out(record, candy_repo)
         except Exception as e:
             return {"Error": e}
 
@@ -113,9 +115,13 @@ class OrderRepo:
         except Exception:
             return False
 
-    def record_to_out(self, record):
-        return OrderOut(id=record[0], candy_id=record[1], quantity=record[2])
+    def record_to_out(self, record, candy_repo: CandyRepository):
+        candy = candy_repo.get_one(record[1])
+        print("THIS IS THE RECORD:",record)
+        return OrderOut(id=record[0], candy_id=candy, quantity=record[2])
 
-    def order_into_out(self, id: int, order: OrderIn):
+    def order_into_out(self, id: int, order: OrderIn, candy_repo:CandyRepository):
         old_data = order.dict()
+        old_data["candy_id"] = candy_repo.get_one(order.candy_id)
+
         return OrderOut(id=id, **old_data)
