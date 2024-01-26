@@ -27,13 +27,64 @@ class CandyOut(BaseModel):
 
 
 class CandyRepository:
-    def update(self, candy_id: int, candy: CandyIn) -> Union[CandyOut, Error]:
+    def get_one(self, candy_id:int) -> CandyOut:
         try:
             # connect
             with pool.connection() as conn:
                 # cursor
                 with conn.cursor() as db:
                     # run SELECT
+                    result = db.execute(
+                        """
+                        SELECT id
+                            , name
+                            , business
+                            , picture_url
+                            , description
+                            , price
+                            , stock
+                            FROM candy
+                            WHERE id =%s
+                        """,
+                        [candy_id]
+                    )
+                    record = result.fetchone()
+                    return self.record_to_candy_out(record)
+
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get candy"}
+
+
+    def delete_candy(self, candy_id: int) -> bool:
+        try:
+            # connect
+            with pool.connection() as conn:
+                # cursor
+                with conn.cursor() as db:
+                    # run DELETE
+                    db.execute(
+                        """
+                        DELETE FROM candy
+                        WHERE id = %s
+                        """,
+                        [candy_id]
+                    )
+                    return True
+
+        except Exception as e:
+            print(e)
+            return False
+
+
+
+    def update(self, candy_id: int, candy: CandyIn) -> Union[CandyOut, Error]:
+        try:
+            # connect
+            with pool.connection() as conn:
+                # cursor
+                with conn.cursor() as db:
+                    # run UPDATE
                     db.execute(
                         """
                         UPDATE candy
@@ -74,15 +125,7 @@ class CandyRepository:
                     )
 
                     return [
-                        CandyOut(
-                            id=record[0],
-                            name=record[1],
-                            business=record[2],
-                            picture_url=record[3],
-                            description=record[4],
-                            price=record[5],
-                            stock=record[6],
-                        )
+                        self.record_to_candy_out(record)
                         for record in db
                     ]
         except Exception as e:
@@ -117,3 +160,14 @@ class CandyRepository:
     def candy_in_to_out(self, id: int, candy: CandyIn):
         old_data = candy.dict()
         return CandyOut(id=id, **old_data)
+
+    def record_to_candy_out(self, record):
+        return CandyOut(
+                            id=record[0],
+                            name=record[1],
+                            business=record[2],
+                            picture_url=record[3],
+                            description=record[4],
+                            price=record[5],
+                            stock=record[6],
+                        )
