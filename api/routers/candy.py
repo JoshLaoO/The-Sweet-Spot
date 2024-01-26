@@ -33,3 +33,23 @@ def update_candy(
     repo: CandyRepository = Depends(),
 ) -> Union[Error, CandyOut]:
     return repo.update(candy_id, candy)
+
+
+@router.delete("/candy/{id}", response_model=bool)
+def delete_candy(
+    candy_id: int,
+    repo: CandyRepository = Depends(),
+) -> bool:
+    return repo.delete_candy(candy_id)
+
+
+@router.get("/candy/{id}", response_model=Union[CandyOut, Error])
+def get_one_candy(
+    candy_id: int,
+    response: Response,
+    repo: CandyRepository = Depends(),
+) -> CandyOut:
+    candy = repo.get_one(candy_id)
+    if candy is None:
+        response.status_code = 404
+    return candy
