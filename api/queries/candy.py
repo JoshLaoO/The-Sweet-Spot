@@ -27,7 +27,7 @@ class CandyOut(BaseModel):
 
 
 class CandyRepository:
-    def get_one(self, candy_id:int) -> CandyOut:
+    def get_one(self, candy_id: int) -> CandyOut:
         try:
             # connect
             with pool.connection() as conn:
@@ -46,7 +46,7 @@ class CandyRepository:
                             FROM candy
                             WHERE id =%s
                         """,
-                        [candy_id]
+                        [candy_id],
                     )
                     record = result.fetchone()
                     return self.record_to_candy_out(record)
@@ -54,7 +54,6 @@ class CandyRepository:
         except Exception as e:
             print(e)
             return {"message": "Could not get candy"}
-
 
     def delete_candy(self, candy_id: int) -> bool:
         try:
@@ -68,15 +67,13 @@ class CandyRepository:
                         DELETE FROM candy
                         WHERE id = %s
                         """,
-                        [candy_id]
+                        [candy_id],
                     )
                     return True
 
         except Exception as e:
             print(e)
             return False
-
-
 
     def update(self, candy_id: int, candy: CandyIn) -> Union[CandyOut, Error]:
         try:
@@ -124,10 +121,7 @@ class CandyRepository:
                         """
                     )
 
-                    return [
-                        self.record_to_candy_out(record)
-                        for record in db
-                    ]
+                    return [self.record_to_candy_out(record) for record in db]
         except Exception as e:
             print(e)
             return {"message": "Could not get all candies"}
@@ -163,11 +157,11 @@ class CandyRepository:
 
     def record_to_candy_out(self, record):
         return CandyOut(
-                            id=record[0],
-                            name=record[1],
-                            business=record[2],
-                            picture_url=record[3],
-                            description=record[4],
-                            price=record[5],
-                            stock=record[6],
-                        )
+            id=record[0],
+            name=record[1],
+            business=record[2],
+            picture_url=record[3],
+            description=record[4],
+            price=record[5],
+            stock=record[6],
+        )
