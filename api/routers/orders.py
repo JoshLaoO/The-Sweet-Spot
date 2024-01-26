@@ -32,3 +32,8 @@ def update_order(order_id: int, order: OrderIn, repo: OrderRepo = Depends()):
     update = repo.update(order_id, order)
     print(update)
     return update
+
+
+@router.delete("/orders/{order_id}", response_model=bool)
+def delete_order(order_id: int, repo: OrderRepo = Depends()):
+    return repo.delete(order_id)
