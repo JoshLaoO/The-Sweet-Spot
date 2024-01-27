@@ -78,7 +78,6 @@ async def create_account(
         "email": info.email,
         "picture_url": info.picture_url,
     }
-
     if info.business is not None:
         form_data["business"] = info.business
 
