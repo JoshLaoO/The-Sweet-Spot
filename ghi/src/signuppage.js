@@ -95,9 +95,10 @@ function SignUpPage() {
                     </label>
                 </div>
                 <button type="submit">Sign Up</button>
+                {isSignupSuccessful && <p className="success-message">Successful, please log in.</p>}
+                {signupError && <p className="error-message">Failed to sign up.</p>}
             </form>
-            {isSignupSuccessful && <p className="success-message">Successful, please log in.</p>}
-            {signupError && <p className="error-message">Failed to sign up.</p>}
+
         </div>
     );
 }
