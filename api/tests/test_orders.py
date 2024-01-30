@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 from main import app
-from queries.orders import OrderRepo, OrderIn
+from queries.orders import OrderRepo
 from queries.candy import CandyRepository
 
 client = TestClient(app)
