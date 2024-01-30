@@ -146,8 +146,10 @@ async def update_user(
 async def create_business(
     business_data: BusinessIn,
     repo: AccountRepo = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
-    return repo.create_business(business_data)
+    if account_data:
+        return repo.create_business(business_data)
 
 
 @router.get("/businesses/{business_id}", response_model=BusinessOut)

@@ -29,7 +29,7 @@ class AccountIn(BaseModel):
     picture_url: str
     username: str
     password: str
-    business: Optional[Union[int, None]]
+    business: Optional[Union[int, None]] = None
 
 
 class AccountOut(BaseModel):
