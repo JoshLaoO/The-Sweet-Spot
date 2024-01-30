@@ -447,19 +447,7 @@ class AccountRepo:
             raise
 
 
-    # def get_account_by_email(self, email: str):
-    #     with pool.connection() as conn:
-    #         with conn.cursor() as cur:
-    #             cur.execute("SELECT * FROM users WHERE email = %s", (email,))
-    #             user_record = cur.fetchone()
-    #             if user_record:
-    #                 return AccountOutWithPassword(**user_record)
-    #             else:
-    #                 return None
 
-
-    # def verify_password(self, plain_password: str, hashed_password: str) -> bool:
-    #     return bcrypt.checkpw(plain_password.encode(), hashed_password.encode())
 
 
 account_repo = AccountRepo()

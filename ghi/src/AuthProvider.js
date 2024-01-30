@@ -1,44 +1,42 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-
+import React, { createContext, useContext, useState } from 'react';
 
 const AuthContext = createContext(null);
 
-
-export const useAuth = () => useContext(AuthContext);
-
-
 export const AuthProvider = ({ children }) => {
     const [authToken, setAuthToken] = useState(null);
+    const [userInfo, setUserInfo] = useState(null);
 
-    console.log("Current auth token:", authToken);
-
-
-    const setToken = (token) => {
-        localStorage.setItem('token', token);
-        setAuthToken(token);
-    };
-
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            setAuthToken(token);
+    const login = async (email, password) => {
+        try {
+            const response = await fetch('http://localhost:8000/token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                setAuthToken(data.access_token);
+                setUserInfo(data.account); // 假设登录响应中包含用户信息
+            } else {
+                throw new Error(data.message || 'Login failed');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            throw error;
         }
-    }, []);
-
-
-
-
-    const authContextValue = {
-        token: authToken,
-        setToken
     };
 
-    console.log("Providing context value:", { token: authToken, setToken });
+    const contextValue = {
+        authToken,
+        userInfo,
+        login
+    };
 
     return (
-        <AuthContext.Provider value={authContextValue}>
+        <AuthContext.Provider value={contextValue}>
             {children}
         </AuthContext.Provider>
     );
 };
+
+export const useAuth = () => useContext(AuthContext);
