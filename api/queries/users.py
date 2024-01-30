@@ -30,7 +30,7 @@ class AccountIn(BaseModel):
     picture_url: Optional[str] = None   # Anna changed them to optional since when login only need email and password
     username: Optional[str] = None
     password: str
-    business: Optional[Union[int, None]]
+    business: Optional[Union[int, None]] = None
 
 
 class AccountOut(BaseModel):
