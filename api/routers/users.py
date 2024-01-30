@@ -20,6 +20,7 @@ from queries.users import (
     AccountUpdate,
     BusinessIn,
     BusinessOut,
+    ExampleAuthenticator,
 )
 
 
@@ -191,3 +192,24 @@ async def delete_business(
             detail="Business not found",
         )
     return success
+
+
+
+# authenticator = ExampleAuthenticator()
+
+# account_repo = AccountRepo()
+
+# @router.post("/login", response_model=AccountToken)
+# async def login(login_data: AccountIn):
+#     print(f"Login attempt for email: {login_data.email}")
+#     user = account_repo.get_account_by_email(login_data.email)
+#     print(f"User found: {user}")
+#     if user and authenticator.verify_password(login_data.password, user.hashed_password):
+#         access_token = authenticator.create_access_token(data={"sub": user.email})
+#         return AccountToken(access_token=access_token, token_type="bearer")
+#     else:
+#         print("Login failed: Incorrect email or password")
+#         raise HTTPException(
+#             status_code=status.HTTP_401_UNAUTHORIZED,
+#             detail="Incorrect email or password"
+#         )

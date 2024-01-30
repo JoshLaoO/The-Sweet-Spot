@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAuth } from './AuthContext';
 import backgroundImg from './images/background.png';
 import { useNavigate } from 'react-router-dom';
 import './App.css';
@@ -9,10 +10,15 @@ function LoginPage() {
     const [isBusinessLogin, setIsBusinessLogin] = useState(false);
     const [loginError, setLoginError] = useState('');
     const navigate = useNavigate();
+    const { setToken } = useAuth();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const loginUrl = isBusinessLogin ? 'http://localhost:8000/business/login' : 'http://localhost:8000/login';
+        console.log('API URL:', process.env.REACT_APP_API_URL);
+
+        // 使用 /token 路由进行登录
+        const loginUrl = `${process.env.REACT_APP_API_URL}/login`;
+
 
         try {
             const response = await fetch(loginUrl, {
@@ -24,20 +30,13 @@ function LoginPage() {
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP Error: ${response.status}`);
+                throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
             }
 
-            const data = await response.json();
-            console.log('Login successful:', data);
-
-
-            if (isBusinessLogin) {
-                navigate('/business-dashboard'); // need to update later
-            } else {
-                navigate('/user-dashboard'); // need to update later
-            }
-
-            setLoginError('');
+            const { token } = await response.json();
+            setToken(token);
+            // 根据登录类型导航到不同的页面
+            navigate(isBusinessLogin ? '/business-dashboard' : '/user-dashboard');
         } catch (error) {
             console.error('Login failed:', error);
             setLoginError('Login failed. Please try again.');
