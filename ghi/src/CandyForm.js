@@ -117,7 +117,7 @@ function CandyForm() {
                             <input onChange={handleStockChange} value={stock} placeholder="Stock" required type="text" name="stock" id="stock" className="form-control" />
                             <label htmlFor="stock">Stock</label>
                         </div>
-                        <button className="btn btn-primary">Add Candy</button>
+                        <button className="btn btn-info text-white">Add Candy</button>
                     </form>
                 </div>
                 <div className={messageClasses} role="alert">
