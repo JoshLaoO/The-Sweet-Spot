@@ -9,8 +9,10 @@ router = APIRouter()
 
 @router.post("/candy", response_model=Union[CandyOut, Error])
 async def create_candy(
-    candy: CandyIn, response: Response, repo: CandyRepository = Depends(),
-    account_data: dict = Depends(authenticator.get_current_account_data)
+    candy: CandyIn,
+    response: Response,
+    repo: CandyRepository = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     if account_data:
         try:
@@ -35,19 +37,17 @@ def update_candy(
     candy: CandyIn,
     response: Response,
     repo: CandyRepository = Depends(),
-    account_data: dict = Depends(authenticator.get_current_account_data)
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ) -> Union[Error, CandyOut]:
     if account_data:
         return repo.update(candy_id, candy)
-
-
 
 
 @router.delete("/candy/{id}", response_model=bool)
 def delete_candy(
     candy_id: int,
     repo: CandyRepository = Depends(),
-    account_data: dict = Depends(authenticator.get_current_account_data)
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ) -> bool:
     if account_data:
         return repo.delete_candy(candy_id)
