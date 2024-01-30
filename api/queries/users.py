@@ -46,16 +46,11 @@ class AccountOutWithPassword(AccountOut):
 
 class AccountUpdate(BaseModel):
 
-
-
     picture_url: str
     username: str
     email: str
-    password:str
+    password: str
     business: Optional[BusinessOut]
-
-
-
 
 
 class AccountRepo:
@@ -415,14 +410,19 @@ class AccountRepo:
                         raise Exception("User not found or no change made")
 
                     if len(record) < 5:
-                        raise Exception("Unexpected record format from database. Record does not contain enough elements.")
+                        raise Exception(
+                            """
+                            Unexpected record format from database.
+                            Record does not contain enough elements.
+                            """
+                        )
                     return AccountOut(
-                    id=record[0],
-                    business=record[1],
-                    email=record[2],
-                    picture_url=record[3],
-                    username=record[4],
-                )
+                        id=record[0],
+                        business=record[1],
+                        email=record[2],
+                        picture_url=record[3],
+                        username=record[4],
+                    )
         except Exception as e:
             print(f"Error updating user: {e}")
             raise
