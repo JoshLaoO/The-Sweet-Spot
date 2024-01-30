@@ -12,7 +12,7 @@ function LoginPage() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const loginUrl = isBusinessLogin ? 'http://localhost:8000/business/login' : 'http://localhost:8000/login';
+        const loginUrl = isBusinessLogin ? 'http://localhost:8000/business/login' : 'http://localhost:8000/token';
 
         try {
             const response = await fetch(loginUrl, {

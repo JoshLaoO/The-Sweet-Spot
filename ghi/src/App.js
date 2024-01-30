@@ -8,7 +8,7 @@ import Footer from "./footer.js";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from "./CustomerLogIn.js";
 import MainPage from "./mainpage.js";
-
+import CandyForm from "./CandyForm.js";
 
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
@@ -30,7 +30,7 @@ function App() {
         setError(data.message);
       }
     }
-    getData();
+   // getData();
   }, []);
   return (
         <Router>
@@ -40,8 +40,9 @@ function App() {
                 <Route path="/signup/" element={<SignUpPage />} />
                 <Route path="/login/" element={<LoginPage />} />
                 <Route path="/mainpage/" element={<MainPage/>} />
-
+                <Route path="/candyform" element={<CandyForm/>}/>
                 <Route path="/" element={<Construct info={launchInfo} />} />
+
             </Routes>
             <Footer />
         </Router>
