@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, Response
+from authenticator import authenticator
 from typing import Union, List
 from queries.candy import Error, CandyIn, CandyOut, CandyRepository
 
@@ -7,16 +8,18 @@ router = APIRouter()
 
 
 @router.post("/candy", response_model=Union[CandyOut, Error])
-def create_candy(
-    candy: CandyIn, response: Response, repo: CandyRepository = Depends()
+async def create_candy(
+    candy: CandyIn, response: Response, repo: CandyRepository = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data)
 ):
-    try:
-        new_candy = repo.create(candy)
-        return new_candy
+    if account_data:
+        try:
+            new_candy = repo.create(candy)
+            return new_candy
 
-    except Exception as e:
-        print(e)
-        response.status_code = 400
+        except Exception as e:
+            print(e)
+            response.status_code = 400
 
 
 @router.get("/candy", response_model=List[CandyOut])
@@ -30,17 +33,24 @@ def get_all(
 def update_candy(
     candy_id: int,
     candy: CandyIn,
+    response: Response,
     repo: CandyRepository = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data)
 ) -> Union[Error, CandyOut]:
-    return repo.update(candy_id, candy)
+    if account_data:
+        return repo.update(candy_id, candy)
+
+
 
 
 @router.delete("/candy/{id}", response_model=bool)
 def delete_candy(
     candy_id: int,
     repo: CandyRepository = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data)
 ) -> bool:
-    return repo.delete_candy(candy_id)
+    if account_data:
+        return repo.delete_candy(candy_id)
 
 
 @router.get("/candy/{id}", response_model=Union[CandyOut, Error])
