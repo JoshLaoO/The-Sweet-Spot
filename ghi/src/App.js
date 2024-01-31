@@ -30,24 +30,22 @@ function App() {
         setError(data.message);
       }
     }
-   // getData();
+    // getData();
   }, []);
   return (
-        <Router>
-            <Header />
-            <ErrorNotification error={error} />
-            <Routes>
-                <Route path="/signup/" element={<SignUpPage />} />
-                <Route path="/login/" element={<LoginPage />} />
-                <Route path="/mainpage/" element={<MainPage/>} />
-                <Route path="/candyform" element={<CandyForm/>}/>
-                <Route path="/" element={<Construct info={launchInfo} />} />
-
-            </Routes>
-            <Footer />
-        </Router>
-    );
-
+    <Router>
+      <Header />
+      <ErrorNotification error={error} />
+      <Routes>
+        <Route path="/signup/" element={<SignUpPage />} />
+        <Route path="/login/" element={<LoginPage />} />
+        <Route path="/mainpage/" element={<MainPage />} />
+        <Route path="/create-candy" element={<CandyForm />} />
+        <Route path="/" element={<Construct info={launchInfo} />} />
+      </Routes>
+      <Footer />
+    </Router>
+  );
 
 
   // return (

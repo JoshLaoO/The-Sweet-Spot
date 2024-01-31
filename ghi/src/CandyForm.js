@@ -5,10 +5,10 @@ function CandyForm() {
     const [businesses, setBusinesses] = useState([])
     const [business, setBusiness] = useState(0)
     const [picture_url, setPictureUrl] = useState('')
-    const[description,setDescription] = useState('')
-    const [price, setPrice]= useState(0)
-    const [stock, setStock]= useState(0)
-    const[submitted,setSubmitted] = useState(false)
+    const [description, setDescription] = useState('')
+    const [price, setPrice] = useState(0)
+    const [stock, setStock] = useState(0)
+    const [submitted, setSubmitted] = useState(false)
     const handleNameChange = (e) => {
         const value = e.target.value;
         setName(value);
@@ -37,7 +37,7 @@ function CandyForm() {
     const getBusinesses = async () => {
         const URL = 'http://localhost:8000/businesses'
         const response = await fetch(URL)
-        if(response.ok){
+        if (response.ok) {
             const data = await response.json();
             console.log(data)
             setBusinesses(data)
@@ -82,7 +82,7 @@ function CandyForm() {
     }
     const messageClasses = (!submitted) ? 'alert alert-success d-none mb-0' : 'alert alert-success mb-0';
     return (
-        <div className="row">
+        <div className="row m-5">
             <div className="offset-3 col-6">
                 <div className="shadow p-4 mt-4">
                     <h1>Create a candy</h1>
@@ -121,8 +121,8 @@ function CandyForm() {
                     </form>
                 </div>
                 <div className={messageClasses} role="alert">
-            Candy Created!
-          </div>
+                    Candy Created!
+                </div>
             </div>
         </div>
     )
