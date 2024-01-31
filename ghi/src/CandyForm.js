@@ -9,6 +9,8 @@ function CandyForm() {
     const [price, setPrice] = useState(0)
     const [stock, setStock] = useState(0)
     const [submitted, setSubmitted] = useState(false)
+    const [token, setToken] = useState('');
+
     const handleNameChange = (e) => {
         const value = e.target.value;
         setName(value);
@@ -43,7 +45,23 @@ function CandyForm() {
             setBusinesses(data)
         }
     }
+    const getToken = async () => {
+        const URL = 'http://localhost:8000/token'
+        const fetchConfig = {
+            method: "GET",
+            headers: { 'Content-Type': 'application/json' },
+            credentials: "include"
+        }
+        const response = await fetch(URL, fetchConfig)
+        if(response.ok){
+            const data = await response.json();
+            console.log(data)
+            setToken(data.access_token)
+        }
+
+    }
     useEffect(() => {
+        getToken();
         getBusinesses();
     }, []);
 
@@ -60,14 +78,16 @@ function CandyForm() {
         }
 
         console.log(data)
-
+        console.log(token)
         const candyURL = 'http://localhost:8000/candy'
         const fetchConfig = {
             method: "post",
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
-            }
+                'Authorization': `Bearer ${token}`
+            },
+            credentials: "include",
         }
         const candyResponse = await fetch(candyURL, fetchConfig)
         if (candyResponse.ok) {
@@ -110,11 +130,11 @@ function CandyForm() {
                             <label htmlFor="description">Description</label>
                         </div>
                         <div className="form-floating mb-3">
-                            <input onChange={handlePriceChange} value={price} placeholder="Price" required type="text" name="price" id="price" className="form-control" />
+                            <input onChange={handlePriceChange} value={price} placeholder="Price" required type="number" name="price" id="price" className="form-control" />
                             <label htmlFor="price">Price</label>
                         </div>
                         <div className="form-floating mb-3">
-                            <input onChange={handleStockChange} value={stock} placeholder="Stock" required type="text" name="stock" id="stock" className="form-control" />
+                            <input onChange={handleStockChange} value={stock} placeholder="Stock" required type="number" name="stock" id="stock" className="form-control" />
                             <label htmlFor="stock">Stock</label>
                         </div>
                         <button className="btn btn-info text-white">Add Candy</button>

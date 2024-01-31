@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import backgroundImg from './images/background.png';
-
+//import {useToken} from '@galvanize-inc/jwtdown-for-react';
 function SignUpPage() {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
@@ -35,6 +35,7 @@ function SignUpPage() {
             }
 
             const responseData = await response.json();
+            
             setUserToken(responseData.access_token);
             setIsUserRegistered(true);
         } catch (error) {

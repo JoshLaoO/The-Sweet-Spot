@@ -5,7 +5,6 @@ import hashlib
 from psycopg.rows import dict_row
 
 
-
 class Error(BaseModel):
     message: str
 
@@ -27,7 +26,9 @@ class BusinessOut(BaseModel):
 
 class AccountIn(BaseModel):
     email: str
-    picture_url: Optional[str] = None   # Anna changed them to optional since when login only need email and password
+    picture_url: Optional[
+        str
+    ] = None
     username: Optional[str] = None
     password: str
     business: Optional[Union[int, None]] = None
@@ -240,7 +241,13 @@ class AccountRepo:
     ) -> Optional[BusinessOut]:
         try:
             print("Starting to create business.")
-            print(f"Business data received: Name - {business_data.business_name}, Email - {business_data.business_email}")
+            print(
+                f"""
+                Business data received: Name
+                - {business_data.business_name},
+                  Email - {business_data.business_email}
+                """
+            )
 
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -262,10 +269,10 @@ class AccountRepo:
                         ],
                     )
                     record = result.fetchone()
-                    #if record is None:
+                    # if record is None:
                     if record:
                         print(f"Business created with ID: {record[0]}")
-                        #return None
+                        # return None
                         return BusinessOut(
                             business_id=record[0],
                             business_name=record[1],
@@ -425,18 +432,15 @@ class AccountRepo:
                             """
                         )
                     return AccountOut(
-                    id=record[0],
-                    business=record[1],
-                    email=record[2],
-                    picture_url=record[3],
-                    username=record[4],
-                )
+                        id=record[0],
+                        business=record[1],
+                        email=record[2],
+                        picture_url=record[3],
+                        username=record[4],
+                    )
         except Exception as e:
             print(f"Error updating user: {e}")
             raise
-
-
-
 
 
 account_repo = AccountRepo()
