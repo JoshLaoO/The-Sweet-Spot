@@ -3,7 +3,6 @@ from typing import Union, List, Optional
 from queries.pool import pool
 import hashlib
 from psycopg.rows import dict_row
-import bcrypt,base64,json
 
 
 class Error(BaseModel):
@@ -27,7 +26,9 @@ class BusinessOut(BaseModel):
 
 class AccountIn(BaseModel):
     email: str
-    picture_url: Optional[str] = None   # Anna changed them to optional since when login only need email and password
+    picture_url: Optional[
+        str
+    ] = None
     username: Optional[str] = None
     password: str
     business: Optional[Union[int, None]] = None
@@ -47,26 +48,10 @@ class AccountOutWithPassword(AccountOut):
 
 class AccountUpdate(BaseModel):
 
-
-
     picture_url: str
     username: str
     email: str
-    password:str
-    business: Optional[BusinessOut]
-
-import hashlib
-
-class ExampleAuthenticator:
-
-
-    def verify_password(self, plain_password: str, hashed_password: str) -> bool:
-        return hashlib.sha256(plain_password.encode()).hexdigest() == hashed_password
-    def create_access_token(self, data: dict):
-        encoded_jwt = base64.b64encode(json.dumps(data).encode()).decode()
-        return encoded_jwt
-
-
+    password: str
 
 
 class AccountRepo:
@@ -256,7 +241,13 @@ class AccountRepo:
     ) -> Optional[BusinessOut]:
         try:
             print("Starting to create business.")
-            print(f"Business data received: Name - {business_data.business_name}, Email - {business_data.business_email}")
+            print(
+                f"""
+                Business data received: Name
+                - {business_data.business_name},
+                  Email - {business_data.business_email}
+                """
+            )
 
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -278,10 +269,10 @@ class AccountRepo:
                         ],
                     )
                     record = result.fetchone()
-                    #if record is None:
+                    # if record is None:
                     if record:
                         print(f"Business created with ID: {record[0]}")
-                        #return None
+                        # return None
                         return BusinessOut(
                             business_id=record[0],
                             business_name=record[1],
@@ -434,20 +425,22 @@ class AccountRepo:
                         raise Exception("User not found or no change made")
 
                     if len(record) < 5:
-                        raise Exception("Unexpected record format from database. Record does not contain enough elements.")
+                        raise Exception(
+                            """
+                            Unexpected record format from database.
+                            Record does not contain enough elements.
+                            """
+                        )
                     return AccountOut(
-                    id=record[0],
-                    business=record[1],
-                    email=record[2],
-                    picture_url=record[3],
-                    username=record[4],
-                )
+                        id=record[0],
+                        business=record[1],
+                        email=record[2],
+                        picture_url=record[3],
+                        username=record[4],
+                    )
         except Exception as e:
             print(f"Error updating user: {e}")
             raise
-
-
-
 
 
 account_repo = AccountRepo()

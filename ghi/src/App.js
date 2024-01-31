@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './AuthContext';
+import { AuthProvider } from './AuthContext.js';
 import LoginPage from './CustomerLogIn';
 import SignUpPage from './signuppage.js';
 import MainPage from './mainpage.js';
@@ -9,6 +9,7 @@ import ErrorNotification from './ErrorNotification';
 import Header from './header.js';
 import Footer from './footer.js';
 import './App.css';
+import CandyForm from "./CandyForm.js";
 
 function App() {
     const [launchInfo, setLaunchInfo] = useState([]);
@@ -57,6 +58,7 @@ function App() {
                     <Route path="/signup/" element={<SignUpPage />} />
                     <Route path="/login/" element={<LoginPage login={login} />} />
                     <Route path="/mainpage/" element={<MainPage />} />
+                    <Route path="/create-candy" element={<CandyForm />} />
                     <Route path="/" element={<Construct info={launchInfo} />} />
                 </Routes>
                 <Footer />
