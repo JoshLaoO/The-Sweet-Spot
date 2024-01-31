@@ -13,6 +13,9 @@ import './App.css';
 function App() {
     const [launchInfo, setLaunchInfo] = useState([]);
     const [error, setError] = useState(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userName, setUserName] = useState('');
+    const [userType, setUserType] = useState('');
 
     useEffect(() => {
         async function getData() {
@@ -33,14 +36,26 @@ function App() {
         getData();
     }, []);
 
+    const login = (userData) => {
+        setIsLoggedIn(true);
+        setUserName(userData.username);
+        setUserType(userData.userType); // 'user' 或 'business'
+    };
+
+    const logout = () => {
+        setIsLoggedIn(false);
+        setUserName('');
+        setUserType('');
+    };
+
     return (
         <AuthProvider>
             <Router>
-                <Header />
+                <Header isLoggedIn={isLoggedIn} userName={userName} userType={userType} logout={logout} />
                 <ErrorNotification error={error} />
                 <Routes>
                     <Route path="/signup/" element={<SignUpPage />} />
-                    <Route path="/login/" element={<LoginPage />} />
+                    <Route path="/login/" element={<LoginPage login={login} />} />
                     <Route path="/mainpage/" element={<MainPage />} />
                     <Route path="/" element={<Construct info={launchInfo} />} />
                 </Routes>
