@@ -12,3 +12,357 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+
+
+.footer-container {
+    background-color: #f8c6d1;
+    color: #333;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer-link {
+    color: #333;
+    margin: 0 10px;
+}
+
+.footer-link:hover {
+    color: #555;
+}
+
+
+
+
+.header-container {
+    background-color: #f8c6d1;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.header-title {
+    font-family: 'Cursive', sans-serif;
+    font-size: 24px;
+}
+
+.search-box {
+    border: 2px solid #333;
+    padding: 5px 10px;
+    font-size: 16px;
+}
+
+
+.sign-up-form-container {
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+
+
+.sign-up-form {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin-bottom: 10px;
+    border: none;
+}
+
+
+
+.sign-up-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.sign-up-form input[type="text"],
+.sign-up-form input[type="password"] {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+
+
+.sign-up-form button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #77b2f1;
+    color: white;
+    cursor: pointer;
+}
+
+.success-message {
+    color: green;
+
+}
+
+.error-message {
+    color: red;
+
+}
+
+
+
+.login-page-container {
+
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form-container {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login-form button {
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #77b2f1;
+    color: white;
+    cursor: pointer;
+}
+
+.login-form button:hover {
+    background-color: #0056b3;
+}
+
+
+.login-form .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+
+.toggle-login-type {
+    margin-left: 10px;
+    background-color: transparent;
+    border: none;
+    color: #0056b3;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.toggle-login-type:hover {
+    color: #003366;
+}
+
+
+
+
+
+.button-link {
+    padding: 10px 15px;
+    margin: 0 10px;
+    background-color: #add8e6;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button-link:hover {
+    background-color: #9acfe1;
+}
+
+
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.product-item {
+    flex-basis: calc(25% - 10px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.product-item img {
+    max-width: 100%;
+    height: auto;
+    border-bottom: 1px solid #eee;
+}
+
+.login-page-container {
+
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form-container {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login-form button {
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #77b2f1;
+    color: white;
+    cursor: pointer;
+}
+
+.login-form button:hover {
+    background-color: #0056b3;
+}
+
+
+.login-form .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+
+.toggle-login-type {
+    margin-left: 10px;
+    background-color: transparent;
+    border: none;
+    color: #0056b3;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.toggle-login-type:hover {
+    color: #003366;
+}
+
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+
+}
+
+.button-link {
+    margin-right: 10px;
+
+}
+
+.fa-shopping-cart {
+    margin-right: 5px;
+
+}
+
+.centered-heading {
+    text-align: center;
+    color: #FFA500;
+
+}
+
+
+.sign-up-form-container .business-decision {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.sign-up-form-container .business-decision button {
+    margin: 10px 10px;
+    padding: 5px 10px;
+    color: #05468c;
+}
+
+.sign-up-form-container .business-account-form {
+    background-color: rgba(255, 255, 255, 0.8); /* 半透明的白色背景 */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 轻微的阴影效果 */
+    text-align: center; /* 文字居中 */
+    margin: 10px 0; /* 上下外边距 */
+    display: flex; /* 使用Flexbox布局 */
+    flex-direction: column; /* 子元素垂直排列 */
+    align-items: center; /* 子元素在水平方向上居中 */
+    justify-content: center; /* 子元素在垂直方向上居中 */
+}
+
+.sign-up-form-container .business-account-form button {
+    margin: 10px 10px; /* 按钮间的间距 */
+    padding: 5px 10px; /* 内边距 */
+    font-size: 0.9em; /* 字体大小 */
+    border: 1px solid #ccc; /* 边框 */
+    border-radius: 5px; /* 圆角边框 */
+}
