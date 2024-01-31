@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import backgroundImg from './images/background.png';
-
+//import {useToken} from '@galvanize-inc/jwtdown-for-react';
 function SignUpPage() {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
@@ -27,7 +27,8 @@ function SignUpPage() {
             const response = await fetch(signUpUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userData)
+                body: JSON.stringify(userData),
+                credentials: "include"
             });
 
             if (!response.ok) {
@@ -35,6 +36,7 @@ function SignUpPage() {
             }
 
             const responseData = await response.json();
+            console.log(responseData.access_token)
             setUserToken(responseData.access_token);
             setIsUserRegistered(true);
         } catch (error) {
