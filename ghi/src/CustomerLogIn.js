@@ -20,7 +20,8 @@ const LoginForm = () => {
             const response = await fetch('http://localhost:8000/token', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: formData
+                body: formData,
+                credentials: "include"
             });
 
             if (!response.ok) {
@@ -29,7 +30,7 @@ const LoginForm = () => {
 
             const data = await response.json();
             setToken(data.access_token);
-
+            console.log(data.access_token)
 
             if (data.account && data.account.business) {
                 navigate('/business-profile');
