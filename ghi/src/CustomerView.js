@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 
 const CustomerView = (props) => {
 
-    const url = 
+    const url ='';
 
     return (
-
+        -1
     );
 }
 

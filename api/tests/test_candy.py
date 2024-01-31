@@ -40,14 +40,17 @@ def test_get_candy():
 def test_create_candy():
     # Arrange
     app.dependency_overrides[CandyRepository] = CreateCandyQueries
-    candy = {
-        "name": "string",
-        "business": 0,
-        "picture_url": "string",
-        "description": "string",
-        "price": 0,
-        "stock": 0,
-    }
+    response = client.post("/candy",
+        headers={"X-Token": "test"},
+        json = {
+            "name": "string",
+            "business": 0,
+            "picture_url": "string",
+            "description": "string",
+            "price": 0,
+            "stock": 0,
+        }
+    )
 
     expected = {
         "id": 0,
@@ -60,9 +63,8 @@ def test_create_candy():
     }
 
     # Act
-    response = client.post("/candy", json=candy)
     app.dependency_overrides = {}
 
     # Assert
-    assert response.status_code != 200
+    assert response.status_code == 200
     assert response.json() != expected
