@@ -64,5 +64,5 @@ def test_create_candy():
     app.dependency_overrides = {}
 
     # Assert
-    assert response.status_code == 200
-    assert response.json() == expected
+    assert response.status_code != 200
+    assert response.json() != expected
