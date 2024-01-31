@@ -6,99 +6,100 @@ function SignUpPage() {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [pictureUrl, setPictureUrl] = useState('');
-    const [isBusiness, setIsBusiness] = useState(false);
-    const [isSignupSuccessful, setIsSignupSuccessful] = useState(false);
-    const [signupError, setSignupError] = useState(false);
+    const [businessName, setBusinessName] = useState('');
+    const [businessEmail, setBusinessEmail] = useState('');
+    const [isUserRegistered, setIsUserRegistered] = useState(false);
+    const [isBusinessAccount, setIsBusinessAccount] = useState(false);
+    const [signupError, setSignupError] = useState('');
+    const [userToken, setUserToken] = useState('');
 
-    const handleSubmit = async (event) => {
+    const handleUserSubmit = async (event) => {
         event.preventDefault();
-
-        const signUpUrl = isBusiness ? 'http://localhost:8000/business' : 'http://localhost:8000/users';
-        const signUpData = isBusiness ? {
-            business_name: username,
-            business_email: email
-        } : {
+        const signUpUrl = 'http://localhost:8000/users';
+        const userData = {
             email: email,
-            picture_url: pictureUrl,
             username: username,
-            password: password
+            password: password,
+            picture_url: ""
         };
 
         try {
             const response = await fetch(signUpUrl, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(signUpData)
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData)
             });
 
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);
             }
-            const data = await response.json();
-            console.log('Account created:', data);
-            setIsSignupSuccessful(true);
-            setSignupError(false);
+
+            const responseData = await response.json();
+            setUserToken(responseData.access_token);
+            setIsUserRegistered(true);
         } catch (error) {
-            console.error('Failed to create account:', error);
-            setIsSignupSuccessful(false);
-            setSignupError(true);
+            console.error('Failed to create user account:', error);
+            setSignupError('Failed to sign up. Please try again.');
+        }
+    };
+
+    const handleBusinessSubmit = async (event) => {
+        event.preventDefault();
+        const businessSignUpUrl = 'http://localhost:8000/business';
+        const businessData = {
+            business_name: businessName,
+            business_email: businessEmail
+        };
+
+        try {
+            const response = await fetch(businessSignUpUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${userToken}`
+                },
+                body: JSON.stringify(businessData)
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
+            }
+            alert('Business account created successfully!');
+        } catch (error) {
+            console.error('Failed to create business account:', error);
+            alert('Failed to create business account. Please try again.');
         }
     };
 
     return (
         <div className="sign-up-form-container" style={{ backgroundImage: `url(${backgroundImg})` }}>
-            <form onSubmit={handleSubmit} className="sign-up-form">
-                <div>
-                    <h3>Sign Up</h3>
+            {!isUserRegistered ? (
+                <form onSubmit={handleUserSubmit} className="sign-up-form">
+                    <h3>User Sign Up</h3>
                     <label>Email:</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Picture URL:</label>
-                    <input
-                        type="text"
-                        value={pictureUrl}
-                        onChange={(e) => setPictureUrl(e.target.value)}
-                    />
-                </div>
-                <div>
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                     <label>Username:</label>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </div>
-                <div>
+                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
                     <label>Password:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <button type="submit">Sign Up</button>
+                    {signupError && <p className="error-message">{signupError}</p>}
+                </form>
+            ) : !isBusinessAccount ? (
+                <div className="business-decision">
+                    <button onClick={() => setIsBusinessAccount(true)}>Yes, I want to create a business account</button>
+                    <button onClick={() => alert('Registration complete!')}>No businesss account, only users</button>
                 </div>
-                <div>
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={isBusiness}
-                            onChange={(e) => setIsBusiness(e.target.checked)}
-                        />
-                        Business Account
-                    </label>
-                </div>
-                <button type="submit">Sign Up</button>
-                {isSignupSuccessful && <p className="success-message">Successful, please log in.</p>}
-                {signupError && <p className="error-message">Failed to sign up.</p>}
-            </form>
-
+            ) : (
+                <form onSubmit={handleBusinessSubmit} className="business-account-form">
+                    <h3>Business Account Registration</h3>
+                    <label>Business Name:</label>
+                    <input type="text" value={businessName} onChange={(e) => setBusinessName(e.target.value)} />
+                    <label>Business Email:</label>
+                    <input type="email" value={businessEmail} onChange={(e) => setBusinessEmail(e.target.value)} />
+                    <button type="submit">Create Business Account</button>
+                </form>
+            )}
         </div>
     );
 }

@@ -1,54 +1,50 @@
 import React, { useState } from 'react';
-import backgroundImg from './images/background.png';
+import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
-import './App.css';
+import backgroundImg from './images/background.png';
 
-function LoginPage() {
+const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isBusinessLogin, setIsBusinessLogin] = useState(false);
-    const [loginError, setLoginError] = useState('');
+    const { setToken } = useAuth();
     const navigate = useNavigate();
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const loginUrl = isBusinessLogin ? 'http://localhost:8000/business/login' : 'http://localhost:8000/token';
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const formData = new URLSearchParams();
+        formData.append('grant_type', 'password');
+        formData.append('username', email);
+        formData.append('password', password);
 
         try {
-            const response = await fetch(loginUrl, {
+            const response = await fetch('http://localhost:8000/token', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP Error: ${response.status}`);
+                throw new Error(`Login failed: ${response.status}`);
             }
 
             const data = await response.json();
-            console.log('Login successful:', data);
+            setToken(data.access_token);
 
 
-            if (isBusinessLogin) {
-                navigate('/business-dashboard'); // need to update later
+            if (data.account && data.account.business) {
+                navigate('/business-profile');
             } else {
-                navigate('/user-dashboard'); // need to update later
+                navigate('/mainpage');
             }
-
-            setLoginError('');
         } catch (error) {
-            console.error('Login failed:', error);
-            setLoginError('Login failed. Please try again.');
+            alert(error.message);
         }
     };
 
     return (
         <div className="login-page-container" style={{ backgroundImage: `url(${backgroundImg})` }}>
             <div className="login-form-container">
-                <form onSubmit={handleSubmit} className="login-form" id="login-form">
-                    <h3>{isBusinessLogin ? 'Business Log In' : 'User Log In'}</h3>
+                <form onSubmit={handleSubmit} className="login-form">
                     <div>
                         <label>Email:</label>
                         <input
@@ -65,21 +61,11 @@ function LoginPage() {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    <div className="buttons-container">
-                        <button type="submit">Log In</button>
-                        <button
-                            type="button"
-                            onClick={() => setIsBusinessLogin(!isBusinessLogin)}
-                            className="toggle-login-type"
-                        >
-                            {isBusinessLogin ? 'User account? Click here' : 'Business account? Click here'}
-                        </button>
-                    </div>
+                    <button type="submit">Login</button>
                 </form>
-                {loginError && <p className="error-message">{loginError}</p>}
             </div>
         </div>
     );
-}
+};
 
-export default LoginPage;
+export default LoginForm;
