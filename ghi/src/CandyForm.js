@@ -58,8 +58,8 @@ function CandyForm() {
             console.log(data)
             setToken(data.access_token)
         }
-
     }
+    
     useEffect(() => {
         getToken();
         getBusinesses();
