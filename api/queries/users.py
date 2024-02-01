@@ -52,6 +52,7 @@ class AccountUpdate(BaseModel):
     username: str
     email: str
     password: str
+    business: int
 
 
 class AccountRepo:
@@ -82,13 +83,13 @@ class AccountRepo:
             return None
 
     def record_to_account_out(self, record) -> AccountOutWithPassword:
+        biz_info = AccountRepo.get_business(self, business_id=record[1])
         account_dict = {
             "id": record[0],
-            "business": record[1],
+            "business": biz_info,
             "email": record[2],
             "picture_url": record[3],
             "username": record[4],
-            "hashed_password": record[5],
         }
 
         return account_dict
@@ -401,7 +402,8 @@ class AccountRepo:
                             picture_url = %s,
                             username = %s,
                             email = %s,
-                            hashed_password = %s
+                            hashed_password = %s,
+                            business = %s
 
                         WHERE id = %s
                         RETURNING
@@ -417,6 +419,7 @@ class AccountRepo:
                             user.username,
                             user.email,
                             hashed_password,
+                            user.business,
                             id,
                         ],
                     )
@@ -431,13 +434,16 @@ class AccountRepo:
                             Record does not contain enough elements.
                             """
                         )
-                    return AccountOut(
-                        id=record[0],
-                        business=record[1],
-                        email=record[2],
-                        picture_url=record[3],
-                        username=record[4],
-                    )
+
+                    return self.record_to_account_out(record)
+                    # biz_info = AccountRepo.get_business(self, business_id=record[1])
+                    # return AccountOut(
+                    #     id=record[0],
+                    #     business=biz_info,
+                    #     email=record[2],
+                    #     picture_url=record[3],
+                    #     username=record[4],
+                    # )
         except Exception as e:
             print(f"Error updating user: {e}")
             raise
