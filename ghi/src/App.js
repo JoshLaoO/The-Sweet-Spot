@@ -14,42 +14,42 @@ import CustomerView from './CustomerView.js';
 
 
 function App() {
-    const [launchInfo, setLaunchInfo] = useState([]);
-    const [error, setError] = useState(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [userName, setUserName] = useState('');
-    const [userType, setUserType] = useState('');
+  const [launchInfo, setLaunchInfo] = useState([]);
+  const [error, setError] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [userType, setUserType] = useState('');
 
-    useEffect(() => {
-        async function getData() {
-            let url = `${process.env.REACT_APP_API_HOST}/api/launch-details`;
-            try {
-                let response = await fetch(url);
-                let data = await response.json();
+  useEffect(() => {
+    async function getData() {
+      let url = `${process.env.REACT_APP_API_HOST}/api/launch-details`;
+      try {
+        let response = await fetch(url);
+        let data = await response.json();
 
-                if (response.ok) {
-                    setLaunchInfo(data.launch_details);
-                } else {
-                    setError(data.message);
-                }
-            } catch (err) {
-                setError("Failed to fetch launch details");
-            }
+        if (response.ok) {
+          setLaunchInfo(data.launch_details);
+        } else {
+          setError(data.message);
         }
-        getData();
-    }, []);
+      } catch (err) {
+        setError("Failed to fetch launch details");
+      }
+    }
+    getData();
+  }, []);
 
-    const login = (userData) => {
-        setIsLoggedIn(true);
-        setUserName(userData.username);
-        setUserType(userData.userType); // 'user' 或 'business'
-    };
+  const login = (userData) => {
+    setIsLoggedIn(true);
+    setUserName(userData.username);
+    setUserType(userData.userType); // 'user' 或 'business'
+  };
 
-    const logout = () => {
-        setIsLoggedIn(false);
-        setUserName('');
-        setUserType('');
-    };
+  const logout = () => {
+    setIsLoggedIn(false);
+    setUserName('');
+    setUserType('');
+  };
 
     return (
         <AuthProvider>
