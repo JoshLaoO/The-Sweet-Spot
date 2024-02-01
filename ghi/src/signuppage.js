@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import backgroundImg from './images/background.png';
-import useToken from '@galvanize-inc/jwtdown-for-react';
+//import useToken from '@galvanize-inc/jwtdown-for-react';
 function SignUpPage() {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
@@ -12,7 +12,7 @@ function SignUpPage() {
     const [isBusinessAccount, setIsBusinessAccount] = useState(false);
     const [signupError, setSignupError] = useState('');
     const [userToken, setUserToken] = useState('');
-    const { register } = useToken();
+    //const { register } = useToken();
     const handleUserSubmit = async (event) => {
         event.preventDefault();
         const signUpUrl = 'http://localhost:8000/users';
@@ -34,7 +34,7 @@ function SignUpPage() {
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);
             }
-            register(userData,signUpUrl)
+            //register(userData,signUpUrl)
             const responseData = await response.json();
             console.log(responseData.access_token)
             setUserToken(responseData.access_token);

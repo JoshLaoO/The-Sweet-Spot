@@ -1,27 +1,12 @@
 import React from 'react';
 import './App.css';
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { changeToken } from './features/token/tokenSlice';
 function Header({ isLoggedIn, userType, userName }) {
-    const [isChecked,setIsChecked] = useState(false)
-
-    const checkLogin = async () =>{
-        const URL = 'http://localhost:8000/token'
-        const fetchConfig = {
-            method: "GET",
-            headers: { 'Content-Type': 'application/json' },
-            credentials: "include"
-        }
-        const response = await fetch(URL, fetchConfig)
-        if (response.ok) {
-            const data = await response.json();
-            setIsChecked(true)
-        }
-    }
-    useEffect(() => {
-        checkLogin();
-    }, [])
-
+    const token = useSelector((state) => state.token.token);
+    const dispatch = useDispatch()
+    console.log(token)
     return (
         <div className="header-container">
             <div className="header-title">Sweet-Spot</div>
@@ -32,19 +17,21 @@ function Header({ isLoggedIn, userType, userName }) {
             <div className="nav-buttons">
                 <Link to="/mainpage/" className="btn btn-info text-white m-2">Sweet Home</Link>
 
-                {!isLoggedIn && isChecked ? (
-                    <>
-                        <Link className="btn btn-info text-white m-2" to="/signup/" /*className="button-link"*/>Sign Up</Link>
-                        <Link to="/login/" className="btn btn-info text-white m-2">Log In</Link>
-                    </>
-                ) : (
+
+
+                {token.length>0 ?
                     <>
                         <span>Hello, {userName}</span>
                         <Link to="/logout/" className="btn btn-danger m-2">Log Out</Link>
-                    </>
-                )}
+                    </> :
+                    <>
 
-                {isLoggedIn && (
+                        <Link className="btn btn-info text-white m-2" to="/signup/" /*className="button-link"*/>Sign Up</Link>
+                        <Link to="/login/" className="btn btn-info text-white m-2">Log In</Link>
+                    </>
+                }
+
+                {isLoggedIn && userType === 'business' && (
                     <>
                         <span>Hello, {userName}</span>
                         <Link to="/profile/" className="btn btn-info text-white">Profile</Link>

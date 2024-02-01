@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-//import { useAuthContext } from '@galvanize-inc/jwtdown-for-react';
+//import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 import backgroundImg from './images/background.png';
-import useToken from '@galvanize-inc/jwtdown-for-react';
+import { changeToken } from './features/token/tokenSlice';
+import { useDispatch } from 'react-redux';
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-//    const { setToken } = useAuth();
+    //const { setToken } = useAuth();
+
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { login } = useToken();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,7 +20,7 @@ const LoginForm = () => {
         formData.append('password', password);
 
         try {
-                const response = await fetch('http://localhost:8000/token', {
+            const response = await fetch('http://localhost:8000/token', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData,
@@ -28,17 +30,17 @@ const LoginForm = () => {
             if (!response.ok) {
                 throw new Error(`Login failed: ${response.status}`);
             }
-            login(email,password)
-            //const data = await response.json();
-            //setToken(data.access_token);
-            //console.log(data.access_token)
 
-            //if (data.account && data.account.business) {
-            //    navigate('/business-profile');
-            //} else {
-            //    navigate('/mainpage');
-            //}
-            navigate("/mainpage")
+            const data = await response.json();
+            //setToken(data.data.access_token);
+
+            dispatch(changeToken(data.access_token))
+
+            if (data.account && data.account.business) {
+                navigate('/business-profile');
+            } else {
+                navigate('/mainpage');
+            }
         } catch (error) {
             alert(error.message);
         }
