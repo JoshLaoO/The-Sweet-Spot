@@ -10,6 +10,7 @@ import Header from './header.js';
 import Footer from './footer.js';
 import './App.css';
 import CandyForm from "./CandyForm.js";
+import BusinessPendingOrders from './BusinessPendingOrders.js';
 
 function App() {
     const [launchInfo, setLaunchInfo] = useState([]);
@@ -59,6 +60,7 @@ function App() {
                     <Route path="/login/" element={<LoginPage login={login} />} />
                     <Route path="/mainpage/" element={<MainPage />} />
                     <Route path="/create-candy" element={<CandyForm />} />
+                    <Route path="/orders" element={<BusinessPendingOrders />} />
                     <Route path="/" element={<Construct info={launchInfo} />} />
                 </Routes>
                 <Footer />
