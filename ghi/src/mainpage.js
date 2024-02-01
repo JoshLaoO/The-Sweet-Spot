@@ -36,7 +36,7 @@ function MainPage() {
             <div className="product-container">
                 {candies.length > 0 ? candies.map(candy => (
                     <div key={candy.id} className="product-item">
-                        <img src={candy.image || placeholderImage} alt={candy.name} />
+                        <img src={candy.picture_url || placeholderImage} alt={candy.name} />
                         <h3><Link to={`/candy/${candy.id}`}>{candy.name}</Link></h3>
                         <input
                             type="number"
