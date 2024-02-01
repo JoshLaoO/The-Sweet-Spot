@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import { useSelector } from 'react-redux';
 function CandyForm() {
     const [name, setName] = useState('')
     const [businesses, setBusinesses] = useState([])
@@ -9,8 +9,8 @@ function CandyForm() {
     const [price, setPrice] = useState(0)
     const [stock, setStock] = useState(0)
     const [submitted, setSubmitted] = useState(false)
-    const [token, setToken] = useState('');
-
+    const token = useSelector((state) => state.token.token)
+    //console.log(token)
     const handleNameChange = (e) => {
         const value = e.target.value;
         setName(value);
@@ -45,23 +45,23 @@ function CandyForm() {
             setBusinesses(data)
         }
     }
-    const getToken = async () => {
-        const URL = 'http://localhost:8000/token'
-        const fetchConfig = {
-            method: "GET",
-            headers: { 'Content-Type': 'application/json' },
-            credentials: "include"
-        }
-        const response = await fetch(URL, fetchConfig)
-        if(response.ok){
-            const data = await response.json();
-            console.log(data)
-            setToken(data.access_token)
-        }
-    }
-    
+    // const getToken = async () => {
+    //     const URL = 'http://localhost:8000/token'
+    //     const fetchConfig = {
+    //         method: "GET",
+    //         headers: { 'Content-Type': 'application/json' },
+    //         credentials: "include"
+    //     }
+    //     const response = await fetch(URL, fetchConfig)
+    //     if(response.ok){
+    //         const data = await response.json();
+    //         console.log(data)
+    //         setToken(data.access_token)
+    //     }
+    // }
+
     useEffect(() => {
-        getToken();
+        //getToken();
         getBusinesses();
     }, []);
 
@@ -89,15 +89,17 @@ function CandyForm() {
             },
             credentials: "include",
         }
-        const candyResponse = await fetch(candyURL, fetchConfig)
-        if (candyResponse.ok) {
-            const candy = await candyResponse.json()
-            console.log(candy)
-            setName('')
-            setBusiness(0)
-            setPictureUrl('')
-            setDescription('')
-            setSubmitted(true)
+        if (token.length > 0) {
+            const candyResponse = await fetch(candyURL, fetchConfig)
+            if (candyResponse.ok) {
+                const candy = await candyResponse.json()
+                console.log(candy)
+                setName('')
+                setBusiness(0)
+                setPictureUrl('')
+                setDescription('')
+                setSubmitted(true)
+            }
         }
     }
     const messageClasses = (!submitted) ? 'alert alert-success d-none mb-0' : 'alert alert-success mb-0';

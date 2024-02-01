@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
 import backgroundImg from './images/background.png';
+import { useDispatch } from 'react-redux';
+import { changeToken } from './features/token/tokenSlice';
 //import useToken from '@galvanize-inc/jwtdown-for-react';
 function SignUpPage() {
     const [email, setEmail] = useState('');
@@ -12,6 +14,8 @@ function SignUpPage() {
     const [isBusinessAccount, setIsBusinessAccount] = useState(false);
     const [signupError, setSignupError] = useState('');
     const [userToken, setUserToken] = useState('');
+
+    const dispatch = useDispatch();
     //const { register } = useToken();
     const handleUserSubmit = async (event) => {
         event.preventDefault();
@@ -37,6 +41,7 @@ function SignUpPage() {
             //register(userData,signUpUrl)
             const responseData = await response.json();
             console.log(responseData.access_token)
+            dispatch(changeToken(responseData.access_token))
             setUserToken(responseData.access_token);
             setIsUserRegistered(true);
         } catch (error) {
