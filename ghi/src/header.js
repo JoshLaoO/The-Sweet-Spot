@@ -1,8 +1,27 @@
 import React from 'react';
 import './App.css';
 import { Link } from 'react-router-dom';
-
+import { useState, useEffect } from 'react';
 function Header({ isLoggedIn, userType, userName }) {
+    const [isChecked,setIsChecked] = useState(false)
+
+    const checkLogin = async () =>{
+        const URL = 'http://localhost:8000/token'
+        const fetchConfig = {
+            method: "GET",
+            headers: { 'Content-Type': 'application/json' },
+            credentials: "include"
+        }
+        const response = await fetch(URL, fetchConfig)
+        if (response.ok) {
+            const data = await response.json();
+            setIsChecked(true)
+        }
+    }
+    useEffect(() => {
+        checkLogin();
+    }, [])
+
     return (
         <div className="header-container">
             <div className="header-title">Sweet-Spot</div>
@@ -13,21 +32,19 @@ function Header({ isLoggedIn, userType, userName }) {
             <div className="nav-buttons">
                 <Link to="/mainpage/" className="btn btn-info text-white m-2">Sweet Home</Link>
 
-                {!isLoggedIn && (
+                {!isLoggedIn && isChecked ? (
                     <>
                         <Link className="btn btn-info text-white m-2" to="/signup/" /*className="button-link"*/>Sign Up</Link>
                         <Link to="/login/" className="btn btn-info text-white m-2">Log In</Link>
                     </>
-                )}
-
-                {isLoggedIn && userType === 'user' && (
+                ) : (
                     <>
                         <span>Hello, {userName}</span>
                         <Link to="/logout/" className="btn btn-danger m-2">Log Out</Link>
                     </>
                 )}
 
-                {isLoggedIn && userType === 'business' && (
+                {isLoggedIn && (
                     <>
                         <span>Hello, {userName}</span>
                         <Link to="/profile/" className="btn btn-info text-white">Profile</Link>
