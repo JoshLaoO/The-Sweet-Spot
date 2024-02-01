@@ -7,7 +7,7 @@ function CustomerView() {
 
 
 
-    const getToken = async (id) => {
+    const getToken = async () => {
         const URL = 'http://localhost:8000/token'
         const fetchConfig = {
             method: "GET",
@@ -15,9 +15,10 @@ function CustomerView() {
             credentials: "include"
         }
         const response = await fetch(URL, fetchConfig)
+        console.log(response)
         if (response.ok) {
             const data = await response.json();
-            console.log(data.account)
+            console.log(data)
             setUser(data.access_token)
             setUserInfo(data.account)
 
@@ -30,30 +31,17 @@ function CustomerView() {
 
     }, []);
 
-    if (userInfo.business === null) {
-        return (
-            <div>
-                <h1>{userInfo.username}</h1>
-                <ul>
-                    <li>{userInfo.email}</li>
-                </ul>
+    return (
+        <div>
+            <h1>{userInfo.username}</h1>
+            <ul>
+                <li>{userInfo.email}</li>
+                <li>{userInfo.business}</li>
+            </ul>
 
-            </div>
-        );
-    } else {
-
-            return (
-                <div>
-                    <h1>{userInfo.username}</h1>
-                    <ul>
-                        <li>{userInfo.email}</li>
-                        <li>{userInfo.business}</li>
-                    </ul>
-
-                </div>
-            )
-        }
-    }
+        </div>
+    )
+}
 
 
 
