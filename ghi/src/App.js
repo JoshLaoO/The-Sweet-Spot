@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Switch, useParams, BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './AuthContext.js';
 import LoginPage from './CustomerLogIn';
 import SignUpPage from './signuppage.js';
@@ -10,6 +10,7 @@ import Header from './header.js';
 import Footer from './footer.js';
 import './App.css';
 import CandyForm from "./CandyForm.js";
+import CustomerView from './CustomerView.js';
 
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
                     <Route path="/mainpage/" element={<MainPage />} />
                     <Route path="/create-candy" element={<CandyForm />} />
                     <Route path="/" element={<Construct info={launchInfo} />} />
+                    <Route path="/user" element={<CustomerView />} />
                 </Routes>
                 <Footer />
             </Router>

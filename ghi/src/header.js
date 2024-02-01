@@ -40,6 +40,7 @@ function Header({ isLoggedIn, userType, userName }) {
                 <Link to="/cart/" className="btn btn-info text-white">
                     <i className="fa fa-shopping-cart"></i> Cart
                 </Link>
+                <Link to="/user" className="btn btn-info text-white m-2">Me</Link>
             </div>
         </div>
     );
