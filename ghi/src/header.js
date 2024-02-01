@@ -14,8 +14,11 @@ function Header({ isLoggedIn, userType, userName }) {
             credentials: 'include'
         }
         const response = await fetch(url,fetchConfig);
-        if(response.ok)
+        if(response.ok){
+            const data = await response.json()
+            console.log(data)
             dispatch(changeToken(''))
+        }
     }
     return (
         <div className="header-container">
