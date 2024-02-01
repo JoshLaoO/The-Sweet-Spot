@@ -47,6 +47,10 @@ Week 2
 Week 3
 ---
 
-**Day 1**
+This week I created the rest of the business endpoints in queries/routers. I protected the "create_business" endpoint.
 
--
+
+Week 4
+---
+
+Created tests in test_user_business.py for business endpoints...

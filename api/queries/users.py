@@ -27,7 +27,9 @@ class BusinessOut(BaseModel):
 
 class AccountIn(BaseModel):
     email: str
-    picture_url: Optional[str] = None   # Anna changed them to optional since when login only need email and password
+    picture_url: Optional[
+        str
+    ] = None
     username: Optional[str] = None
     password: str
     business: Optional[Union[int, None]] = None
@@ -46,8 +48,6 @@ class AccountOutWithPassword(AccountOut):
 
 
 class AccountUpdate(BaseModel):
-
-
 
     picture_url: str
     username: str
@@ -256,7 +256,13 @@ class AccountRepo:
     ) -> Optional[BusinessOut]:
         try:
             print("Starting to create business.")
-            print(f"Business data received: Name - {business_data.business_name}, Email - {business_data.business_email}")
+            print(
+                f"""
+                Business data received: Name
+                - {business_data.business_name},
+                  Email - {business_data.business_email}
+                """
+            )
 
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -278,10 +284,10 @@ class AccountRepo:
                         ],
                     )
                     record = result.fetchone()
-                    #if record is None:
+                    # if record is None:
                     if record:
                         print(f"Business created with ID: {record[0]}")
-                        #return None
+                        # return None
                         return BusinessOut(
                             business_id=record[0],
                             business_name=record[1],
@@ -434,7 +440,13 @@ class AccountRepo:
                         raise Exception("User not found or no change made")
 
                     if len(record) < 5:
-                        raise Exception("Unexpected record format from database. Record does not contain enough elements.")
+                        raise Exception(
+                            """
+                            Unexpected record format from database.
+                            Record does not contain enough elements.
+                            """
+                        )
+
                     return AccountOut(
                     id=record[0],
                     business=record[1],
@@ -445,9 +457,6 @@ class AccountRepo:
         except Exception as e:
             print(f"Error updating user: {e}")
             raise
-
-
-
 
 
 account_repo = AccountRepo()
