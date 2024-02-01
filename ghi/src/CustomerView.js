@@ -31,21 +31,30 @@ function CustomerView() {
     }, []);
 
     if (userInfo.business === null) {
-        return 0;
+        return (
+            <div>
+                <h1>{userInfo.username}</h1>
+                <ul>
+                    <li>{userInfo.email}</li>
+                </ul>
+
+            </div>
+        );
+    } else {
+
+            return (
+                <div>
+                    <h1>{userInfo.username}</h1>
+                    <ul>
+                        <li>{userInfo.email}</li>
+                        <li>{userInfo.business}</li>
+                    </ul>
+
+                </div>
+            )
+        }
     }
 
 
-
-    return (
-        <div>
-            <h1>{userInfo.username}</h1>
-            <ul>
-                <li>{userInfo.email}</li>
-                <li>{userInfo.business}</li>
-            </ul>
-
-        </div>
-    )
-}
 
 export default CustomerView;
