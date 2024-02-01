@@ -1,8 +1,12 @@
 import React from 'react';
 import './App.css';
 import { Link } from 'react-router-dom';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { changeToken } from './features/token/tokenSlice';
 function Header({ isLoggedIn, userType, userName }) {
+    const token = useSelector((state) => state.token.token);
+    const dispatch = useDispatch()
+    console.log(token)
     return (
         <div className="header-container">
             <div className="header-title">Sweet-Spot</div>
@@ -13,19 +17,19 @@ function Header({ isLoggedIn, userType, userName }) {
             <div className="nav-buttons">
                 <Link to="/mainpage/" className="btn btn-info text-white m-2">Sweet Home</Link>
 
-                {!isLoggedIn && (
-                    <>
-                        <Link className="btn btn-info text-white m-2" to="/signup/" /*className="button-link"*/>Sign Up</Link>
-                        <Link to="/login/" className="btn btn-info text-white m-2">Log In</Link>
-                    </>
-                )}
 
-                {isLoggedIn && userType === 'user' && (
+
+                {token.length>0 ?
                     <>
                         <span>Hello, {userName}</span>
                         <Link to="/logout/" className="btn btn-danger m-2">Log Out</Link>
+                    </> :
+                    <>
+
+                        <Link className="btn btn-info text-white m-2" to="/signup/" /*className="button-link"*/>Sign Up</Link>
+                        <Link to="/login/" className="btn btn-info text-white m-2">Log In</Link>
                     </>
-                )}
+                }
 
                 {isLoggedIn && userType === 'business' && (
                     <>
