@@ -26,9 +26,7 @@ class BusinessOut(BaseModel):
 
 class AccountIn(BaseModel):
     email: str
-    picture_url: Optional[
-        str
-    ] = None
+    picture_url: Optional[str] = None
     username: Optional[str] = None
     password: str
     business: Optional[Union[int, None]] = None
