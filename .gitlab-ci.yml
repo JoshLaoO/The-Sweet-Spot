@@ -26,7 +26,7 @@ api-unit-tests-job:
     - python -m pytest
   variables:
     DATABASE_URL: postgresql://sweet_user:secret@db/sweet
-    SIGNING_KEY:  "sweett"
+    SIGNING_KEY:  "sweet"
 
 # # Build API Image:
 # build-api-image:
