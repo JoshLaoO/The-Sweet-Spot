@@ -26,8 +26,8 @@ api-unit-tests-job:
     - pip install -r requirements.txt
     - python -m pytest
   variables:
-    DATABASE_URL: postgresql://sweet_user:secret@db/sweet
-    SIGNING_KEY:  "sweet"
+    DATABASE_URL: ${DATABASE_URL}
+    SIGNING_KEY: ${SIGNING_KEY}
 
 # # Build API Image:
 # build-api-image:
