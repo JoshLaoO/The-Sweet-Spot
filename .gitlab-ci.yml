@@ -23,7 +23,6 @@ api-unit-tests-job:
   script:
     - cd api
     - pip install -r requirements.txt
-    - docker exec -it module3-project-gamma-fastapi-1 bash
     - python -m pytest
 
 # # Build API Image:
