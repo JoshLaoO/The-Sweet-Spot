@@ -22,8 +22,8 @@ api-unit-tests-job:
     - lint-test-job
   script:
     - cd api
-    - ls
     - pip install -r requirements.txt
+    - gitlab-ci bash
     - python -m pytest
   variables:
     DATABASE_URL: ${DATABASE_URL}
