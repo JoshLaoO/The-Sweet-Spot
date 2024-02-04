@@ -10,7 +10,7 @@ import Header from './header.js';
 import Footer from './footer.js';
 import './App.css';
 import CandyForm from "./CandyForm.js";
-import CustomerView from './CustomerView.js';
+import ViewAllUsers from './ViewAllUsers.js';
 
 
 function App() {
@@ -51,23 +51,23 @@ function App() {
     setUserType('');
   };
 
-    return (
-        <AuthProvider>
-            <Router>
-                <Header isLoggedIn={isLoggedIn} userName={userName} userType={userType} logout={logout} />
-                <ErrorNotification error={error} />
-                <Routes>
-                    <Route path="/signup/" element={<SignUpPage />} />
-                    <Route path="/login/" element={<LoginPage login={login} />} />
-                    <Route path="/mainpage/" element={<MainPage />} />
-                    <Route path="/create-candy" element={<CandyForm />} />
-                    <Route path="/" element={<Construct info={launchInfo} />} />
-                    <Route path="/user" element={<CustomerView />} />
-                </Routes>
-                <Footer />
-            </Router>
-        </AuthProvider>
-    );
+  return (
+    <AuthProvider>
+      <Router>
+        <Header isLoggedIn={isLoggedIn} userName={userName} userType={userType} logout={logout} />
+        <ErrorNotification error={error} />
+        <Routes>
+          <Route path="/signup/" element={<SignUpPage />} />
+          <Route path="/login/" element={<LoginPage login={login} />} />
+          <Route path="/mainpage/" element={<MainPage />} />
+          <Route path="/create-candy" element={<CandyForm />} />
+          <Route path="/" element={<Construct info={launchInfo} />} />
+          <Route path="/users" element={<ViewAllUsers />} />
+        </Routes>
+        <Footer />
+      </Router>
+    </AuthProvider>
+  );
 }
 
 export default App;

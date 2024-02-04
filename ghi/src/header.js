@@ -36,6 +36,7 @@ function Header({ isLoggedIn, userType, userName }) {
                     <>
                         <span>Hello, {userName}</span>
                         <button onClick={logout} className="btn btn-danger m-2">Log Out</button>
+                        <Link to="/users" className="btn btn-info text-white m-2">Connect!</Link>
                     </> :
                     <>
 
@@ -50,6 +51,7 @@ function Header({ isLoggedIn, userType, userName }) {
                         <Link to="/profile/" className="btn btn-info text-white">Profile</Link>
                         <Link to="/orders/" className="btn btn-info text-white">Orders</Link>
                         <Link to="/transactions/" className="btn btn-info text-white">Transactions</Link>
+
                         <button  className="btn btn-danger m-2">Log Out</button>
                     </>
                 )}
@@ -57,7 +59,8 @@ function Header({ isLoggedIn, userType, userName }) {
                 <Link to="/cart/" className="btn btn-info text-white">
                     <i className="fa fa-shopping-cart"></i> Cart
                 </Link>
-                <Link to="/user" className="btn btn-info text-white m-2">Me</Link>
+
+
             </div>
         </div>
     );
