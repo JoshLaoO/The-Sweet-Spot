@@ -3,22 +3,44 @@ import React, { useEffect, useState } from "react";
 
 function BusinessPendingOrders() {
     const [orders, setOrders] = useState([]);
+
     async function getOrders() {
         const url = "http://localhost:8000/orders"
-        const response = await fetch(url)
-        if (response.ok) {
-            const data = fetch(url).then(res => res.clone().json())
-            setOrders(data.id)
-            // console.log(orders)
-            console.log(response.json())
-        }
+        const data = await fetch(url).then(response => response.json());
+        setOrders(data)
     }
 
+    function calculateTotal(price, quantity) {
+        return price * quantity;
+    };
+
+    async function changeOrderStatus(order_id) {
+        const url = `http://localhost:8000/orders/${order_id}`;
+        // const config = {
+        //     method: 'PUT',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({
+        //         complete: true,
+        //     }),
+        // };
+        console.log({ "message": "order " + order_id + " complete" })
+
+        await fetch(
+            url,
+            // config
+        );
+        await getOrders();
+    };
 
     useEffect(() => {
-        getOrders()
-    }
-    )
+        const fetchData = async () => {
+            await getOrders();
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <>
@@ -28,6 +50,7 @@ function BusinessPendingOrders() {
                         <tr>
                             <th>Order</th>
                             <th>Customer Information</th>
+                            <th>Candy Name</th>
                             <th>Quantity</th>
                             <th>Total</th>
                             <th>Ship</th>
@@ -35,29 +58,27 @@ function BusinessPendingOrders() {
                     </thead>
                     <tbody>
                         {
-                    orders?.map((order) => {
-                        return (
-                            <tr key={order.id}>
-                                <td>{order.id}</td>
-                            </tr>
-                        )
-                    })
-                }
-                        <tr>
-                            <td>1</td>
-                            <td>Customer 1</td>
-                            <td>10</td>
-                            <td>25</td>
-                            <td>
-                                <button
-
-                                    type="button"
-
-                                >
-                                    Ship
-                                </button>
-                            </td>
-                        </tr>
+                            orders?.map((order) => {
+                                const total = calculateTotal(order.candy_id.price, order.quantity)
+                                return (
+                                    <tr key={order.id}>
+                                        <td>{order.id}</td>
+                                        <td>Needs update to model</td>
+                                        <td>{order.candy_id.name}</td>
+                                        <td>{order.quantity}</td>
+                                        <td>{total}</td>
+                                        <td>
+                                            <button
+                                                type="button"
+                                                onClick={(() => changeOrderStatus(order.id))}
+                                            >
+                                                Ship
+                                            </button>
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        }
                     </tbody>
                 </table>
             </div>
