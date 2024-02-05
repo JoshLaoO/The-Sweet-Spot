@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeToken } from './features/token/tokenSlice';
+
+
 function Header({ isLoggedIn, userType, userName }) {
-    const token = useSelector((state) => state.token.token);
+    let userId = useParams()
+    const [id, setId] = useState()
+    const token = useSelector((state) => state.token.token)
     const dispatch = useDispatch()
     const logout = async () => {
         const url = 'http://localhost:8000/token'
@@ -15,11 +19,27 @@ function Header({ isLoggedIn, userType, userName }) {
         }
         const response = await fetch(url,fetchConfig);
         if(response.ok){
-            const data = await response.json()
-            console.log(data)
+            // const data = await response.json()
             dispatch(changeToken(''))
         }
     }
+
+    const navigateToMyPage = async () => {
+        const fetchUrl = await fetch('http://localhost:8000/token', {
+            method: "GET",
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
+        })
+        const res = await fetchUrl.json()
+        userId = res.account.id
+        console.log(userId)
+        setId(userId)
+    }
+
+    useEffect(() => {
+        navigateToMyPage();
+    }, [userId]);
+
     return (
         <div className="header-container">
             <div className="header-title">Sweet-Spot</div>
@@ -36,7 +56,11 @@ function Header({ isLoggedIn, userType, userName }) {
                     <>
                         <span>Hello, {userName}</span>
                         <button onClick={logout} className="btn btn-danger m-2">Log Out</button>
+                        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
                         <Link to="/users" className="btn btn-info text-white m-2">Connect!</Link>
+
                     </> :
                     <>
 
@@ -56,6 +80,7 @@ function Header({ isLoggedIn, userType, userName }) {
                     </>
                 )}
                 <Link to="/create-candy" className="btn btn-info text-white m-2">Create Candy(This will not be here later)</Link>
+                <Link to={`/users/user/${id}`} onClick={navigateToMyPage}  className="btn btn-info text-white m-2">Me</Link>
                 <Link to="/cart/" className="btn btn-info text-white">
                     <i className="fa fa-shopping-cart"></i> Cart
                 </Link>
