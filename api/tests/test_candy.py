@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 from main import app
+from fastapi import status
 from queries.candy import CandyRepository
 
 client = TestClient(app)
@@ -11,7 +12,7 @@ class EmptyCandyRepository:
 
 
 class CreateCandyQueries:
-    def create(self, candy):
+    def create(self):
         result = {
             "id": 0,
             "name": "string",
@@ -21,7 +22,7 @@ class CreateCandyQueries:
             "price": 0,
             "stock": 0,
         }
-        result.update(candy)
+        result.update()
         return result
 
 
@@ -37,6 +38,15 @@ def test_get_candy():
     assert response.json() == []
 
 
+def test_create_not_logged_in():
+    # Arrange
+    app.dependency_overrides[CandyRepository] = CreateCandyQueries
+    response = client.post("/candy")
+
+    app.dependency_overrides = {}
+    # Assert
+    assert response.status_code == 401
+    
 # def test_create_candy():
 #     # Arrange
 #     app.dependency_overrides[CandyRepository] = CreateCandyQueries
