@@ -10,6 +10,9 @@ import Header from './header.js';
 import Footer from './footer.js';
 import './App.css';
 import CandyForm from "./CandyForm.js";
+import ViewAllUsers from './ViewAllUsers.js';
+import ViewMyInfo from './ViewMyInfo.js';
+
 
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
@@ -49,6 +52,8 @@ function App() {
     setUserType('');
   };
 
+
+
   return (
     <AuthProvider>
       <Router>
@@ -60,6 +65,8 @@ function App() {
           <Route path="/mainpage/" element={<MainPage />} />
           <Route path="/create-candy" element={<CandyForm />} />
           <Route path="/" element={<Construct info={launchInfo} />} />
+          <Route path="/users" element={<ViewAllUsers />} />
+          <Route path={`/users/user/:userId`} element={<ViewMyInfo/>} />
         </Routes>
         <Footer />
       </Router>
