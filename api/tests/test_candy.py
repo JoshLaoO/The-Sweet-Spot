@@ -6,8 +6,6 @@ from queries.candy import CandyRepository
 client = TestClient(app)
 
 
-
-
 class EmptyCandyRepository:
     def get_all(self):
         return []
