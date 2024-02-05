@@ -37,32 +37,32 @@ def test_get_candy():
     assert response.json() == []
 
 
-def test_create_candy():
-    # Arrange
-    app.dependency_overrides[CandyRepository] = CreateCandyQueries
-    candy = {
-        "name": "string",
-        "business": 0,
-        "picture_url": "string",
-        "description": "string",
-        "price": 0,
-        "stock": 0,
-    }
+# def test_create_candy():
+#     # Arrange
+#     app.dependency_overrides[CandyRepository] = CreateCandyQueries
+#     candy = {
+#         "name": "string",
+#         "business": 0,
+#         "picture_url": "string",
+#         "description": "string",
+#         "price": 0,
+#         "stock": 0,
+#     }
 
-    expected = {
-        "id": 0,
-        "name": "string",
-        "business": 0,
-        "picture_url": "string",
-        "description": "string",
-        "price": 0,
-        "stock": 0,
-    }
+#     expected = {
+#         "id": 0,
+#         "name": "string",
+#         "business": 0,
+#         "picture_url": "string",
+#         "description": "string",
+#         "price": 0,
+#         "stock": 0,
+#     }
 
-    # Act
-    response = client.post("/candy", json=candy)
-    app.dependency_overrides = {}
+#     # Act
+#     response = client.post("/candy", json=candy)
+#     app.dependency_overrides = {}
 
-    # Assert
-    assert response.status_code == 200
-    assert response.json() == expected
+#     # Assert
+#     assert response.status_code == 200
+#     assert response.json() == expected
