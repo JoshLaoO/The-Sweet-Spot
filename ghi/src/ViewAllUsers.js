@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 
 function ViewAllUsers() {
     const [users, setUsers] = useState([[], [], []]);
@@ -36,11 +35,11 @@ function ViewAllUsers() {
                 <div className='row'>
                     {users.map((user) => {
                         return (
-                            <div className="col-md-4  mb-3 d-flex justify-content-center">
-                                <div key={user.id} className="col mb-3 shadow" style={{ background: "darkorange" }}>
+                            <div key={user.id} className="col-md-4  mb-3 d-flex justify-content-center">
+                                <div className="col mb-3 shadow" style={{ background: "darkorange" }}>
                                     <div className="p-3">
                                         <div className="text-center">
-                                            <img src={user.picture_url} className="rounded" style={{ width: "200px", height: "200px" }} />
+                                            <img src={user.picture_url} alt="user profile picture" className="rounded" style={{ width: "200px", height: "200px" }} />
                                         </div>
                                         <div className="card-body">
                                             <h4 className='card-title' style={{ color: "white" }}>Username: {user.username}</h4>
