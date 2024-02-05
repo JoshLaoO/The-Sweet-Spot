@@ -46,3 +46,33 @@ def test_create_not_logged_in():
     app.dependency_overrides = {}
     # Assert
     assert response.status_code == 401
+    
+# def test_create_candy():
+#     # Arrange
+#     app.dependency_overrides[CandyRepository] = CreateCandyQueries
+#     candy = {
+#         "name": "string",
+#         "business": 0,
+#         "picture_url": "string",
+#         "description": "string",
+#         "price": 0,
+#         "stock": 0,
+#     }
+
+#     expected = {
+#         "id": 0,
+#         "name": "string",
+#         "business": 0,
+#         "picture_url": "string",
+#         "description": "string",
+#         "price": 0,
+#         "stock": 0,
+#     }
+
+#     # Act
+#     response = client.post("/candy", json=candy)
+#     app.dependency_overrides = {}
+
+#     # Assert
+#     assert response.status_code == 200
+#     assert response.json() == expected
