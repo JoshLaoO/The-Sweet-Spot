@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, useParams, BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './AuthContext.js';
 import LoginPage from './CustomerLogIn';
 import SignUpPage from './signuppage.js';
@@ -11,6 +11,7 @@ import Footer from './footer.js';
 import './App.css';
 import CandyForm from "./CandyForm.js";
 import ViewAllUsers from './ViewAllUsers.js';
+import ViewMyInfo from './ViewMyInfo.js';
 
 
 function App() {
@@ -51,6 +52,8 @@ function App() {
     setUserType('');
   };
 
+
+
   return (
     <AuthProvider>
       <Router>
@@ -63,6 +66,7 @@ function App() {
           <Route path="/create-candy" element={<CandyForm />} />
           <Route path="/" element={<Construct info={launchInfo} />} />
           <Route path="/users" element={<ViewAllUsers />} />
+          <Route path={`/users/user/:userId`} element={<ViewMyInfo/>} />
         </Routes>
         <Footer />
       </Router>
