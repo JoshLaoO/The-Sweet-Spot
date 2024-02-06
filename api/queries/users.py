@@ -37,15 +37,17 @@ class AccountOut(BaseModel):
     email: str
     picture_url: str
     username: str
-    business: Union[BusinessOut,None]
+    business: Union[BusinessOut, None]
+
 
 class GetAccountOut(BaseModel):
     id: int
     email: str
     picture_url: str
     username: str
-    business: Optional[Union[int,None]]
+    business: Optional[Union[int, None]]
     hashed_password: str
+
 
 class AccountOutWithPassword(AccountOut):
     hashed_password: str
@@ -186,7 +188,9 @@ class AccountRepo:
     def get(self, email: str) -> GetAccountOut:
         try:
             with pool.connection() as conn:
-                with conn.cursor(row_factory=dict_row) as db:  #TODO change the business to be a dict not an int
+                with conn.cursor(
+                    row_factory=dict_row
+                ) as db:  # TODO change the business to be a dict not an int
                     result = db.execute(
                         """
                         SELECT
@@ -392,7 +396,9 @@ class AccountRepo:
             return {"message": "could not get user information"}
 
     # anna
-    def update_user(self, id: int, hashed_password: str, user: AccountUpdate) -> GetAccountOut:
+    def update_user(
+        self, id: int, hashed_password: str, user: AccountUpdate
+    ) -> GetAccountOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
