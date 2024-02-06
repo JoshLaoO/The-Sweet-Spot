@@ -53,4 +53,4 @@ This week I created the rest of the business endpoints in queries/routers. I pro
 Week 4
 ---
 
-Created tests in test_user_business.py for business endpoints...
+Created tests in test_user_business.py for business endpoints. Then I worked on a front end component for the business pending orders view. I updated the orders table to include a sold field. I downloaded the CLI for deployment. Pipeline have been set up.

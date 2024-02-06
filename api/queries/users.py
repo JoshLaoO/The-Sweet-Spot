@@ -39,13 +39,19 @@ class AccountOut(BaseModel):
     username: str
     business: Optional[BusinessOut]
 
+class GetAccountOut(BaseModel):
+    id: int
+    email: str
+    picture_url: str
+    username: str
+    business: int
+    hashed_password: str
 
 class AccountOutWithPassword(AccountOut):
     hashed_password: str
 
 
 class AccountUpdate(BaseModel):
-
     picture_url: str
     username: str
     email: str
@@ -106,7 +112,6 @@ class AccountRepo:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-
                     result = db.execute(
                         """
                         INSERT INTO users
@@ -181,7 +186,7 @@ class AccountRepo:
     def get(self, email: str) -> AccountOutWithPassword:
         try:
             with pool.connection() as conn:
-                with conn.cursor(row_factory=dict_row) as db:
+                with conn.cursor(row_factory=dict_row) as db:  #TODO change the business to be a dict not an int
                     result = db.execute(
                         """
                         SELECT
@@ -197,10 +202,12 @@ class AccountRepo:
                         [email],
                     )
                     record = result.fetchone()
+                    print("RECORD", record)
                     if record is None:
                         return None
-                    return AccountOutWithPassword(**record)
-        except Exception:
+                    return GetAccountOut(**record)
+        except Exception as e:
+            print(e)
             return {"message": "Could not get account"}
 
     def delete(self, id: str) -> bool:
@@ -385,14 +392,10 @@ class AccountRepo:
             return {"message": "could not get user information"}
 
     # anna
-    def update_user(self, id: int, user: AccountUpdate) -> AccountOut:
+    def update_user(self, id: int, hashed_password: str, user: AccountUpdate) -> AccountOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    hashed_password = hashlib.sha256(
-                        user.password.encode()
-                    ).hexdigest()
-
                     db.execute(
                         """
                         UPDATE users
