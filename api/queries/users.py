@@ -2,7 +2,6 @@ from pydantic import BaseModel
 from typing import Union, List, Optional
 from queries.pool import pool
 from psycopg.rows import dict_row
-import bcrypt,base64,json
 
 
 class Error(BaseModel):

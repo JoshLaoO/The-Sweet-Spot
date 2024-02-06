@@ -1,8 +1,9 @@
 from fastapi.testclient import TestClient
 from main import app
-from queries.users import AccountRepo, AccountIn, AccountOut, AccountOutWithPassword
+from queries.users import AccountRepo, AccountIn, AccountOut
 
 client = TestClient(app)
+
 
 class EmptyAccountRepo:
     def list_all_users(self):
@@ -10,6 +11,7 @@ class EmptyAccountRepo:
 
     def get(self, email: str):
         return None
+
 
 class GetOneAccountRepo:
     def get(self, email: str):
@@ -19,12 +21,14 @@ class GetOneAccountRepo:
             "picture_url": "http://example.com/picture.jpg",
             "username": "testuser",
             "hashed_password": "hashedpassword",
-            "business": None
+            "business": None,
         }
+
 
 class DeleteAccountRepo:
     def delete(self, id: str) -> bool:
         return True
+
 
 class UpdateAccountRepo:
     def __init__(self):
@@ -34,7 +38,7 @@ class UpdateAccountRepo:
             "picture_url": "http://example.com/picture.jpg",
             "username": "testuser",
             "hashed_password": "hashedpassword",
-            "business": None
+            "business": None,
         }
 
     def get(self, email: str):
@@ -50,7 +54,9 @@ class UpdateAccountRepo:
             return AccountOut(**self.account_data)
         return None
 
+
 # Test cases
+
 
 def test_get_account():
     app.dependency_overrides[AccountRepo] = GetOneAccountRepo
@@ -58,17 +64,20 @@ def test_get_account():
     response = client.get(f"/accounts/{email}")
     assert response.json() == GetOneAccountRepo().get(email)
 
+
 def test_get_all_accounts():
     app.dependency_overrides[AccountRepo] = EmptyAccountRepo
     response = client.get("/accounts")
     app.dependency_overrides = {}
     assert response.json() == []
 
+
 def test_delete_account():
     app.dependency_overrides[AccountRepo] = DeleteAccountRepo
     account_id = 1
     response = client.delete(f"/accounts/{account_id}")
     assert response.json() is True
+
 
 def test_update_account():
     app.dependency_overrides[AccountRepo] = UpdateAccountRepo
@@ -79,7 +88,10 @@ def test_update_account():
         "username": "updateduser",
     }
     response = client.put(f"/accounts/{account_id}", json=new_account_data)
-    assert response.json() == UpdateAccountRepo().update_user(account_id, AccountIn(**new_account_data))
+    assert response.json() == UpdateAccountRepo().update_user(
+        account_id, AccountIn(**new_account_data)
+    )
+
 
 # Reset dependency overrides
 app.dependency_overrides = {}
