@@ -12,7 +12,7 @@ import './App.css';
 import CandyForm from "./CandyForm.js";
 import ViewAllUsers from './ViewAllUsers.js';
 import ViewMyInfo from './ViewMyInfo.js';
-
+import BusinessPendingOrders from './BusinessPendingOrders.js';
 
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
@@ -54,24 +54,25 @@ function App() {
 
 
 
-  return (
-    <AuthProvider>
-      <Router>
-        <Header isLoggedIn={isLoggedIn} userName={userName} userType={userType} logout={logout} />
-        <ErrorNotification error={error} />
-        <Routes>
-          <Route path="/signup/" element={<SignUpPage />} />
-          <Route path="/login/" element={<LoginPage login={login} />} />
-          <Route path="/mainpage/" element={<MainPage />} />
-          <Route path="/create-candy" element={<CandyForm />} />
-          <Route path="/" element={<Construct info={launchInfo} />} />
+    return (
+        <AuthProvider>
+            <Router>
+                <Header isLoggedIn={isLoggedIn} userName={userName} userType={userType} logout={logout} />
+                <ErrorNotification error={error} />
+                <Routes>
+                    <Route path="/signup/" element={<SignUpPage />} />
+                    <Route path="/login/" element={<LoginPage login={login} />} />
+                    <Route path="/mainpage/" element={<MainPage />} />
+                    <Route path="/create-candy" element={<CandyForm />} />
+                    <Route path="/orders" element={<BusinessPendingOrders />} />
+                    <Route path="/" element={<Construct info={launchInfo} />} />
           <Route path="/users" element={<ViewAllUsers />} />
           <Route path={`/users/user/:userId`} element={<ViewMyInfo/>} />
-        </Routes>
-        <Footer />
-      </Router>
-    </AuthProvider>
-  );
+                </Routes>
+                <Footer />
+            </Router>
+        </AuthProvider>
+    );
 }
 
 export default App;
