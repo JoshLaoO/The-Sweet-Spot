@@ -10,6 +10,7 @@ import Header from './header.js';
 import Footer from './footer.js';
 import './App.css';
 import CandyForm from "./CandyForm.js";
+import UpdateMyInfo from "./UpdateMyInfo.js";
 import ViewAllUsers from './ViewAllUsers.js';
 import ViewMyInfo from './ViewMyInfo.js';
 
@@ -67,6 +68,7 @@ function App() {
           <Route path="/" element={<Construct info={launchInfo} />} />
           <Route path="/users" element={<ViewAllUsers />} />
           <Route path={`/users/user/:userId`} element={<ViewMyInfo/>} />
+          <Route path={`/users/user/:userId/edit`} element={<UpdateMyInfo />} />
         </Routes>
         <Footer />
       </Router>
