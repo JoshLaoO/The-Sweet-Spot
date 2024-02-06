@@ -10,6 +10,10 @@ import Header from './header.js';
 import Footer from './footer.js';
 import './App.css';
 import CandyForm from "./CandyForm.js";
+import UpdateMyInfo from "./UpdateMyInfo.js";
+import ViewAllUsers from './ViewAllUsers.js';
+import ViewMyInfo from './ViewMyInfo.js';
+import BusinessPendingOrders from './BusinessPendingOrders.js';
 import CartPage from './CartPage.js';
 import { fetchCandies } from './candiesActions';
 import { useDispatch } from 'react-redux';
@@ -60,6 +64,8 @@ function App() {
     dispatch(fetchCandies());
   }, [dispatch]);
 
+
+
   return (
     <AuthProvider>
       <Router>
@@ -70,9 +76,14 @@ function App() {
           <Route path="/login/" element={<LoginPage login={login} />} />
           <Route path="/mainpage/" element={<MainPage />} />
           <Route path="/create-candy" element={<CandyForm />} />
+          <Route path="/orders" element={<BusinessPendingOrders />} />
           <Route path="/" element={<Construct info={launchInfo} />} />
+          <Route path="/users" element={<ViewAllUsers />} />
+          <Route path={`/users/user/:userId`} element={<ViewMyInfo />} />
+          <Route path={`/users/user/:userId/edit`} element={<UpdateMyInfo />} />
           <Route path="/shoppingcart" element={<CartPage />} />
           <Route path="/candy/:id/" element={<CandyDetail />} />
+          <Route path="/cart/" element={<CartPage />} />
 
 
 
@@ -82,6 +93,9 @@ function App() {
       </Router>
     </AuthProvider>
   );
+
 }
+
+
 
 export default App;

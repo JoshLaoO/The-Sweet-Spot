@@ -6,13 +6,22 @@ import './assets/shoppingCart.css';
 
 function MainPage() {
     const [candies, setCandies] = useState([]);
+    const [candyQuantities, setCandyQuantities] = useState({});
     const [businesses, setBusinesses] = useState([]);
     const dispatch = useDispatch();
 
     useEffect(() => {
         fetch('http://localhost:8000/candy')
             .then(response => response.json())
-            .then(data => setCandies(data))
+            .then(data => {
+                setCandies(data);
+                // 初始化每个糖果的数量为1
+                const initialQuantities = data.reduce((acc, candy) => {
+                    acc[candy.id] = 1;
+                    return acc;
+                }, {});
+                setCandyQuantities(initialQuantities);
+            })
             .catch(error => console.error('Fetch error:', error));
 
         fetch('http://localhost:8000/businesses')
@@ -21,11 +30,19 @@ function MainPage() {
             .catch(error => console.error('Fetch error:', error));
     }, []);
 
-    const placeholderImage = "https://via.placeholder.com/1920x1080";
-
-    const handleAddToCart = (candyId, quantity) => {
-        dispatch(addToCart({ candyId, quantity: parseInt(quantity, 10) }));
+    const handleQuantityChange = (candyId, change) => {
+        setCandyQuantities(prevQuantities => ({
+            ...prevQuantities,
+            [candyId]: Math.max(1, (prevQuantities[candyId] || 1) + change)
+        }));
     };
+
+    const handleAddToCart = (candyId) => {
+        const quantity = candyQuantities[candyId] || 1;
+        dispatch(addToCart({ candyId, quantity }));
+    };
+
+    const placeholderImage = "https://via.placeholder.com/1920x1080";
 
     return (
         <div>
@@ -41,11 +58,11 @@ function MainPage() {
                         <h3><Link to={`/candy/${candy.id}`}>{candy.name}</Link></h3>
                         <p>Price: ${candy.price}</p>
                         <div className="quantity-controls">
-                            <button className="shoppingCartWarp_content_list_actionNumChangeButton" onClick={() => handleAddToCart(candy.id, 1)}>-</button>
-                            <span>1</span>
-                            <button className="shoppingCartWarp_content_list_actionNumChangeButton" onClick={() => handleAddToCart(candy.id, 2)}>+</button>
+                            <button className="shoppingCartWarp_content_list_actionNumChangeButton" onClick={() => handleQuantityChange(candy.id, -1)}>-</button>
+                            <span>{candyQuantities[candy.id]}</span>
+                            <button className="shoppingCartWarp_content_list_actionNumChangeButton" onClick={() => handleQuantityChange(candy.id, 1)}>+</button>
                         </div>
-                        <button onClick={() => handleAddToCart(candy.id, 1)} className="add-to-cart-button">
+                        <button onClick={() => handleAddToCart(candy.id)} className="add-to-cart-button">
                             Add To Cart
                         </button>
                     </div>
