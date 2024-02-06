@@ -10,6 +10,8 @@ import Header from './header.js';
 import Footer from './footer.js';
 import './App.css';
 import CandyForm from "./CandyForm.js";
+import ViewAllUsers from './ViewAllUsers.js';
+import ViewMyInfo from './ViewMyInfo.js';
 import BusinessPendingOrders from './BusinessPendingOrders.js';
 
 function App() {
@@ -50,6 +52,8 @@ function App() {
     setUserType('');
   };
 
+
+
     return (
         <AuthProvider>
             <Router>
@@ -62,6 +66,8 @@ function App() {
                     <Route path="/create-candy" element={<CandyForm />} />
                     <Route path="/orders" element={<BusinessPendingOrders />} />
                     <Route path="/" element={<Construct info={launchInfo} />} />
+          <Route path="/users" element={<ViewAllUsers />} />
+          <Route path={`/users/user/:userId`} element={<ViewMyInfo/>} />
                 </Routes>
                 <Footer />
             </Router>
