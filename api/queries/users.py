@@ -37,14 +37,14 @@ class AccountOut(BaseModel):
     email: str
     picture_url: str
     username: str
-    business: Optional[BusinessOut]
+    business: Union[BusinessOut,None]
 
 class GetAccountOut(BaseModel):
     id: int
     email: str
     picture_url: str
     username: str
-    business: int
+    business: Optional[Union[int,None]]
     hashed_password: str
 
 class AccountOutWithPassword(AccountOut):
@@ -86,7 +86,7 @@ class AccountRepo:
         except Exception:
             return None
 
-    def record_to_account_out(self, record) -> AccountOutWithPassword:
+    def record_to_account_out(self, record) -> AccountOut:
         biz_info = AccountRepo.get_business(self, business_id=record[1])
         account_dict = {
             "id": record[0],
@@ -183,7 +183,7 @@ class AccountRepo:
         except Exception:
             return {"message": "Could not get users"}
 
-    def get(self, email: str) -> AccountOutWithPassword:
+    def get(self, email: str) -> GetAccountOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor(row_factory=dict_row) as db:  #TODO change the business to be a dict not an int
@@ -392,7 +392,7 @@ class AccountRepo:
             return {"message": "could not get user information"}
 
     # anna
-    def update_user(self, id: int, hashed_password: str, user: AccountUpdate) -> AccountOut:
+    def update_user(self, id: int, hashed_password: str, user: AccountUpdate) -> GetAccountOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
