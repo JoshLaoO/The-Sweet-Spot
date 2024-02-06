@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from './features/cart/cartSlice';
+import './assets/shoppingCart.css';
 
 const CandyDetail = () => {
     const [candy, setCandy] = useState(null);
@@ -44,8 +45,8 @@ const CandyDetail = () => {
         }
     };
 
-    const handleIncreaseQuantity = () => {
-        setQuantity(prevQuantity => prevQuantity + 1);
+    const handleQuantityChange = (change) => {
+        setQuantity(prevQuantity => Math.max(1, prevQuantity + change));
     };
 
     if (error) {
@@ -68,11 +69,12 @@ const CandyDetail = () => {
                 <p className={candy.stock > 0 ? 'in-stock' : 'out-of-stock'}>
                     {candy.stock > 0 ? 'In Stock' : 'Out of Stock'}
                 </p>
-                <div>
-                    <button onClick={handleAddToCart}>Add to Cart</button>
-                    <button onClick={handleIncreaseQuantity}>Increase Quantity</button>
-                    <p>Quantity: {quantity}</p>
+                <div className="quantity-controls">
+                    <button className="shoppingCartWarp_content_list_actionNumChangeButton" onClick={() => handleQuantityChange(-1)}>-</button>
+                    <span>{quantity}</span>
+                    <button className="shoppingCartWarp_content_list_actionNumChangeButton" onClick={() => handleQuantityChange(1)}>+</button>
                 </div>
+                <button onClick={handleAddToCart} className="add-to-cart-button">Add to Cart</button>
             </div>
         </div>
     );

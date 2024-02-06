@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from './features/cart/cartSlice';
+import './assets/shoppingCart.css';
 
 function MainPage() {
     const [candies, setCandies] = useState([]);
@@ -9,12 +10,10 @@ function MainPage() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-
         fetch('http://localhost:8000/candy')
             .then(response => response.json())
             .then(data => setCandies(data))
             .catch(error => console.error('Fetch error:', error));
-
 
         fetch('http://localhost:8000/businesses')
             .then(response => response.json())
@@ -23,7 +22,6 @@ function MainPage() {
     }, []);
 
     const placeholderImage = "https://via.placeholder.com/1920x1080";
-
 
     const handleAddToCart = (candyId, quantity) => {
         dispatch(addToCart({ candyId, quantity: parseInt(quantity, 10) }));
@@ -41,18 +39,14 @@ function MainPage() {
                     <div key={candy.id} className="product-item">
                         <img src={candy.picture_url || placeholderImage} alt={candy.name} />
                         <h3><Link to={`/candy/${candy.id}`}>{candy.name}</Link></h3>
-
-                        <input
-                            type="number"
-                            min="1"
-                            defaultValue="1"
-                            id={`quantity_${candy.id}`}
-                        />
-                        <button
-                            onClick={() => handleAddToCart(candy.id, document.getElementById(`quantity_${candy.id}`).value)}
-                        >
+                        <p>Price: ${candy.price}</p>
+                        <div className="quantity-controls">
+                            <button className="shoppingCartWarp_content_list_actionNumChangeButton" onClick={() => handleAddToCart(candy.id, 1)}>-</button>
+                            <span>1</span>
+                            <button className="shoppingCartWarp_content_list_actionNumChangeButton" onClick={() => handleAddToCart(candy.id, 2)}>+</button>
+                        </div>
+                        <button onClick={() => handleAddToCart(candy.id, 1)} className="add-to-cart-button">
                             Add To Cart
-
                         </button>
                     </div>
                 )) : <p>Loading candies...</p>}

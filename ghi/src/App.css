@@ -441,3 +441,34 @@
 .out-of-stock {
     color: #dc3545;
 }
+
+
+
+.candy-detail-container button,
+.shoppingCartWarp_content_list_actionNumChangeButton,
+.add-to-cart-button {
+    border: none;
+
+}
+
+
+.candy-detail-container button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+
+
+.add-to-cart-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-to-cart-button:hover {
+    background-color: #45a049;
+}
