@@ -81,6 +81,7 @@ function Header({ isLoggedIn, userType, userName }) {
                 )}
                 <Link to="/create-candy" className="btn btn-info text-white m-2">Create Candy(This will not be here later)</Link>
                 <Link to={`/users/user/${id}`} onClick={navigateToMyPage}  className="btn btn-info text-white m-2">Me</Link>
+                <Link to="/orders" className="btn btn-info text-white m-2">Pending Orders</Link>
                 <Link to="/cart/" className="btn btn-info text-white">
                     <i className="fa fa-shopping-cart"></i> Cart
                 </Link>

@@ -38,6 +38,7 @@ class CreateOrderRepo:
             "id": 0,
             "candy_id": 0,
             "quantity": 0,
+            "sold": False
         }
         result.update(order)
         for candy in candy_data:
@@ -62,7 +63,7 @@ def test_create_order():
     # arrange
 
     app.dependency_overrides[OrderRepo] = CreateOrderRepo  # set up empty repo
-    order = {"candy_id": 1, "quantity": 0}
+    order = {"candy_id": 1, "quantity": 0, "sold": False}
     expected = {
         "id": 0,
         "candy_id": {
@@ -75,6 +76,7 @@ def test_create_order():
             "stock": 100,
         },
         "quantity": 0,
+        "sold": False
     }
     # act
     response = client.post(
