@@ -14,22 +14,23 @@ function BusinessPendingOrders() {
         return price * quantity;
     };
 
-    async function changeOrderStatus(order_id) {
+    async function changeOrderStatus(order_id, candy_id, quantity) {
         const url = `http://localhost:8000/orders/${order_id}`;
-        // const config = {
-        //     method: 'PUT',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //         complete: true,
-        //     }),
-        // };
-        console.log({ "message": "order " + order_id + " complete" })
+        const config = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                candy_id: candy_id,
+                quantity: quantity,
+                sold: true,
+            }),
+        };
 
         await fetch(
             url,
-            // config
+            config
         );
         await getOrders();
     };
@@ -42,14 +43,16 @@ function BusinessPendingOrders() {
         fetchData();
     }, []);
 
+    const not_sold = orders.filter(order => !order.sold);
+
     return (
         <>
+        <h1>Pending Orders</h1>
             <div className="mb-3 mt-3 d-grid gap-2 d-md-flex justify-content-md-end">
                 <table className="table table-striped">
                     <thead>
                         <tr>
-                            <th>Order</th>
-                            <th>Customer Information</th>
+                            <th>Order ID</th>
                             <th>Candy Name</th>
                             <th>Quantity</th>
                             <th>Total</th>
@@ -58,19 +61,18 @@ function BusinessPendingOrders() {
                     </thead>
                     <tbody>
                         {
-                            orders?.map((order) => {
+                            not_sold?.map((order) => {
                                 const total = calculateTotal(order.candy_id.price, order.quantity)
                                 return (
                                     <tr key={order.id}>
                                         <td>{order.id}</td>
-                                        <td>Needs update to model</td>
                                         <td>{order.candy_id.name}</td>
                                         <td>{order.quantity}</td>
                                         <td>{total}</td>
                                         <td>
                                             <button
-                                                type="button"
-                                                onClick={(() => changeOrderStatus(order.id))}
+                                                className="btn btn-info text-white"
+                                                onClick={(() => changeOrderStatus(order.id, order.candy_id.id, order.quantity))}
                                             >
                                                 Ship
                                             </button>

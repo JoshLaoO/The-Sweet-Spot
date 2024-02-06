@@ -11,12 +11,14 @@ class Error(BaseModel):
 class OrderIn(BaseModel):
     candy_id: int
     quantity: int
+    sold: bool
 
 
 class OrderOut(BaseModel):
     id: int
     candy_id: CandyOut
     quantity: int
+    sold: bool
 
 
 class OrderRepo:
@@ -94,17 +96,20 @@ class OrderRepo:
                         """
                         UPDATE orders
                         SET candy_id = %s,
-                            quantity = %s
+                            quantity = %s,
+                            sold = %s
                         WHERE id = %s
                         RETURNING
                             id,
                             candy_id,
-                            quantity
+                            quantity,
+                            sold
                         """,
                         [
                             order.candy_id,
                             order.quantity,
-                            order_id,
+                            order.sold,
+                            order_id
                         ],
                     )
                     record = db.fetchone()
@@ -130,7 +135,12 @@ class OrderRepo:
     def record_to_out(self, record, candy_repo: CandyRepository):
         candy = candy_repo.get_one(record[1])
         print("THIS IS THE RECORD:", record)
-        return OrderOut(id=record[0], candy_id=candy, quantity=record[2])
+        return OrderOut(
+            id=record[0],
+            candy_id=candy,
+            quantity=record[2],
+            sold=record[3]
+            )
 
     def order_into_out(
         self, id: int, order: OrderIn, candy_repo: CandyRepository
