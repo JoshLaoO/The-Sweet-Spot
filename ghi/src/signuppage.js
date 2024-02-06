@@ -14,6 +14,7 @@ function SignUpPage() {
     const [isBusinessAccount, setIsBusinessAccount] = useState(false);
     const [signupError, setSignupError] = useState('');
     const [userToken, setUserToken] = useState('');
+    const [business, setBusiness] = useState('')
 
     const dispatch = useDispatch();
     //const { register } = useToken();
@@ -40,7 +41,7 @@ function SignUpPage() {
             }
             //register(userData,signUpUrl)
             const responseData = await response.json();
-            console.log(responseData.access_token)
+            console.log(responseData)
             dispatch(changeToken(responseData.access_token))
             setUserToken(responseData.access_token);
             setIsUserRegistered(true);
@@ -71,12 +72,29 @@ function SignUpPage() {
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);
             }
+            const data = await response.json()
+            setBusiness(data)
+
             alert('Business account created successfully!');
         } catch (error) {
             console.error('Failed to create business account:', error);
             alert('Failed to create business account. Please try again.');
         }
     };
+
+    const updateBusinessData = async () => {
+        const businessId = {
+            
+        }
+        const url = await fetch(`http://localhost:8000/users/${routeParams.userId}`, {
+            method: "POSt",
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
+        })
+        body: JSON.stringify(business)
+
+
+    }
 
     return (
         <div className="sign-up-form-container" style={{ backgroundImage: `url(${backgroundImg})` }}>
