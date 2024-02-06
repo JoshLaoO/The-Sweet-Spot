@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import Union, List, Optional
 from queries.pool import pool
-import hashlib
 from psycopg.rows import dict_row
 
 
@@ -37,7 +36,16 @@ class AccountOut(BaseModel):
     email: str
     picture_url: str
     username: str
-    business: Optional[BusinessOut]
+    business: Union[BusinessOut, None]
+
+
+class GetAccountOut(BaseModel):
+    id: int
+    email: str
+    picture_url: str
+    username: str
+    business: Optional[Union[int, None]]
+    hashed_password: str
 
 
 class AccountOutWithPassword(AccountOut):
@@ -45,7 +53,6 @@ class AccountOutWithPassword(AccountOut):
 
 
 class AccountUpdate(BaseModel):
-
     picture_url: str
     username: str
     email: str
@@ -80,7 +87,7 @@ class AccountRepo:
         except Exception:
             return None
 
-    def record_to_account_out(self, record) -> AccountOutWithPassword:
+    def record_to_account_out(self, record) -> AccountOut:
         biz_info = AccountRepo.get_business(self, business_id=record[1])
         account_dict = {
             "id": record[0],
@@ -106,7 +113,6 @@ class AccountRepo:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-
                     result = db.execute(
                         """
                         INSERT INTO users
@@ -178,10 +184,12 @@ class AccountRepo:
         except Exception:
             return {"message": "Could not get users"}
 
-    def get(self, email: str) -> AccountOutWithPassword:
+    def get(self, email: str) -> GetAccountOut:
         try:
             with pool.connection() as conn:
-                with conn.cursor(row_factory=dict_row) as db:
+                with conn.cursor(
+                    row_factory=dict_row
+                ) as db:  # TODO change the business to be a dict not an int
                     result = db.execute(
                         """
                         SELECT
@@ -197,10 +205,12 @@ class AccountRepo:
                         [email],
                     )
                     record = result.fetchone()
+                    print("RECORD", record)
                     if record is None:
                         return None
-                    return self.record_to_account_out(record)
-        except Exception:
+                    return GetAccountOut(**record)
+        except Exception as e:
+            print(e)
             return {"message": "Could not get account"}
 
     def delete(self, id: str) -> bool:
@@ -385,14 +395,12 @@ class AccountRepo:
             return {"message": "could not get user information"}
 
     # anna
-    def update_user(self, id: int, user: AccountUpdate) -> AccountOut:
+    def update_user(
+        self, id: int, hashed_password: str, user: AccountUpdate
+    ) -> GetAccountOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    hashed_password = hashlib.sha256(
-                        user.password.encode()
-                    ).hexdigest()
-
                     db.execute(
                         """
                         UPDATE users
@@ -435,7 +443,6 @@ class AccountRepo:
                         )
 
                     return self.record_to_account_out(record)
-                    # biz_info = AccountRepo.get_business(self, business_id=record[1])
                     # return AccountOut(
                     #     id=record[0],
                     #     business=biz_info,

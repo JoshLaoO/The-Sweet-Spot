@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 function ViewMyInfo(props) {
     const routeParams = useParams(props.userId)
@@ -36,7 +36,7 @@ function ViewMyInfo(props) {
                             <h4 className='card-title' style={{ color: "white" }}>Username: {data.username}</h4>
                             <h4 className='card-title' style={{ color: "white" }}>Email: {data.email}</h4>
                             <h4 className="card-text mb-2" style={{ color: "white" }}>Business:{data.business}</h4>
-
+                            <Link to={`/users/user/${routeParams.userId}/edit`} onClick={""} style={{ float: 'right'}}className="btn btn-info text-white m-2">Edit</Link>
                         </div>
                     </div>
                 </div>

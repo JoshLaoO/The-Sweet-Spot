@@ -10,9 +10,10 @@ import Header from './header.js';
 import Footer from './footer.js';
 import './App.css';
 import CandyForm from "./CandyForm.js";
+import UpdateMyInfo from "./UpdateMyInfo.js";
 import ViewAllUsers from './ViewAllUsers.js';
 import ViewMyInfo from './ViewMyInfo.js';
-import MyBusiness from './MyBusiness.js';
+import BusinessPendingOrders from './BusinessPendingOrders.js';
 
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
@@ -64,15 +65,19 @@ function App() {
           <Route path="/login/" element={<LoginPage login={login} />} />
           <Route path="/mainpage/" element={<MainPage />} />
           <Route path="/create-candy" element={<CandyForm />} />
+          <Route path="/orders" element={<BusinessPendingOrders />} />
           <Route path="/" element={<Construct info={launchInfo} />} />
           <Route path="/users" element={<ViewAllUsers />} />
           <Route path={`/users/user/:userId`} element={<ViewMyInfo/>} />
-          <Route path='/my-business' element={<MyBusiness/>}/>
+          <Route path={`/users/user/:userId/edit`} element={<UpdateMyInfo />} />
         </Routes>
         <Footer />
       </Router>
     </AuthProvider>
   );
+
 }
+
+
 
 export default App;
