@@ -105,12 +105,7 @@ class OrderRepo:
                             quantity,
                             sold
                         """,
-                        [
-                            order.candy_id,
-                            order.quantity,
-                            order.sold,
-                            order_id
-                        ],
+                        [order.candy_id, order.quantity, order.sold, order_id],
                     )
                     record = db.fetchone()
                     return self.record_to_out(record, candy_repo)
@@ -136,11 +131,8 @@ class OrderRepo:
         candy = candy_repo.get_one(record[1])
         print("THIS IS THE RECORD:", record)
         return OrderOut(
-            id=record[0],
-            candy_id=candy,
-            quantity=record[2],
-            sold=record[3]
-            )
+            id=record[0], candy_id=candy, quantity=record[2], sold=record[3]
+        )
 
     def order_into_out(
         self, id: int, order: OrderIn, candy_repo: CandyRepository
