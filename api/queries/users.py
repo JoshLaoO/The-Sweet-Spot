@@ -37,7 +37,7 @@ class AccountOut(BaseModel):
     email: str
     picture_url: str
     username: str
-    business: Optional[BusinessOut]
+    business: Optional[Union[int, None]]
 
 
 class AccountOutWithPassword(AccountOut):
@@ -80,10 +80,11 @@ class AccountRepo:
             return None
 
     def record_to_account_out(self, record) -> AccountOutWithPassword:
-        biz_info = AccountRepo.get_business(self, business_id=record[1])
+        #biz_info = AccountRepo.get_business(self, business_id=record[1])
+        print("RECORD", record)
         account_dict = {
             "id": record[0],
-            "business": biz_info,
+            "business": record[1],
             "email": record[2],
             "picture_url": record[3],
             "username": record[4],
@@ -117,11 +118,11 @@ class AccountRepo:
                             (%s, %s, %s, %s, %s)
                         RETURNING
                         id,
+                        business,
                         email,
                         picture_url,
                         username,
-                        hashed_password,
-                        business;
+                        hashed_password;
                         """,
                         [
                             user.email,
@@ -166,11 +167,11 @@ class AccountRepo:
                             "email": record[1],
                             "picture_url": record[2],
                             "username": record[3],
-                            "business": None,
+                            "business": record[4],
                         }
-                        if record[4] is not None:
-                            data = self.get_business_data(record[4])
-                            u_data["business"] = data.dict() if data else None
+                        # if record[4] is not None:
+                        #     data = self.get_business_data(record[4])
+                        #     u_data["business"] = data.dict() if data else None
                         users.append(AccountOut(**u_data))
                     return users
         except Exception:
@@ -383,13 +384,10 @@ class AccountRepo:
             return {"message": "could not get user information"}
 
     # anna
-    def update_user(self, id: int, user: AccountUpdate) -> AccountOut:
+    def update_user(self, id: int, user: AccountUpdate, hashed_password: str) -> AccountOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    hashed_password = hashlib.sha256(
-                        user.password.encode()
-                    ).hexdigest()
 
                     db.execute(
                         """

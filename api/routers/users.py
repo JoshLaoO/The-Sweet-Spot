@@ -134,7 +134,10 @@ async def update_user(
     id: int, update_form: AccountUpdate, repo: AccountRepo = Depends()
 ):
     try:
-        updated_account = repo.update_user(id, update_form)
+        hashed_password = authenticator.hash_password(update_form.password)
+        print("here hashed_password", hashed_password)
+        updated_account = repo.update_user(id, update_form, hashed_password)
+        print(updated_account)
         return updated_account
     except Exception as e:
         raise HTTPException(
