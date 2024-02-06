@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 from main import app
-from fastapi import status
+
+# from fastapi import status
 from queries.candy import CandyRepository
 
 client = TestClient(app)
@@ -46,7 +47,8 @@ def test_create_not_logged_in():
     app.dependency_overrides = {}
     # Assert
     assert response.status_code == 401
-    
+
+
 # def test_create_candy():
 #     # Arrange
 #     app.dependency_overrides[CandyRepository] = CreateCandyQueries

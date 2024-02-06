@@ -45,7 +45,6 @@ class AccountOutWithPassword(AccountOut):
 
 
 class AccountUpdate(BaseModel):
-
     picture_url: str
     username: str
     email: str
@@ -106,7 +105,6 @@ class AccountRepo:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-
                     result = db.execute(
                         """
                         INSERT INTO users
