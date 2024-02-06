@@ -12,7 +12,7 @@ import './App.css';
 import CandyForm from "./CandyForm.js";
 import ViewAllUsers from './ViewAllUsers.js';
 import ViewMyInfo from './ViewMyInfo.js';
-
+import MyBusiness from './MyBusiness.js';
 
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
@@ -67,6 +67,7 @@ function App() {
           <Route path="/" element={<Construct info={launchInfo} />} />
           <Route path="/users" element={<ViewAllUsers />} />
           <Route path={`/users/user/:userId`} element={<ViewMyInfo/>} />
+          <Route path='/my-business' element={<MyBusiness/>}/>
         </Routes>
         <Footer />
       </Router>

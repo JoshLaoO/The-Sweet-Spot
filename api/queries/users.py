@@ -199,7 +199,7 @@ class AccountRepo:
                     record = result.fetchone()
                     if record is None:
                         return None
-                    return AccountOutWithPassword(**record)
+                    return self.record_to_account_out(record)
         except Exception:
             return {"message": "Could not get account"}
 
@@ -421,6 +421,7 @@ class AccountRepo:
                             id,
                         ],
                     )
+                    print(hashed_password)
                     record = db.fetchone()
                     if record is None:
                         raise Exception("User not found or no change made")
