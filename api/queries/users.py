@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import Union, List, Optional
 from queries.pool import pool
-import hashlib
 from psycopg.rows import dict_row
 
 
@@ -443,7 +442,6 @@ class AccountRepo:
                         )
 
                     return self.record_to_account_out(record)
-                    # biz_info = AccountRepo.get_business(self, business_id=record[1])
                     # return AccountOut(
                     #     id=record[0],
                     #     business=biz_info,
