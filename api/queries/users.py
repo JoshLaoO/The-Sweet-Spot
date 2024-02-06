@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import Union, List, Optional
 from queries.pool import pool
-import hashlib
 from psycopg.rows import dict_row
 
 
@@ -37,7 +36,16 @@ class AccountOut(BaseModel):
     email: str
     picture_url: str
     username: str
-    business: Optional[BusinessOut]
+    business: Union[BusinessOut, None]
+
+
+class GetAccountOut(BaseModel):
+    id: int
+    email: str
+    picture_url: str
+    username: str
+    business: Optional[Union[int, None]]
+    hashed_password: str
 
 class GetAccountOut(BaseModel):
     id: int
@@ -86,7 +94,7 @@ class AccountRepo:
         except Exception:
             return None
 
-    def record_to_account_out(self, record) -> AccountOutWithPassword:
+    def record_to_account_out(self, record) -> AccountOut:
         biz_info = AccountRepo.get_business(self, business_id=record[1])
         account_dict = {
             "id": record[0],
@@ -183,10 +191,12 @@ class AccountRepo:
         except Exception:
             return {"message": "Could not get users"}
 
-    def get(self, email: str) -> AccountOutWithPassword:
+    def get(self, email: str) -> GetAccountOut:
         try:
             with pool.connection() as conn:
-                with conn.cursor(row_factory=dict_row) as db:  #TODO change the business to be a dict not an int
+                with conn.cursor(
+                    row_factory=dict_row
+                ) as db:  
                     result = db.execute(
                         """
                         SELECT
@@ -392,7 +402,9 @@ class AccountRepo:
             return {"message": "could not get user information"}
 
     # anna
-    def update_user(self, id: int, hashed_password: str, user: AccountUpdate) -> AccountOut:
+    def update_user(
+        self, id: int, hashed_password: str, user: AccountUpdate
+    ) -> GetAccountOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -437,7 +449,6 @@ class AccountRepo:
                         )
 
                     return self.record_to_account_out(record)
-                    # biz_info = AccountRepo.get_business(self, business_id=record[1])
                     # return AccountOut(
                     #     id=record[0],
                     #     business=biz_info,
