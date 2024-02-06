@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './AuthContext.js';
 import LoginPage from './CustomerLogIn';
@@ -10,6 +10,12 @@ import Header from './header.js';
 import Footer from './footer.js';
 import './App.css';
 import CandyForm from "./CandyForm.js";
+import CartPage from './CartPage.js';
+import { fetchCandies } from './candiesActions';
+import { useDispatch } from 'react-redux';
+import CandyDetail from './CandyDetail.js';
+
+
 
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
@@ -17,6 +23,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
   const [userType, setUserType] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function getData() {
@@ -49,6 +56,10 @@ function App() {
     setUserType('');
   };
 
+  useEffect(() => {
+    dispatch(fetchCandies());
+  }, [dispatch]);
+
   return (
     <AuthProvider>
       <Router>
@@ -60,6 +71,12 @@ function App() {
           <Route path="/mainpage/" element={<MainPage />} />
           <Route path="/create-candy" element={<CandyForm />} />
           <Route path="/" element={<Construct info={launchInfo} />} />
+          <Route path="/shoppingcart" element={<CartPage />} />
+          <Route path="/candy/:id/" element={<CandyDetail />} />
+
+
+
+
         </Routes>
         <Footer />
       </Router>

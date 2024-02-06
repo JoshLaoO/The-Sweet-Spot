@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addToCart } from './features/cart/cartSlice';
 
 function MainPage() {
     const [candies, setCandies] = useState([]);
     const [businesses, setBusinesses] = useState([]);
+    const dispatch = useDispatch();
 
     useEffect(() => {
 
@@ -21,13 +24,13 @@ function MainPage() {
 
     const placeholderImage = "https://via.placeholder.com/1920x1080";
 
-    function addToCart(candyId) {
-        console.log(`Candy ${candyId} will be added to cart in the future.`);
-    }
+
+    const handleAddToCart = (candyId, quantity) => {
+        dispatch(addToCart({ candyId, quantity: parseInt(quantity, 10) }));
+    };
 
     return (
         <div>
-
             <div className="featured-candy">
                 <img src={placeholderImage} alt="Placeholder" />
             </div>
@@ -38,6 +41,7 @@ function MainPage() {
                     <div key={candy.id} className="product-item">
                         <img src={candy.picture_url || placeholderImage} alt={candy.name} />
                         <h3><Link to={`/candy/${candy.id}`}>{candy.name}</Link></h3>
+
                         <input
                             type="number"
                             min="1"
@@ -45,16 +49,14 @@ function MainPage() {
                             id={`quantity_${candy.id}`}
                         />
                         <button
-                            onClick={() => addToCart(candy.id, document.getElementById(`quantity_${candy.id}`).value)}
+                            onClick={() => handleAddToCart(candy.id, document.getElementById(`quantity_${candy.id}`).value)}
                         >
-                            Add to Cart
+                            Add To Cart
+
                         </button>
                     </div>
                 )) : <p>Loading candies...</p>}
             </div>
-
-
-
 
             <div><h2 className="centered-heading">All the Candy Brands</h2></div>
             <div className="product-container">
@@ -65,7 +67,6 @@ function MainPage() {
                     </div>
                 )) : <p>Loading businesses...</p>}
             </div>
-
         </div>
     );
 }

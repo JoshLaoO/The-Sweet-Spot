@@ -54,7 +54,7 @@ function Header({ isLoggedIn, userType, userName }) {
                     </>
                 )}
                 <Link to="/create-candy" className="btn btn-info text-white m-2">Create Candy(This will not be here later)</Link>
-                <Link to="/cart/" className="btn btn-info text-white">
+                <Link to="/shoppingcart/" className="btn btn-info text-white">
                     <i className="fa fa-shopping-cart"></i> Cart
                 </Link>
             </div>

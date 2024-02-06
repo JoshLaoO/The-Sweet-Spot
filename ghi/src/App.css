@@ -347,22 +347,97 @@
 }
 
 .sign-up-form-container .business-account-form {
-    background-color: rgba(255, 255, 255, 0.8); /* 半透明的白色背景 */
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 轻微的阴影效果 */
-    text-align: center; /* 文字居中 */
-    margin: 10px 0; /* 上下外边距 */
-    display: flex; /* 使用Flexbox布局 */
-    flex-direction: column; /* 子元素垂直排列 */
-    align-items: center; /* 子元素在水平方向上居中 */
-    justify-content: center; /* 子元素在垂直方向上居中 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .sign-up-form-container .business-account-form button {
-    margin: 10px 10px; /* 按钮间的间距 */
-    padding: 5px 10px; /* 内边距 */
-    font-size: 0.9em; /* 字体大小 */
-    border: 1px solid #ccc; /* 边框 */
-    border-radius: 5px; /* 圆角边框 */
+    margin: 10px 10px;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.cart-item-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.cart-item-details h4 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.cart-item-details p {
+    margin: 5px 0;
+}
+
+.cart-page {
+    padding: 20px;
+}
+
+.cart-total {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.candy-detail-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.candy-image img {
+    max-width: 300px;
+    max-height: 300px;
+    margin-right: 20px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.candy-info {
+    flex: 1;
+    font-size: 18px;
+    color: #333;
+}
+
+.candy-info h2 {
+    color: #007bff;
+}
+
+.price {
+    font-weight: bold;
+    color: #28a745;
+}
+
+.in-stock {
+    color: #28a745;
+}
+
+.out-of-stock {
+    color: #dc3545;
 }
