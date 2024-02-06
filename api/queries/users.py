@@ -44,7 +44,7 @@ class GetAccountOut(BaseModel):
     email: str
     picture_url: str
     username: str
-    business: int
+    business: Union[int,None]
     hashed_password: str
 
 class AccountOutWithPassword(AccountOut):
