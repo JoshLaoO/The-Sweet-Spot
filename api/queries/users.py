@@ -181,7 +181,7 @@ class AccountRepo:
     def get(self, email: str) -> AccountOutWithPassword:
         try:
             with pool.connection() as conn:
-                with conn.cursor(row_factory=dict_row) as db:
+                with conn.cursor(row_factory=dict_row) as db:  #TODO change the business to be a dict not an int
                     result = db.execute(
                         """
                         SELECT
@@ -197,10 +197,12 @@ class AccountRepo:
                         [email],
                     )
                     record = result.fetchone()
+                    print("RECORD", record)
                     if record is None:
                         return None
                     return AccountOutWithPassword(**record)
-        except Exception:
+        except Exception as e:
+            print(e)
             return {"message": "Could not get account"}
 
     def delete(self, id: str) -> bool:

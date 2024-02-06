@@ -8,6 +8,9 @@ function UpdateMyInfo(props) {
     const [pictureUrl, setPictureUrl] = useState();
     const [businesses, setBusinesses] = useState([]);
     const [business, setBusiness] = useState();
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    const messageClasses = ''
 
     // const updateMyData = async () => {
     //     const url = await fetch(`http://localhost:8000/users/${routeParams.userId}`, {
@@ -32,7 +35,7 @@ function UpdateMyInfo(props) {
                     <form onSubmit={''} id="create-update-form">
                         <div className="form-floating mb-3">
                             <input onChange={''} value={pictureUrl} placeholder="Picture url" required type="text" name="pictureUrl" id="pictureUrl" className="form-control" />
-                            <label htmlFor="pictureUrl">Picture Url</label>
+                            <label htmlFor="pictureUrl">Picture</label>
                         </div>
                         <div className="mb-3">
                             <select onChange={''} value={business} required name="business" id="business" className="form-select">
