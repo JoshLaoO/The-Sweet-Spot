@@ -1,0 +1,6 @@
+glv-cloud-cli deploy -a sweetspotdb -i postgres:14.7 -e POSTGRES_DB=spot -e POSTGRES_USER=spot-user -e POSTGRES_PASSWORD=spot -m /var/lib/postgresql -p 5432 -x=false
+{"uri":"oct-2023-11-pt-sweetspotdb-service.default.svc.cluster.local"}
+
+
+glv-cloud-cli deploy -a sweetspotapi -i registry.gitlab.com/crunchy-bellpeppers/module3-project-gamma/api:latest -e SIGNING_KEY=spot -e DATABASE_URL=postgresql://spot-user:spot@oct-2023-11-pt-sweetspotdb-service.default.svc.cluster.local/postgres -e CORS_HOST=https://crunchy-bellpeppers.gitlab.io
+{"uri":"oct-2023-11-pt-sweetspotapi.mod3projects.com"}
