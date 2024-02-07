@@ -1,17 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addToCart } from './features/cart/cartSlice';
+import './assets/shoppingCart.css';
 
 function MainPage() {
     const [candies, setCandies] = useState([]);
+    const [candyQuantities, setCandyQuantities] = useState({});
     const [businesses, setBusinesses] = useState([]);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-
         fetch('http://localhost:8000/candy')
             .then(response => response.json())
-            .then(data => setCandies(data))
+            .then(data => {
+                setCandies(data);
+                // 初始化每个糖果的数量为1
+                const initialQuantities = data.reduce((acc, candy) => {
+                    acc[candy.id] = 1;
+                    return acc;
+                }, {});
+                setCandyQuantities(initialQuantities);
+            })
             .catch(error => console.error('Fetch error:', error));
-
 
         fetch('http://localhost:8000/businesses')
             .then(response => response.json())
@@ -19,15 +30,22 @@ function MainPage() {
             .catch(error => console.error('Fetch error:', error));
     }, []);
 
-    const placeholderImage = "https://via.placeholder.com/1920x1080";
+    const handleQuantityChange = (candyId, change) => {
+        setCandyQuantities(prevQuantities => ({
+            ...prevQuantities,
+            [candyId]: Math.max(1, (prevQuantities[candyId] || 1) + change)
+        }));
+    };
 
-    function addToCart(candyId) {
-        console.log(`Candy ${candyId} will be added to cart in the future.`);
-    }
+    const handleAddToCart = (candyId) => {
+        const quantity = candyQuantities[candyId] || 1;
+        dispatch(addToCart({ candyId, quantity }));
+    };
+
+    const placeholderImage = "https://via.placeholder.com/1920x1080";
 
     return (
         <div>
-
             <div className="featured-candy">
                 <img src={placeholderImage} alt="Placeholder" />
             </div>
@@ -38,23 +56,18 @@ function MainPage() {
                     <div key={candy.id} className="product-item">
                         <img src={candy.picture_url || placeholderImage} alt={candy.name} />
                         <h3><Link to={`/candy/${candy.id}`}>{candy.name}</Link></h3>
-                        <input
-                            type="number"
-                            min="1"
-                            defaultValue="1"
-                            id={`quantity_${candy.id}`}
-                        />
-                        <button
-                            onClick={() => addToCart(candy.id, document.getElementById(`quantity_${candy.id}`).value)}
-                        >
-                            Add to Cart
+                        <p>Price: ${candy.price}</p>
+                        <div className="quantity-controls">
+                            <button className="shoppingCartWarp_content_list_actionNumChangeButton" onClick={() => handleQuantityChange(candy.id, -1)}>-</button>
+                            <span>{candyQuantities[candy.id]}</span>
+                            <button className="shoppingCartWarp_content_list_actionNumChangeButton" onClick={() => handleQuantityChange(candy.id, 1)}>+</button>
+                        </div>
+                        <button onClick={() => handleAddToCart(candy.id)} className="add-to-cart-button">
+                            Add To Cart
                         </button>
                     </div>
                 )) : <p>Loading candies...</p>}
             </div>
-
-
-
 
             <div><h2 className="centered-heading">All the Candy Brands</h2></div>
             <div className="product-container">
@@ -65,7 +78,6 @@ function MainPage() {
                     </div>
                 )) : <p>Loading businesses...</p>}
             </div>
-
         </div>
     );
 }
