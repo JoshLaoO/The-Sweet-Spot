@@ -118,16 +118,13 @@ async def get_user_by_username(
     username: str,
     response: Response,
     repo: AccountRepo = Depends(),
-    account_data: Optional[dict] = Depends(
-        authenticator.try_get_current_account_data
-    ),
 ):
-    if account_data:
-        print(account_data)
-        user = repo.get_by_username(username)
-        if user is None:
-            response.status_code = 404
-        return user
+    #user = await authenticator.get_account_data(username, repo)
+    user = repo.get_by_username(username)
+    print(user)
+    if user is None:
+        return None
+    return user
 
 
 @router.get(

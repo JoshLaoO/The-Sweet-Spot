@@ -184,12 +184,42 @@ class AccountRepo:
         except Exception:
             return {"message": "Could not get users"}
 
-    def get_by_username(self, username: str) -> Union[GetAccountOut, Error]:
+    def get(self, email: str) -> GetAccountOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor(
                     row_factory=dict_row
                 ) as db:  # TODO change the business to be a dict not an int
+                    result = db.execute(
+                        """
+                        SELECT
+                        id,
+                        business,
+                        email,
+                        picture_url,
+                        username,
+                        hashed_password
+                        FROM users
+                        WHERE email = %s
+                        """,
+                        [email],
+                    )
+                    record = result.fetchone()
+                    print("RECORD", record)
+                    if record is None:
+                        return None
+                    return GetAccountOut(**record)
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get account"}
+
+
+
+
+    def get_by_username(self, username: str) -> Union[AccountOut, Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:  # TODO change the business to be a dict not an int
                     print("THE USERNAME", username)
                     result = db.execute(
                         """
@@ -203,13 +233,13 @@ class AccountRepo:
                         FROM users
                         WHERE username = %s
                         """,
-                        [username],
+                        [username]
                     )
                     record = result.fetchone()
-                    print("RECORD", record)
                     if record is None:
                         return None
-                    return GetAccountOut(**record)
+
+                    return self.record_to_account_out(record)
         except Exception as e:
             print(e)
             return {"message": "Could not get account"}
