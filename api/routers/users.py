@@ -20,7 +20,6 @@ from queries.users import (
     AccountUpdate,
     BusinessIn,
     BusinessOut,
-
 )
 
 
@@ -54,8 +53,6 @@ async def get_token(
             "type": "Bearer",
             "account": account,
         }
-
-
 
 
 @router.post("/users", response_model=AccountToken | HttpError)
