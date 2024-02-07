@@ -68,6 +68,9 @@ function App() {
     dispatch(fetchCandies());
   }, [dispatch]);
 
+  const domain = /https:\/\/[^/]+/;
+  const basename = process.env.PUBLIC_URL.replace(domain, "");
+
   return (
     <BrowserRouter basename={basename}>
       <AuthProvider>
