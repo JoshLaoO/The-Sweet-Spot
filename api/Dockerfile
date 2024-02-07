@@ -14,8 +14,9 @@ COPY authenticator.py authenticator.py
 
 # Copy all of the subdirectories in your service's directory
 # Modify these instructions to do that
-# COPY queries queries
-# COPY routers routers
+COPY queries queries
+COPY routers routers
+# COPY tests tests
 
 # Installs all the python packages listed in our requirements.txt file
 RUN python -m pip install -r requirements.txt
