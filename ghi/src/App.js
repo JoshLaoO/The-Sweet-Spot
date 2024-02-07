@@ -14,7 +14,7 @@ import UpdateMyInfo from "./UpdateMyInfo.js";
 import ViewAllUsers from './ViewAllUsers.js';
 import ViewMyInfo from './ViewMyInfo.js';
 import BusinessPendingOrders from './BusinessPendingOrders.js';
-
+import MyBusiness from './MyBusiness.js';
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
   const [error, setError] = useState(null);
@@ -68,6 +68,7 @@ function App() {
           <Route path="/orders" element={<BusinessPendingOrders />} />
           <Route path="/" element={<Construct info={launchInfo} />} />
           <Route path="/users" element={<ViewAllUsers />} />
+          <Route path="/inventory/:userId" element={<MyBusiness/>}/>
           <Route path={`/users/user/:userId`} element={<ViewMyInfo/>} />
           <Route path={`/users/user/:userId/edit`} element={<UpdateMyInfo />} />
         </Routes>

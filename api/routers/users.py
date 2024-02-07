@@ -110,6 +110,21 @@ def get_all_businesses(
     print(businesses)
     return businesses
 
+@router.get("/users/{username}", response_model=Union[Optional[AccountOut], Error])
+async def get_user_by_username(
+    username: str,
+    response: Response,
+    repo: AccountRepo = Depends(),
+    account_data: Optional[dict] = Depends(
+        authenticator.try_get_current_account_data
+    ),
+):
+    if account_data:
+        print(account_data)
+        user = repo.get_by_username(username)
+        if user is None:
+            response.status_code = 404
+        return user
 
 @router.get(
     "/users/{user_id}", response_model=Union[Optional[AccountOut], Error]

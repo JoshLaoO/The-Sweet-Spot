@@ -184,12 +184,13 @@ class AccountRepo:
         except Exception:
             return {"message": "Could not get users"}
 
-    def get(self, email: str) -> GetAccountOut:
+    def get_by_username(self, username: str) -> Union[GetAccountOut,Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor(
                     row_factory=dict_row
                 ) as db:  # TODO change the business to be a dict not an int
+                    print("THE USERNAME", username)
                     result = db.execute(
                         """
                         SELECT
@@ -200,9 +201,9 @@ class AccountRepo:
                         username,
                         hashed_password
                         FROM users
-                        WHERE email = %s
+                        WHERE username = %s
                         """,
-                        [email],
+                        [username],
                     )
                     record = result.fetchone()
                     print("RECORD", record)
@@ -212,7 +213,6 @@ class AccountRepo:
         except Exception as e:
             print(e)
             return {"message": "Could not get account"}
-
     def delete(self, id: str) -> bool:
         try:
             with pool.connection() as conn:

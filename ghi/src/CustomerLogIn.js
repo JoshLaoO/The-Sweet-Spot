@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import backgroundImg from './images/background.png';
 import { changeToken } from './features/token/tokenSlice';
 import { useDispatch } from 'react-redux';
+import { getId } from './features/users/userIdSlice';
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -30,12 +31,12 @@ const LoginForm = () => {
             if (!response.ok) {
                 throw new Error(`Login failed: ${response.status}`);
             }
-
+            
             const data = await response.json();
             //setToken(data.data.access_token);
-
+            console.log(data)
             dispatch(changeToken(data.access_token))
-
+            //dispatch(getId(data.account.id))
             if (data.account && data.account.business) {
                 navigate('/business-profile');
             } else {

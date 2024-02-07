@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
 function ViewMyInfo(props) {
+    console.log(props)
     const routeParams = useParams(props.userId)
     const [data, setData] = useState([])
 
@@ -16,6 +17,7 @@ function ViewMyInfo(props) {
         setData(res)
 
     }
+
 
     useEffect(() => {
         fetchMyData();

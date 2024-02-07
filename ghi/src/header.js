@@ -79,7 +79,7 @@ function Header({ isLoggedIn, userType, userName }) {
                         <button  className="btn btn-danger m-2">Log Out</button>
                     </>
                 )}
-                <Link to="/create-candy" className="btn btn-info text-white m-2">Create Candy(This will not be here later)</Link>
+                <Link to={`inventory/${id}`} className="btn btn-success text-white m-2">Inventory</Link>
                 <Link to={`/users/user/${id}`} onClick={navigateToMyPage}  className="btn btn-info text-white m-2">Me</Link>
                 <Link to="/orders" className="btn btn-info text-white m-2">Pending Orders</Link>
                 <Link to="/cart/" className="btn btn-info text-white">
