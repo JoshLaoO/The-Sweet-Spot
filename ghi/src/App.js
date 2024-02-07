@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './AuthContext.js';
 import LoginPage from './CustomerLogIn';
@@ -14,6 +14,12 @@ import UpdateMyInfo from "./UpdateMyInfo.js";
 import ViewAllUsers from './ViewAllUsers.js';
 import ViewMyInfo from './ViewMyInfo.js';
 import BusinessPendingOrders from './BusinessPendingOrders.js';
+import CartPage from './CartPage.js';
+import { fetchCandies } from './candiesActions';
+import { useDispatch } from 'react-redux';
+import CandyDetail from './CandyDetail.js';
+
+
 
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
@@ -21,6 +27,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
   const [userType, setUserType] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function getData() {
@@ -53,6 +60,10 @@ function App() {
     setUserType('');
   };
 
+  useEffect(() => {
+    dispatch(fetchCandies());
+  }, [dispatch]);
+
 
 
   return (
@@ -68,8 +79,15 @@ function App() {
           <Route path="/orders" element={<BusinessPendingOrders />} />
           <Route path="/" element={<Construct info={launchInfo} />} />
           <Route path="/users" element={<ViewAllUsers />} />
-          <Route path={`/users/user/:userId`} element={<ViewMyInfo/>} />
+          <Route path={`/users/user/:userId`} element={<ViewMyInfo />} />
           <Route path={`/users/user/:userId/edit`} element={<UpdateMyInfo />} />
+          <Route path="/shoppingcart" element={<CartPage />} />
+          <Route path="/candy/:id/" element={<CandyDetail />} />
+          <Route path="/cart/" element={<CartPage />} />
+
+
+
+
         </Routes>
         <Footer />
       </Router>
