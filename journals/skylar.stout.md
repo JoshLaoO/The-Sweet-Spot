@@ -54,3 +54,9 @@ Week 4
 ---
 
 Created tests in test_user_business.py for business endpoints. Then I worked on a front end component for the business pending orders view. I updated the orders table to include a sold field. I downloaded the CLI for deployment. Pipeline have been set up.
+
+
+Week 5
+---
+
+Created Transaction History page. Currently the fields on Orders needs to be updated to include a sold date if we would like that displayed on this page.
