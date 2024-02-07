@@ -42,7 +42,6 @@ function UpdateMyInfo(props) {
     }
     const handleBusinessChange = (e) => {
         const value = e.target.value;
-        console.log(value)
         setBusiness(value)
     }
 
@@ -61,33 +60,36 @@ function UpdateMyInfo(props) {
             business: business
         }
 
-        const updateMyData = async () => {
-            const userUpdateUrl = await fetch(`http://localhost:8000/user/${routeParams.userId}`, {
-                method: "PUT",
-                body: JSON.stringify(data),
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include'
-            })
-            const res = await userUpdateUrl.json()
-            console.log("RES", res)
-            setPictureUrl('')
-            setUsername('')
-            setEmail('')
-            setPassword('')
-            setBusiness('')
-            setSubmitted(true)
 
-        }
+
+        const userUpdateUrl = await fetch(`http://localhost:8000/user/${routeParams.userId}`, {
+            method: "PUT",
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
+        })
+
+        const res = await userUpdateUrl.json()
+        console.log(res)
+        console.log("RES", res)
+        setPictureUrl('')
+        setUsername('')
+        setEmail('')
+        setPassword('')
+        setBusiness('')
+        setSubmitted(true)
+
+
     }
     const messageClasses = (!submitted) ? 'alert alert-success d-none mb-0' : 'alert alert-success mb-0';
     return (
-        <div className="row m-5">
+        <div className="row m-5" style={{ color: "darkorange" }}>
             <div className="offset-3 col-6">
                 <div className="shadow p-4 mt-4">
                     <h1>Update Profile</h1>
-                    <form onSubmit={handleSubmit} id="create-update-form">
+                    <form onSubmit={handleSubmit}  id="create-update-form">
                         <div className="form-floating mb-3">
-                            <input onChange={handlePictureURLChange} value={pictureUrl} placeholder="Picture url" required type="text" name="pictureUrl" id="pictureUrl" className="form-control" />
+                            <input onChange={handlePictureURLChange} value={pictureUrl} placeholder="Picture url" required type="url" name="pictureUrl" id="pictureUrl" className="form-control" />
                             <label htmlFor="pictureUrl">Picture</label>
                         </div>
                         <div className="form-floating mb-3">
@@ -95,14 +97,14 @@ function UpdateMyInfo(props) {
                             <label htmlFor="username">Username</label>
                         </div>
                         <div className="form-floating mb-3">
-                            <input onCanPlay={handleEmailChange} value={email} placeholder="email" required type="text" name="email" id="email" className="form-control" />
+                            <input onChange={handleEmailChange} value={email} placeholder="email" required type="email" name="email" id="email" className="form-control" />
                             <label htmlFor="email">Email</label>
                         </div>
                         <div className="form-floating mb-3">
                             <input onChange={handlePasswordChange} value={password} placeholder="password" required type="text" name="password" id="password" className="form-control" />
                             <label htmlFor="password">Password</label>
                         </div>
-                        <div className="mb-3">
+                        <div className="mb-3" >
                             <select onChange={handleBusinessChange} value={business} required name="business" id="business" className="form-select">
                                 <option value="">Business</option>
                                 {businesses.map(b => {
