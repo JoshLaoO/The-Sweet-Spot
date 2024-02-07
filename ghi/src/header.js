@@ -14,25 +14,27 @@ function Header({ isLoggedIn, userType, userName }) {
         const url = 'http://localhost:8000/token'
         const fetchConfig = {
             method: 'DELETE',
-            headeres: {'Content-Type': 'application/json'},
+            headeres: { 'Content-Type': 'application/json' },
             credentials: 'include'
         }
-        const response = await fetch(url,fetchConfig);
-        if(response.ok){
+        const response = await fetch(url, fetchConfig);
+        if (response.ok) {
             // const data = await response.json()
             dispatch(changeToken(''))
         }
     }
 
     const navigateToMyPage = async () => {
+        console.log("HERE")
         const fetchUrl = await fetch('http://localhost:8000/token', {
             method: "GET",
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include'
         })
+        console.log("HERE!")
         const res = await fetchUrl.json()
         userId = res.account.id
-        console.log(userId)
+        console.log("USER ID: ", userId)
         setId(userId)
     }
 
@@ -76,11 +78,11 @@ function Header({ isLoggedIn, userType, userName }) {
                         <Link to="/orders/" className="btn btn-info text-white">Orders</Link>
                         <Link to="/transactions/" className="btn btn-info text-white">Transactions</Link>
 
-                        <button  className="btn btn-danger m-2">Log Out</button>
+                        <button className="btn btn-danger m-2">Log Out</button>
                     </>
                 )}
                 <Link to="/create-candy" className="btn btn-info text-white m-2">Create Candy(This will not be here later)</Link>
-                <Link to={`/users/user/${id}`} onClick={navigateToMyPage}  className="btn btn-info text-white m-2">Me</Link>
+                <Link to={`/users/user/${id}`} onClick={navigateToMyPage} className="btn btn-info text-white m-2">Me</Link>
                 <Link to="/orders" className="btn btn-info text-white m-2">Pending Orders</Link>
                 <Link to="/cart/" className="btn btn-info text-white">
                     <i className="fa fa-shopping-cart"></i> Cart
