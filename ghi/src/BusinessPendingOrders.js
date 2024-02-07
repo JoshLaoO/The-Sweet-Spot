@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { Link } from "react-router-dom";
 
 function BusinessPendingOrders() {
     const [orders, setOrders] = useState([]);
@@ -84,6 +84,7 @@ function BusinessPendingOrders() {
                     </tbody>
                 </table>
             </div>
+            <Link to="/history" className="btn btn-info text-white m-2">Transaction History</Link>
         </>
     );
 }

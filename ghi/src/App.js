@@ -18,8 +18,7 @@ import CartPage from './CartPage.js';
 import { fetchCandies } from './candiesActions';
 import { useDispatch } from 'react-redux';
 import CandyDetail from './CandyDetail.js';
-
-
+import TransactionHistory from './TransactionHistroy.js';
 
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
@@ -77,6 +76,7 @@ function App() {
           <Route path="/mainpage/" element={<MainPage />} />
           <Route path="/create-candy" element={<CandyForm />} />
           <Route path="/orders" element={<BusinessPendingOrders />} />
+          <Route path="/history" element={<TransactionHistory />} />
           <Route path="/" element={<Construct info={launchInfo} />} />
           <Route path="/users" element={<ViewAllUsers />} />
           <Route path={`/users/user/:userId`} element={<ViewMyInfo />} />

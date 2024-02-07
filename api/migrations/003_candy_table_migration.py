@@ -38,3 +38,6 @@ steps = [
         """,
     ],
 ]
+
+
+# sold_date VARCHAR(20)
