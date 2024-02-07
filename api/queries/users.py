@@ -184,7 +184,7 @@ class AccountRepo:
         except Exception:
             return {"message": "Could not get users"}
 
-    def get_by_username(self, username: str) -> Union[GetAccountOut,Error]:
+    def get_by_username(self, username: str) -> Union[GetAccountOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor(
@@ -213,6 +213,7 @@ class AccountRepo:
         except Exception as e:
             print(e)
             return {"message": "Could not get account"}
+
     def delete(self, id: str) -> bool:
         try:
             with pool.connection() as conn:

@@ -110,7 +110,10 @@ def get_all_businesses(
     print(businesses)
     return businesses
 
-@router.get("/users/{username}", response_model=Union[Optional[AccountOut], Error])
+
+@router.get(
+    "/users/{username}", response_model=Union[Optional[AccountOut], Error]
+)
 async def get_user_by_username(
     username: str,
     response: Response,
@@ -125,6 +128,7 @@ async def get_user_by_username(
         if user is None:
             response.status_code = 404
         return user
+
 
 @router.get(
     "/users/{user_id}", response_model=Union[Optional[AccountOut], Error]
@@ -147,7 +151,9 @@ async def get_one_user(
 
 @router.put("/user/{id}", response_model=AccountOut)
 async def update_user(
-    id: int, update_form: AccountUpdate, repo: AccountRepo = Depends(),
+    id: int,
+    update_form: AccountUpdate,
+    repo: AccountRepo = Depends(),
 ):
     try:
         hashed_password = authenticator.hash_password(update_form.password)
