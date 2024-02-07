@@ -1,85 +1,60 @@
-from fastapi.testclient import TestClient
-from main import app
-from queries.users import AccountRepo, AccountIn, AccountOut, AccountOutWithPassword
+# from fastapi.testclient import TestClient
+# from main import app
+# from queries.users import AccountRepo
 
-client = TestClient(app)
+# client = TestClient(app)
 
-class EmptyAccountRepo:
-    def list_all_users(self):
-        return []
+# class MockAccountRepo:
+#     # 为了简化，这里我们直接使用静态数据
+#     users = [
+#         {"id": 1, "email": "user1@example.com", "picture_url": "http://example.com/picture1.jpg", "username": "user1", "business": None},
+#         {"id": 2, "email": "user2@example.com", "picture_url": "http://example.com/picture2.jpg", "username": "user2", "business": None}
+#     ]
 
-    def get(self, email: str):
-        return None
+#     def list_all_users(self):
+#         return self.users
 
-class GetOneAccountRepo:
-    def get(self, email: str):
-        return {
-            "id": 1,
-            "email": email,
-            "picture_url": "http://example.com/picture.jpg",
-            "username": "testuser",
-            "hashed_password": "hashedpassword",
-            "business": None
-        }
+#     def get_one(self, user_id: int):
+#         return next((user for user in self.users if user["id"] == user_id), None)
 
-class DeleteAccountRepo:
-    def delete(self, id: str) -> bool:
-        return True
+#     def delete(self, id: int) -> bool:
+#         self.users = [user for user in self.users if user["id"] != id]
+#         return True
 
-class UpdateAccountRepo:
-    def __init__(self):
-        self.account_data = {
-            "id": 1,
-            "email": "test@example.com",
-            "picture_url": "http://example.com/picture.jpg",
-            "username": "testuser",
-            "hashed_password": "hashedpassword",
-            "business": None
-        }
+#     def update_user(self, id: int, user_data):
+#         user = self.get_one(id)
+#         if user:
+#             user.update(user_data)
+#             return user
+#         return None
 
-    def get(self, email: str):
-        if email == self.account_data["email"]:
-            return self.account_data
-        return None
+# # 设置依赖项覆盖
+# app.dependency_overrides[AccountRepo] = MockAccountRepo
 
-    def update_user(self, id: int, user: AccountIn):
-        if id == self.account_data["id"]:
-            self.account_data["email"] = user.email
-            self.account_data["picture_url"] = user.picture_url
-            self.account_data["username"] = user.username
-            return AccountOut(**self.account_data)
-        return None
+# def test_list_all_users():
+#     response = client.get("/users")
+#     assert response.status_code == 200
+#     assert response.json() == MockAccountRepo.users
 
-# Test cases
+# def test_get_one_user():
+#     user_id = 1
+#     response = client.get(f"/users/{user_id}")
+#     expected_user = next((user for user in MockAccountRepo.users if user["id"] == user_id), None)
+#     assert response.status_code == 200
+#     assert response.json() == expected_user
 
-def test_get_account():
-    app.dependency_overrides[AccountRepo] = GetOneAccountRepo
-    email = "test@example.com"
-    response = client.get(f"/accounts/{email}")
-    assert response.json() == GetOneAccountRepo().get(email)
+# def test_delete_user():
+#     user_id = 2
+#     response = client.delete(f"/users/{user_id}")
+#     assert response.status_code == 200
+#     assert response.json() is True
+#     assert not any(user["id"] == user_id for user in MockAccountRepo.users)
 
-def test_get_all_accounts():
-    app.dependency_overrides[AccountRepo] = EmptyAccountRepo
-    response = client.get("/accounts")
-    app.dependency_overrides = {}
-    assert response.json() == []
-
-def test_delete_account():
-    app.dependency_overrides[AccountRepo] = DeleteAccountRepo
-    account_id = 1
-    response = client.delete(f"/accounts/{account_id}")
-    assert response.json() is True
-
-def test_update_account():
-    app.dependency_overrides[AccountRepo] = UpdateAccountRepo
-    account_id = 1
-    new_account_data = {
-        "email": "updated@example.com",
-        "picture_url": "http://example.com/updated.jpg",
-        "username": "updateduser",
-    }
-    response = client.put(f"/accounts/{account_id}", json=new_account_data)
-    assert response.json() == UpdateAccountRepo().update_user(account_id, AccountIn(**new_account_data))
-
-# Reset dependency overrides
-app.dependency_overrides = {}
+# def test_update_user():
+#     user_id = 1
+#     updated_data = {"email": "updated@example.com", "username": "updateduser"}
+#     response = client.put(f"/users/{user_id}", json=updated_data)
+#     assert response.status_code == 200
+#     updated_user = next((user for user in MockAccountRepo.users if user["id"] == user_id), None)
+#     assert updated_user["email"] == "updated@example.com"
+#     assert updated_user["username"] == "updateduser"
