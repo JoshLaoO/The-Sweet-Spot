@@ -45,6 +45,7 @@ router = APIRouter()
 @router.get("/token", response_model=AccountToken | None)
 async def get_token(
     request: Request,
+    repo: AccountRepo = Depends(),
     account: AccountOut = Depends(authenticator.try_get_current_account_data),
 ):
     if account and authenticator.cookie_name in request.cookies:
