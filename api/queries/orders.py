@@ -12,7 +12,6 @@ class OrderIn(BaseModel):
     candy_id: int
     quantity: int
     sold: bool
-    # sold_date: Optional[Union[str, None]] = None
 
 
 class OrderOut(BaseModel):
