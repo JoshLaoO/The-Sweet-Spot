@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from "react";
 
 function TransactionHistory() {
-    const [history, setHistory] = useState([]);
+    const [orders, setOrders] = useState([]);
 
-    async function getHistory() {
-        const url = "http://localhost:8000/history"
+    async function getOrders() {
+        const url = "http://localhost:8000/orders"
         const data = await fetch(url).then(response => response.json());
-        setHistory(data)
+        setOrders(data);
+        console.log(data);
     }
 
     function calculateTotal(price, quantity) {
         return price * quantity;
     };
 
+    useEffect(() => {
+        const fetchData = async () => {
+            await getOrders();
+        };
+
+        fetchData();
+    }, []);
+
+    const sold = orders.filter(order => order.sold);
 
 return (
     <>
