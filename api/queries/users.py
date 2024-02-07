@@ -196,7 +196,7 @@ class AccountRepo:
             with pool.connection() as conn:
                 with conn.cursor(
                     row_factory=dict_row
-                ) as db:  
+                ) as db:
                     result = db.execute(
                         """
                         SELECT
@@ -437,6 +437,7 @@ class AccountRepo:
                         ],
                     )
                     record = db.fetchone()
+                    print(record)
                     if record is None:
                         raise Exception("User not found or no change made")
 

@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 function ViewMyInfo(props) {
     const routeParams = useParams(props.userId)
     const [data, setData] = useState([])
+    const [business, setBusiness] = useState([])
 
 
     const fetchMyData = async () => {
@@ -14,14 +15,15 @@ function ViewMyInfo(props) {
         })
         const res = await url.json()
         setData(res)
-
+        data.map((x) => setBusiness(x.business))
+        console.log(res)
     }
 
     useEffect(() => {
         fetchMyData();
     }, [])
 
-    console.log(data)
+
 
     return (
         <>
@@ -35,7 +37,10 @@ function ViewMyInfo(props) {
                         <div className="card-body">
                             <h4 className='card-title' style={{ color: "white" }}>Username: {data.username}</h4>
                             <h4 className='card-title' style={{ color: "white" }}>Email: {data.email}</h4>
-                            <h4 className="card-text mb-2" style={{ color: "white" }}>Business:{data.business}</h4>
+                            {/* <h4 className="card-text mb-2" style={{ color: "white" }}>Business:{data.business.business_name}</h4> */}
+                            <ul>
+                                <li></li>
+                            </ul>
                             <Link to={`/users/user/${routeParams.userId}/edit`} onClick={""} style={{ float: 'right'}}className="btn btn-info text-white m-2">Edit</Link>
                         </div>
                     </div>

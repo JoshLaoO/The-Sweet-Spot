@@ -6,39 +6,104 @@ function UpdateMyInfo(props) {
     const token = useSelector((state) => state.token.token);
     const routeParams = useParams(props.userId);
     const [pictureUrl, setPictureUrl] = useState();
+    const [username, setUsername] = useState();
     const [businesses, setBusinesses] = useState([]);
     const [business, setBusiness] = useState();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    const messageClasses = ''
+    const [submitted, setSubmitted] = useState(false);
 
-    // const updateMyData = async () => {
-    //     const url = await fetch(`http://localhost:8000/users/${routeParams.userId}`, {
-    //         method: "POST",
-    //         body: JSON.stringify(data)
-    //         headers: { 'Content-Type': 'application/json' },
-    //         credentials: 'include'
-    //     })
-    //     const res = await url.json()
-    //     console.log(res)
-    // }
+    const getBusinesses = async () => {
+        const bizUrl = await fetch('http://localhost:8000/businesses')
+        if (bizUrl.ok) {
+            const data = await bizUrl.json();
+            setBusinesses(data)
+        }
+    }
 
-    // useEffect(() => {
-    //     fetchMyData();
-    // } [])
+    const handlePictureURLChange = (e) => {
+        const value = e.target.value;
+        setPictureUrl(value);
+    }
 
+    const handleNameChange = (e) => {
+        const value = e.target.value;
+        setUsername(value);
+    }
+
+    const handleEmailChange = (e) => {
+        const value = e.target.value
+        setEmail(value)
+    }
+
+    const handlePasswordChange = (e) => {
+        const value = e.target.value
+        setPassword(value)
+    }
+    const handleBusinessChange = (e) => {
+        const value = e.target.value;
+        console.log(value)
+        setBusiness(value)
+    }
+
+    useEffect(() => {
+        getBusinesses();
+    }, [])
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const data = {
+            picture_url: pictureUrl,
+            username: username,
+            email: email,
+            password: password,
+            business: business
+        }
+
+        const updateMyData = async () => {
+            const userUpdateUrl = await fetch(`http://localhost:8000/user/${routeParams.userId}`, {
+                method: "PUT",
+                body: JSON.stringify(data),
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            })
+            const res = await userUpdateUrl.json()
+            console.log("RES", res)
+            setPictureUrl('')
+            setUsername('')
+            setEmail('')
+            setPassword('')
+            setBusiness('')
+            setSubmitted(true)
+
+        }
+    }
+    const messageClasses = (!submitted) ? 'alert alert-success d-none mb-0' : 'alert alert-success mb-0';
     return (
         <div className="row m-5">
             <div className="offset-3 col-6">
                 <div className="shadow p-4 mt-4">
                     <h1>Update Profile</h1>
-                    <form onSubmit={''} id="create-update-form">
+                    <form onSubmit={handleSubmit} id="create-update-form">
                         <div className="form-floating mb-3">
-                            <input onChange={''} value={pictureUrl} placeholder="Picture url" required type="text" name="pictureUrl" id="pictureUrl" className="form-control" />
+                            <input onChange={handlePictureURLChange} value={pictureUrl} placeholder="Picture url" required type="text" name="pictureUrl" id="pictureUrl" className="form-control" />
                             <label htmlFor="pictureUrl">Picture</label>
                         </div>
+                        <div className="form-floating mb-3">
+                            <input onChange={handleNameChange} value={username} placeholder="Username" required type="text" name="username" id="username" className="form-control" />
+                            <label htmlFor="username">Username</label>
+                        </div>
+                        <div className="form-floating mb-3">
+                            <input onCanPlay={handleEmailChange} value={email} placeholder="email" required type="text" name="email" id="email" className="form-control" />
+                            <label htmlFor="email">Email</label>
+                        </div>
+                        <div className="form-floating mb-3">
+                            <input onChange={handlePasswordChange} value={password} placeholder="password" required type="text" name="password" id="password" className="form-control" />
+                            <label htmlFor="password">Password</label>
+                        </div>
                         <div className="mb-3">
-                            <select onChange={''} value={business} required name="business" id="business" className="form-select">
+                            <select onChange={handleBusinessChange} value={business} required name="business" id="business" className="form-select">
                                 <option value="">Business</option>
                                 {businesses.map(b => {
                                     return (
@@ -46,14 +111,6 @@ function UpdateMyInfo(props) {
                                     )
                                 })};
                             </select>
-                        </div>
-                        <div className="form-floating mb-3">
-                            <input onChange={''} value={email} placeholder="email" required type="text" name="email" id="email" className="form-control" />
-                            <label htmlFor="email">Email</label>
-                        </div>
-                        <div className="form-floating mb-3">
-                            <input onChange={''} value={password} placeholder="password" required type="text" name="password" id="password" className="form-control" />
-                            <label htmlFor="password">Password</label>
                         </div>
                         <button className="btn btn-info text-white">Update</button>
                     </form>
