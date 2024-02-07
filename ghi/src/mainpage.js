@@ -19,7 +19,7 @@ function MainPage() {
             .catch(error => console.error('Fetch error:', error));
     }, []);
 
-    const image = "ghi/src/images/background.png";
+    const placeholderImage = "https://via.placeholder.com/1920x1080";
 
     function addToCart(candyId) {
         console.log(`Candy ${candyId} will be added to cart in the future.`);
@@ -29,14 +29,14 @@ function MainPage() {
         <div>
 
             <div className="featured-candy">
-                <img src={image} alt="Placeholder" />
+                <img src={placeholderImage} alt="Placeholder" />
             </div>
 
             <div><h2 className="centered-heading">All the Candies</h2></div>
             <div className="product-container">
                 {candies.length > 0 ? candies.map(candy => (
                     <div key={candy.id} className="product-item">
-                        <img src={candy.picture_url} alt={candy.name} />
+                        <img src={candy.picture_url || placeholderImage} alt={candy.name} />
                         <h3><Link to={`/candy/${candy.id}`}>{candy.name}</Link></h3>
                         <input
                             type="number"
@@ -60,7 +60,7 @@ function MainPage() {
             <div className="product-container">
                 {businesses.length > 0 ? businesses.map(business => (
                     <div key={business.business_id} className="product-item">
-                        <img src={business.picture_url} alt={business.business_name} />
+                        <img src={business.picture_url || placeholderImage} alt={business.business_name} />
                         <h3><Link to={`/business/${business.business_id}`}>{business.business_name}</Link></h3>
                     </div>
                 )) : <p>Loading businesses...</p>}

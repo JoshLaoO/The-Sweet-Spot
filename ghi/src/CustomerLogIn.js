@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import backgroundImg from './images/background.png';
 import { changeToken } from './features/token/tokenSlice';
 import { useDispatch } from 'react-redux';
-import { getId } from './features/users/userIdSlice';
+//import { getId } from './features/users/userIdSlice';
+import { setUsername } from './features/users/usernameSlice';
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [username, setUser] = useState('');
     //const { setToken } = useAuth();
 
     const dispatch = useDispatch();
@@ -31,11 +33,13 @@ const LoginForm = () => {
             if (!response.ok) {
                 throw new Error(`Login failed: ${response.status}`);
             }
-            
+
             const data = await response.json();
             //setToken(data.data.access_token);
             console.log(data)
             dispatch(changeToken(data.access_token))
+            console.log(username)
+            dispatch(setUsername(username))
             //dispatch(getId(data.account.id))
             if (data.account && data.account.business) {
                 navigate('/business-profile');
@@ -57,6 +61,14 @@ const LoginForm = () => {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label>Username:</label>
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUser(e.target.value)}
                         />
                     </div>
                     <div>

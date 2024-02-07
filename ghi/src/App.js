@@ -68,9 +68,9 @@ function App() {
           <Route path="/orders" element={<BusinessPendingOrders />} />
           <Route path="/" element={<Construct info={launchInfo} />} />
           <Route path="/users" element={<ViewAllUsers />} />
-          <Route path="/inventory/:userId" element={<MyBusiness/>}/>
-          <Route path={`/users/user/:userId`} element={<ViewMyInfo/>} />
-          <Route path={`/users/user/:userId/edit`} element={<UpdateMyInfo />} />
+          <Route path="/inventory/" element={<MyBusiness/>}/>
+          <Route path={`/users/user/`} element={<ViewMyInfo/>} />
+          <Route path={`/users/user/edit`} element={<UpdateMyInfo />} />
         </Routes>
         <Footer />
       </Router>

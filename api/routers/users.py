@@ -45,8 +45,8 @@ router = APIRouter()
 @router.get("/token", response_model=AccountToken | None)
 async def get_token(
     request: Request,
-    account: AccountOut = Depends(authenticator.try_get_current_account_data),
-):
+    account: AccountOut = Depends(authenticator.try_get_current_account_data)
+) -> AccountToken | None:
     if account and authenticator.cookie_name in request.cookies:
         return {
             "access_token": request.cookies[authenticator.cookie_name],
@@ -116,15 +116,20 @@ def get_all_businesses(
 )
 async def get_user_by_username(
     username: str,
-    response: Response,
     repo: AccountRepo = Depends(),
+    account_data: Optional[dict] = Depends(
+        authenticator.try_get_current_account_data
+    ),
 ):
     #user = await authenticator.get_account_data(username, repo)
-    user = repo.get_by_username(username)
-    print(user)
-    if user is None:
+    if account_data:
+        user = repo.get_by_username(username)
+        print(user)
+        if user is None:
+            return None
+        return user
+    else:
         return None
-    return user
 
 
 @router.get(
