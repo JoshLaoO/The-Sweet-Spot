@@ -66,7 +66,7 @@ class AccountUpdate(BaseModel):
     username: str
     email: str
     password: str
-    business: int
+    business: Optional[int] = None
 
 
 class AccountRepo:
@@ -401,7 +401,6 @@ class AccountRepo:
             print(e)
             return {"message": "could not get user information"}
 
-    # anna
     def update_user(
         self, id: int, hashed_password: str, user: AccountUpdate
     ) -> GetAccountOut:

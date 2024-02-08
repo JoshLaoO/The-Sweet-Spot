@@ -73,32 +73,32 @@ function App() {
   return (
     <BrowserRouter basename={basename}>
       <AuthProvider>
-          <Header
-            isLoggedIn={isLoggedIn}
-            userName={userName}
-            userType={userType}
-            logout={logout}
+        <Header
+          isLoggedIn={isLoggedIn}
+          userName={userName}
+          userType={userType}
+          logout={logout}
+        />
+        <ErrorNotification error={error} />
+        <Routes>
+          <Route path="/signup/" element={<SignUpPage />} />
+          <Route path="/login/" element={<LoginPage login={login} />} />
+          <Route path="/mainpage/" element={<MainPage />} />
+          <Route path="/create-candy" element={<CandyForm />} />
+          <Route path="/orders" element={<BusinessPendingOrders />} />
+          <Route path="/history" element={<TransactionHistory />} />
+          <Route path="/" element={<Construct info={launchInfo} />} />
+          <Route path="/users" element={<ViewAllUsers />} />
+          <Route path={`/users/user/:userId`} element={<ViewMyInfo />} />
+          <Route
+            path={`/users/user/:userId/edit`}
+            element={<UpdateMyInfo />}
           />
-          <ErrorNotification error={error} />
-          <Routes>
-            <Route path="/signup/" element={<SignUpPage />} />
-            <Route path="/login/" element={<LoginPage login={login} />} />
-            <Route path="/mainpage/" element={<MainPage />} />
-            <Route path="/create-candy" element={<CandyForm />} />
-            <Route path="/orders" element={<BusinessPendingOrders />} />
-            <Route path="/history" element={<TransactionHistory />} />
-            <Route path="/" element={<Construct info={launchInfo} />} />
-            <Route path="/users" element={<ViewAllUsers />} />
-            <Route path={`/users/user/:userId`} element={<ViewMyInfo />} />
-            <Route
-              path={`/users/user/:userId/edit`}
-              element={<UpdateMyInfo />}
-            />
-            <Route path="/shoppingcart" element={<CartPage />} />
-            <Route path="/candy/:id/" element={<CandyDetail />} />
-            <Route path="/cart/" element={<CartPage />} />
-          </Routes>
-          <Footer />
+          <Route path="/shoppingcart" element={<CartPage />} />
+          <Route path="/candy/:id/" element={<CandyDetail />} />
+          <Route path="/cart/" element={<CartPage />} />
+        </Routes>
+        <Footer />
       </AuthProvider>
     </BrowserRouter>
   );
