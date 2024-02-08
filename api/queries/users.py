@@ -53,11 +53,11 @@ class AccountOutWithPassword(AccountOut):
 
 
 class AccountUpdate(BaseModel):
-    picture_url: str
-    username: str
-    email: str
-    password: str
-    business: int
+    picture_url: Optional[str] = None
+    username: Optional[str] = None
+    email: Optional[str] = None
+    password: Optional[str] = None
+    business: Optional[int] = None
 
 
 class AccountRepo:
