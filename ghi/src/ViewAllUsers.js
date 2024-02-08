@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
+
 function ViewAllUsers() {
     const [users, setUsers] = useState([[], [], []]);
+
     const getUsers = async () => {
         const url = 'http://localhost:8000/users';
 
@@ -17,17 +19,17 @@ function ViewAllUsers() {
             if (response.ok) {
                 const data = await response.json();
                 setUsers(data)
-                console.log(data)
             }
         } catch (e) {
             console.error(e);
         }
     };
 
+
+
     useEffect(() => {
         getUsers();
     }, []);
-
 
     return (
         <>
@@ -44,8 +46,8 @@ function ViewAllUsers() {
                                         <div className="card-body">
                                             <h4 className='card-title' style={{ color: "white" }}>Username: {user.username}</h4>
                                             <h4 className='card-title' style={{ color: "white" }}>Email: {user.email}</h4>
-                                            <h4 className="card-text mb-2" style={{ color: "white" }}>Business:{user.business}</h4>
-
+                                            {user.business ? <h4 className='card-title' style={{ color: "white" }}>Business: {user.business.business_name}</h4>
+                                                : null}
                                         </div>
                                     </div>
                                 </div>
