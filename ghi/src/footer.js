@@ -7,9 +7,9 @@ function Footer() {
             <p>&copy; {new Date().getFullYear()} Candy Store. All rights reserved.</p>
             <p>Contact us: info@candystore.com</p>
             <div>
-                <a href="#" className="footer-link">Facebook</a>
-                <a href="#" className="footer-link">Twitter</a>
-                <a href="#" className="footer-link">Instagram</a>
+                <a href="/mainpage/" className="footer-link">Facebook</a>
+                <a href="/mainpage/" className="footer-link">Twitter</a>
+                <a href="/mainpage/" className="footer-link">Instagram</a>
             </div>
         </footer>
     );
