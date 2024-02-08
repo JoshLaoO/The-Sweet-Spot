@@ -23,14 +23,6 @@ import { fetchCandies } from "./candiesActions";
 import { useDispatch } from "react-redux";
 import CandyDetail from "./CandyDetail.js";
 import TransactionHistory from "./TransactionHistroy.js";
-import ViewAllUsers from "./ViewAllUsers.js";
-import ViewMyInfo from "./ViewMyInfo.js";
-import BusinessPendingOrders from "./BusinessPendingOrders.js";
-import CartPage from "./CartPage.js";
-import { fetchCandies } from "./candiesActions";
-import { useDispatch } from "react-redux";
-import CandyDetail from "./CandyDetail.js";
-import TransactionHistory from "./TransactionHistroy.js";
 
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
