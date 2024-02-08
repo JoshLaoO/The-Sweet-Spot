@@ -39,12 +39,21 @@ class AccountOut(BaseModel):
     business: Union[BusinessOut, None]
 
 
+# class GetAccountOut(BaseModel):
+#     id: int
+#     email: str
+#     picture_url: str
+#     username: str
+#     business: Optional[Union[int, None]]
+#     hashed_password: str
+
+
 class GetAccountOut(BaseModel):
     id: int
     email: str
     picture_url: str
     username: str
-    business: Optional[Union[int, None]]
+    business: Union[int, None]
     hashed_password: str
 
 
@@ -53,10 +62,10 @@ class AccountOutWithPassword(AccountOut):
 
 
 class AccountUpdate(BaseModel):
-    picture_url: Optional[str] = None
-    username: Optional[str] = None
-    email: Optional[str] = None
-    password: Optional[str] = None
+    picture_url: str
+    username: str
+    email: str
+    password: str
     business: Optional[int] = None
 
 
@@ -187,9 +196,7 @@ class AccountRepo:
     def get(self, email: str) -> GetAccountOut:
         try:
             with pool.connection() as conn:
-                with conn.cursor(
-                    row_factory=dict_row
-                ) as db:  # TODO change the business to be a dict not an int
+                with conn.cursor(row_factory=dict_row) as db:
                     result = db.execute(
                         """
                         SELECT
@@ -394,7 +401,16 @@ class AccountRepo:
             print(e)
             return {"message": "could not get user information"}
 
-    # anna
+
+
+
+
+
+
+
+
+
+
     def update_user(
         self, id: int, hashed_password: str, user: AccountUpdate
     ) -> GetAccountOut:
@@ -429,7 +445,9 @@ class AccountRepo:
                             id,
                         ],
                     )
+                    print(hashed_password)
                     record = db.fetchone()
+                    print(record)
                     if record is None:
                         raise Exception("User not found or no change made")
 

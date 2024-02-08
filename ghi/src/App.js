@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
   BrowserRouter,
@@ -74,7 +73,6 @@ function App() {
   return (
     <BrowserRouter basename={basename}>
       <AuthProvider>
-
         <Header
           isLoggedIn={isLoggedIn}
           userName={userName}
@@ -101,7 +99,6 @@ function App() {
           <Route path="/cart/" element={<CartPage />} />
         </Routes>
         <Footer />
-
       </AuthProvider>
     </BrowserRouter>
   );
