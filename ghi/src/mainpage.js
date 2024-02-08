@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from './features/cart/cartSlice';
 import './assets/shoppingCart.css';
+import candySaleImage from './images/candysale.png';
+
+
 
 function MainPage() {
     const [candies, setCandies] = useState([]);
@@ -10,12 +13,13 @@ function MainPage() {
     const [businesses, setBusinesses] = useState([]);
     const dispatch = useDispatch();
 
+    const placeholderImage = "https://via.placeholder.com/1920x1080"; // 占位图片
+
     useEffect(() => {
         fetch('http://localhost:8000/candy')
             .then(response => response.json())
             .then(data => {
                 setCandies(data);
-                // 初始化每个糖果的数量为1
                 const initialQuantities = data.reduce((acc, candy) => {
                     acc[candy.id] = 1;
                     return acc;
@@ -42,12 +46,10 @@ function MainPage() {
         dispatch(addToCart({ candyId, quantity }));
     };
 
-    const placeholderImage = "https://via.placeholder.com/1920x1080";
-
     return (
         <div>
             <div className="featured-candy">
-                <img src={placeholderImage} alt="Placeholder" />
+                <img src={candySaleImage} alt="Candy Sale" />
             </div>
 
             <div><h2 className="centered-heading">All the Candies</h2></div>
