@@ -74,7 +74,6 @@ function App() {
   return (
     <BrowserRouter basename={basename}>
       <AuthProvider>
-        <Router>
           <Header
             isLoggedIn={isLoggedIn}
             userName={userName}
@@ -101,7 +100,6 @@ function App() {
             <Route path="/cart/" element={<CartPage />} />
           </Routes>
           <Footer />
-        </Router>
       </AuthProvider>
     </BrowserRouter>
   );

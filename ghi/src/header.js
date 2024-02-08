@@ -64,7 +64,7 @@ function Header({ isLoggedIn, userType, userName }) {
                     </> :
                     <>
 
-                        <Link className="btn btn-info text-white m-2" to="/signup/" /*className="button-link"*/>Sign Up</Link>
+                        <Link className="btn btn-info text-white m-2" to="/signup/">Sign Up</Link>
                         <Link to="/login/" className="btn btn-info text-white m-2">Log In</Link>
                     </>
                 }
