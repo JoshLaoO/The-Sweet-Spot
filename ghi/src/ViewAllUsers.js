@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 
-function ViewAllUsers(props) {
+function ViewAllUsers() {
     const [users, setUsers] = useState([[], [], []]);
-    const [business, setBusiness] = useState();
+
     const getUsers = async () => {
         const url = 'http://localhost:8000/users';
 
@@ -18,9 +18,7 @@ function ViewAllUsers(props) {
             const response = await fetch(url, config)
             if (response.ok) {
                 const data = await response.json();
-                console.log(data)
                 setUsers(data)
-                data.map((x)=>setBusiness(x.business))
             }
         } catch (e) {
             console.error(e);
@@ -32,7 +30,6 @@ function ViewAllUsers(props) {
     useEffect(() => {
         getUsers();
     }, []);
-    console.log("BUSINESS", business)
 
     return (
         <>
