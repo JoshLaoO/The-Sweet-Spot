@@ -49,8 +49,8 @@ function ViewAllUsers(props) {
                                         <div className="card-body">
                                             <h4 className='card-title' style={{ color: "white" }}>Username: {user.username}</h4>
                                             <h4 className='card-title' style={{ color: "white" }}>Email: {user.email}</h4>
-                                            {/* <h4 className="card-text mb-2" style={{ color: "white" }}>Business:{user.business}</h4> */}
-
+                                            {user.business ? <h4 className='card-title' style={{ color: "white" }}>Business: {user.business.business_name}</h4>
+                                                : null}
                                         </div>
                                     </div>
                                 </div>
