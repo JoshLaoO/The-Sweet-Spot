@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+// import { useParams } from 'react-router-dom';
+// import { useSelector } from 'react-redux';
 
 function UpdateMyInfo(props) {
-    const token = useSelector((state) => state.token.token);
-    const routeParams = useParams(props.userId);
+    // const token = useSelector((state) => state.token.token);
+    // const routeParams = useParams(props.userId);
     const [pictureUrl, setPictureUrl] = useState();
     const [businesses, setBusinesses] = useState([]);
     const [business, setBusiness] = useState();
