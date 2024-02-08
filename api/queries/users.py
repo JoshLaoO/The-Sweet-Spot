@@ -47,6 +47,13 @@ class GetAccountOut(BaseModel):
     business: Optional[Union[int, None]]
     hashed_password: str
 
+class GetAccountOut(BaseModel):
+    id: int
+    email: str
+    picture_url: str
+    username: str
+    business: Union[int,None]
+    hashed_password: str
 
 class AccountOutWithPassword(AccountOut):
     hashed_password: str
@@ -189,7 +196,7 @@ class AccountRepo:
             with pool.connection() as conn:
                 with conn.cursor(
                     row_factory=dict_row
-                ) as db:  # TODO change the business to be a dict not an int
+                ) as db:
                     result = db.execute(
                         """
                         SELECT
@@ -431,6 +438,7 @@ class AccountRepo:
                     )
                     print(hashed_password)
                     record = db.fetchone()
+                    print(record)
                     if record is None:
                         raise Exception("User not found or no change made")
 

@@ -74,7 +74,6 @@ function App() {
   return (
     <BrowserRouter basename={basename}>
       <AuthProvider>
-
           <Header
             isLoggedIn={isLoggedIn}
             userName={userName}
