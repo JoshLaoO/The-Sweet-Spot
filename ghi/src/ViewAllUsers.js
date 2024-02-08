@@ -44,7 +44,7 @@ function ViewAllUsers(props) {
                                 <div className="col mb-3 shadow" style={{ background: "darkorange" }}>
                                     <div className="p-3">
                                         <div className="text-center">
-                                            <img src={user.picture_url} alt="user profile picture" className="rounded" style={{ width: "200px", height: "200px" }} />
+                                            <img src={user.picture_url} alt="user profile" className="rounded" style={{ width: "200px", height: "200px" }} />
                                         </div>
                                         <div className="card-body">
                                             <h4 className='card-title' style={{ color: "white" }}>Username: {user.username}</h4>

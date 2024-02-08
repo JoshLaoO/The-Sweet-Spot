@@ -21,7 +21,7 @@ function ViewMyInfo(props) {
 
     useEffect(() => {
         fetchMyData();
-    }, [] )
+    }, )
 
 
     return (
@@ -31,7 +31,7 @@ function ViewMyInfo(props) {
                 <div className="col mb-3 shadow" style={{ background: "darkorange" }}>
                     <div className="p-3">
                         <div className="text-center">
-                            <img src={data.picture_url} alt="user profile picture" className="rounded" style={{ width: "200px", height: "200px" }} />
+                            <img src={data.picture_url} alt="user profile" className="rounded" style={{ width: "200px", height: "200px" }} />
                         </div>
                         <div className="card-body">
                             <h4 className='card-title' style={{ color: "white" }}>Username: {data.username}</h4>
@@ -40,7 +40,7 @@ function ViewMyInfo(props) {
                              : null }
                             {business ? <h4 className='card-title' style={{ color: "white" }}>Business Email: {business.business_email}</h4>
                                 : null}
-                            
+
                             <Link to={`/users/user/${routeParams.userId}/edit`} onClick={""} style={{ float: 'right'}}className="btn btn-info text-white m-2">Edit</Link>
                         </div>
                     </div>
