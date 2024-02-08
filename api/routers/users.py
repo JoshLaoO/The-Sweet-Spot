@@ -130,13 +130,6 @@ async def get_one_user(
         return user
 
 
-
-
-
-
-
-
-
 @router.put("/user/{id}", response_model=AccountOut)
 async def update_user(
     id: int,

@@ -1,10 +1,14 @@
 from fastapi.testclient import TestClient
 from main import app
-from queries.users import AccountRepo, AccountIn, AccountOut, AccountOutWithPassword
+from queries.users import (
+    AccountRepo,
+    AccountIn,
+    AccountOut,
+    AccountOutWithPassword,
+)
 import bcrypt
 
 client = TestClient(app)
-
 
 
 def mock_get_account_data(email: str, accounts: AccountRepo):
@@ -13,8 +17,10 @@ def mock_get_account_data(email: str, accounts: AccountRepo):
         email="authenticated@example.com",
         picture_url="http://example.com/authenticated.jpg",
         username="authenticateduser",
-        hashed_password=bcrypt.hashpw("password".encode(), bcrypt.gensalt()).decode(),
-        business=None
+        hashed_password=bcrypt.hashpw(
+            "password".encode(), bcrypt.gensalt()
+        ).decode(),
+        business=None,
     )
 
 
@@ -26,9 +32,8 @@ class MockAccountRepo(AccountRepo):
             picture_url=user.picture_url,
             username=user.username,
             hashed_password=hashed_password,
-            business=None
+            business=None,
         )
-
 
     def list_all_users(self):
 
@@ -38,17 +43,13 @@ class MockAccountRepo(AccountRepo):
                 email="test@example.com",
                 picture_url="http://example.com/picture.jpg",
                 username="testuser",
-                business=None
+                business=None,
             )
         ]
 
     def delete(self, id: int) -> bool:
 
         return True
-
-
-
-
 
 
 def test_list_all_users():

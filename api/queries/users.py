@@ -401,16 +401,6 @@ class AccountRepo:
             print(e)
             return {"message": "could not get user information"}
 
-
-
-
-
-
-
-
-
-
-
     def update_user(
         self, id: int, hashed_password: str, user: AccountUpdate
     ) -> GetAccountOut:
