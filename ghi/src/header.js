@@ -38,7 +38,7 @@ function Header({ isLoggedIn, userType, userName }) {
 
     useEffect(() => {
         navigateToMyPage();
-    }, [userId]);
+    }, );
 
     return (
         <div className="header-container">
