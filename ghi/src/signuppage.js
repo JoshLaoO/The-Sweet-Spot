@@ -3,7 +3,7 @@ import './App.css';
 import backgroundImg from './images/background.png';
 import { useDispatch } from 'react-redux';
 import { changeToken } from './features/token/tokenSlice';
-import { useParams} from 'react-router-dom'
+//import { useParams } from 'react-router-dom'
 
 
 function SignUpPage(props) {
