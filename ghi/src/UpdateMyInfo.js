@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function UpdateMyInfo(props) {
-    const token = useSelector((state) => state.token.token);
+    //const token = useSelector((state) => state.token.token);
     const routeParams = useParams(props.userId);
     const [pictureUrl, setPictureUrl] = useState();
     const [username, setUsername] = useState();
