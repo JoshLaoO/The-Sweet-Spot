@@ -74,6 +74,7 @@ class OrderRepo:
                         SELECT id
                              , candy_id
                              , quantity
+                             , sold
                         FROM orders
                         WHERE id = %s
                         """,
