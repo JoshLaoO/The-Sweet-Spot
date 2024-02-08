@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
   BrowserRouter,
@@ -16,6 +15,14 @@ import Footer from "./footer.js";
 import "./App.css";
 import CandyForm from "./CandyForm.js";
 import UpdateMyInfo from "./UpdateMyInfo.js";
+import ViewAllUsers from "./ViewAllUsers.js";
+import ViewMyInfo from "./ViewMyInfo.js";
+import BusinessPendingOrders from "./BusinessPendingOrders.js";
+import CartPage from "./CartPage.js";
+import { fetchCandies } from "./candiesActions";
+import { useDispatch } from "react-redux";
+import CandyDetail from "./CandyDetail.js";
+import TransactionHistory from "./TransactionHistroy.js";
 import ViewAllUsers from "./ViewAllUsers.js";
 import ViewMyInfo from "./ViewMyInfo.js";
 import BusinessPendingOrders from "./BusinessPendingOrders.js";

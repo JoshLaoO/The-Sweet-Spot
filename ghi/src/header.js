@@ -25,14 +25,16 @@ function Header({ isLoggedIn, userType, userName }) {
     }
 
     const navigateToMyPage = async () => {
+        console.log("HERE")
         const fetchUrl = await fetch('http://localhost:8000/token', {
             method: "GET",
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include'
         })
+        console.log("HERE!")
         const res = await fetchUrl.json()
         userId = res.account.id
-        console.log(userId)
+        console.log("USER ID: ", userId)
         setId(userId)
     }
 
@@ -64,7 +66,7 @@ function Header({ isLoggedIn, userType, userName }) {
                     </> :
                     <>
 
-                        <Link className="btn btn-info text-white m-2" to="/signup/" /*className="button-link"*/>Sign Up</Link>
+                        <Link className="btn btn-info text-white m-2" to="/signup/">Sign Up</Link>
                         <Link to="/login/" className="btn btn-info text-white m-2">Log In</Link>
                     </>
                 }

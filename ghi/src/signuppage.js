@@ -3,8 +3,11 @@ import './App.css';
 import backgroundImg from './images/background.png';
 import { useDispatch } from 'react-redux';
 import { changeToken } from './features/token/tokenSlice';
-//import useToken from '@galvanize-inc/jwtdown-for-react';
-function SignUpPage() {
+//import { useParams } from 'react-router-dom'
+
+
+function SignUpPage(props) {
+    // const [theId, setTheId] = useState('')
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -14,9 +17,9 @@ function SignUpPage() {
     const [isBusinessAccount, setIsBusinessAccount] = useState(false);
     const [signupError, setSignupError] = useState('');
     const [userToken, setUserToken] = useState('');
-
+    // const [businessId, setBusinessId] = useState('')
+    // const routeParams = useParams(props.userId)
     const dispatch = useDispatch();
-    //const { register } = useToken();
     const handleUserSubmit = async (event) => {
         event.preventDefault();
         const signUpUrl = 'http://localhost:8000/users';
@@ -40,7 +43,7 @@ function SignUpPage() {
             }
             //register(userData,signUpUrl)
             const responseData = await response.json();
-            console.log(responseData.access_token)
+            // setTheId(responseData.account.id)
             dispatch(changeToken(responseData.access_token))
             setUserToken(responseData.access_token);
             setIsUserRegistered(true);
@@ -71,12 +74,38 @@ function SignUpPage() {
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);
             }
+            // const data = await response.json()
+            // console.log(data)
+            // setBusinessId(data.business_id)
+            // const userData = {
+            //     picture_url: "X",
+            //     username: username,
+            //     email: email,
+            //     password: password,
+            //     business: businessId
+            // }
+            // console.log(userData)
+
+            // const res = await fetch(`http://localhost:8000/user/${theId}`, {
+            //     method: "PUT",
+            //     headers: { 'Content-Type': 'application/json' },
+            //     credentials: 'include',
+            //     body: JSON.stringify(userData),
+            // })
+            // console.log(res)
+            // if (res.ok) {
+            //     const data = await res.json()
+            //     console.log("PRAY", data)
+            // }
+
+
             alert('Business account created successfully!');
         } catch (error) {
             console.error('Failed to create business account:', error);
             alert('Failed to create business account. Please try again.');
         }
-    };
+
+    }
 
     return (
         <div className="sign-up-form-container" style={{ backgroundImage: `url(${backgroundImg})` }}>

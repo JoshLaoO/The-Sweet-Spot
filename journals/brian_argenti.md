@@ -22,4 +22,10 @@ Week 3: Week of Jan 22, 2024
     the tests folder.
 
 Week 4: Week of Jan 29, 2024
-    
+    I worked to get the user Id to show up in the url when the customer navigates to their profile.
+    It was a bit of work and research to get it to work but I solved the problems by utilizing the
+    useParams function and route the userId to the url. I then worked on a view all users to get the
+    contact information of all users. Eventually this will become a contact page for all users with
+    businesses.
+
+Week 5: Week of Feb 5, 2024
