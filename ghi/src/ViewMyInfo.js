@@ -19,7 +19,7 @@ function ViewMyInfo(props) {
 
     useEffect(() => {
         fetchMyData();
-    }, [])
+    }, )
 
     console.log(data)
 
@@ -30,7 +30,7 @@ function ViewMyInfo(props) {
                 <div className="col mb-3 shadow" style={{ background: "darkorange" }}>
                     <div className="p-3">
                         <div className="text-center">
-                            <img src={data.picture_url} alt="user profile picture" className="rounded" style={{ width: "200px", height: "200px" }} />
+                            <img src={data.picture_url} alt="user profile" className="rounded" style={{ width: "200px", height: "200px" }} />
                         </div>
                         <div className="card-body">
                             <h4 className='card-title' style={{ color: "white" }}>Username: {data.username}</h4>
