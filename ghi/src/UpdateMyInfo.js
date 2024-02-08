@@ -45,6 +45,7 @@ function UpdateMyInfo(props) {
         setBusiness(value)
     }
 
+
     useEffect(() => {
         getBusinesses();
     }, [])
@@ -59,7 +60,7 @@ function UpdateMyInfo(props) {
             password: password,
             business: business
         }
-
+        console.log("THIS", data)
 
 
         const userUpdateUrl = await fetch(`http://localhost:8000/user/${routeParams.userId}`, {
@@ -105,7 +106,7 @@ function UpdateMyInfo(props) {
                             <label htmlFor="password">Password</label>
                         </div>
                         <div className="mb-3" >
-                            <select onChange={handleBusinessChange} value={business} required name="business" id="business" className="form-select">
+                            <select onChange={handleBusinessChange} value={business} name="business" id="business" className="form-select">
                                 <option value="">Business</option>
                                 {businesses.map(b => {
                                     return (
