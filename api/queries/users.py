@@ -39,8 +39,6 @@ class AccountOut(BaseModel):
     business: Union[BusinessOut, None]
 
 
-
-
 class GetAccountOut(BaseModel):
     id: int
     email: str
