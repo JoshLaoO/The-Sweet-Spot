@@ -60,9 +60,6 @@ function CandyForm() {
             price,
             stock,
         }
-
-        console.log(data)
-        console.log(token)
         const candyURL = `${process.env.REACT_APP_API_HOST}/candy`
         const fetchConfig = {
             method: "post",
