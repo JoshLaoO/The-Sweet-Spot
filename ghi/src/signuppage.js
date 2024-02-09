@@ -37,7 +37,7 @@ function SignUpPage() {
                 body: JSON.stringify(userData),
                 credentials: "include"
             });
-            console.log(response)
+
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);
             }
