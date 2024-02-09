@@ -42,7 +42,6 @@ function SignUpPage() {
                 throw new Error(`Error: ${response.status}`);
             }
             const responseData = await response.json();
-            console.log(responseData)
             dispatch(changeToken(responseData.access_token))
             dispatch(getId(responseData.id))
             console.log(userId)
