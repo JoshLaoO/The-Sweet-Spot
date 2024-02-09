@@ -36,7 +36,6 @@ class MockAccountRepo(AccountRepo):
         )
 
     def list_all_users(self):
-
         return [
             AccountOut(
                 id=1,
@@ -48,7 +47,6 @@ class MockAccountRepo(AccountRepo):
         ]
 
     def delete(self, id: int) -> bool:
-
         return True
 
 

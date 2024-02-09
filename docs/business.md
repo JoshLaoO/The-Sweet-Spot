@@ -13,7 +13,7 @@
 
 ## Create a business
 
-To create a business in FastAPI, input the following format:
+To create a business in FastAPI, follow this format in the request body:
 
 input:
 
@@ -38,7 +38,7 @@ output:
 
 ## Get a business
 
-To get a specific business in FastAPI, enter the business_id and execute.
+To get details of specific business in FastAPI, enter the business_id and execute.
 A succesful response returns the following:
 
 ```
@@ -51,7 +51,7 @@ A succesful response returns the following:
 
 ## List all businesses
 
-To view a list containing all businesses execute this endpoint in FastAPI, it will return the following:
+To view a list containing all businesses execute this endpoint in FastAPI, a successful response will return the following:
 
 output:
 
