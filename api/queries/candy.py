@@ -51,8 +51,7 @@ class CandyRepository:
                     record = result.fetchone()
                     return self.record_to_candy_out(record)
 
-        except Exception as e:
-            print(e)
+        except Exception:
             return {"message": "Could not get candy"}
 
     def delete_candy(self, candy_id: int) -> bool:
@@ -71,8 +70,7 @@ class CandyRepository:
                     )
                     return True
 
-        except Exception as e:
-            print(e)
+        except Exception:
             return False
 
     def update(self, candy_id: int, candy: CandyIn) -> Union[CandyOut, Error]:
@@ -102,8 +100,7 @@ class CandyRepository:
                         ],
                     )
                     return self.candy_in_to_out(candy_id, candy)
-        except Exception as e:
-            print(e)
+        except Exception:
             return {"message": "Could not get candy"}
 
     def get_all(self) -> Union[List[CandyOut], Error]:
@@ -122,8 +119,7 @@ class CandyRepository:
                     )
 
                     return [self.record_to_candy_out(record) for record in db]
-        except Exception as e:
-            print(e)
+        except Exception:
             return {"message": "Could not get all candies"}
 
     def create(self, candy: CandyIn) -> CandyOut:

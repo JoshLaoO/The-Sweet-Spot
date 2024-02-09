@@ -39,15 +39,6 @@ class AccountOut(BaseModel):
     business: Union[BusinessOut, None]
 
 
-# class GetAccountOut(BaseModel):
-#     id: int
-#     email: str
-#     picture_url: str
-#     username: str
-#     business: Optional[Union[int, None]]
-#     hashed_password: str
-
-
 class GetAccountOut(BaseModel):
     id: int
     email: str
@@ -212,12 +203,10 @@ class AccountRepo:
                         [email],
                     )
                     record = result.fetchone()
-                    print("RECORD", record)
                     if record is None:
                         return None
                     return GetAccountOut(**record)
-        except Exception as e:
-            print(e)
+        except Exception:
             return {"message": "Could not get account"}
 
     def delete(self, id: str) -> bool:
@@ -248,26 +237,15 @@ class AccountRepo:
                     return [
                         self.record_to_business_out(record) for record in db
                     ]
-        except Exception as e:
-            print(e)
+        except Exception:
             return {"message": "Could not get all businesses"}
 
     def create_business(
         self, business_data: BusinessIn
     ) -> Optional[BusinessOut]:
         try:
-            print("Starting to create business.")
-            print(
-                f"""
-                Business data received: Name
-                - {business_data.business_name},
-                  Email - {business_data.business_email}
-                """
-            )
-
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    print("Database connection established.")
                     result = db.execute(
                         """
                         INSERT INTO businesses
@@ -285,18 +263,14 @@ class AccountRepo:
                         ],
                     )
                     record = result.fetchone()
-                    # if record is None:
                     if record:
-                        print(f"Business created with ID: {record[0]}")
-                        # return None
                         return BusinessOut(
                             business_id=record[0],
                             business_name=record[1],
                             business_email=record[2],
                         )
-        except Exception as e:
-            print(f"Error during business creation: {e}")
-            return None
+        except Exception:
+            return {"message": "Could not create business"}
 
     def get_business(self, business_id: int) -> Optional[BusinessOut]:
         try:
@@ -322,7 +296,7 @@ class AccountRepo:
                         business_email=record[2],
                     )
         except Exception:
-            return None
+            return {"message": "Could not get business details"}
 
     def update_business(
         self, business_id: int, business_data: BusinessIn
@@ -357,7 +331,7 @@ class AccountRepo:
                         business_email=record[2],
                     )
         except Exception:
-            return None
+            return {"message": "Could not update business"}
 
     def delete_business(self, business_id: int) -> bool:
         try:
@@ -397,8 +371,7 @@ class AccountRepo:
                         return None
 
                     return self.record_to_account_out(record)
-        except Exception as e:
-            print(e)
+        except Exception:
             return {"message": "could not get user information"}
 
     def update_user(
@@ -435,9 +408,7 @@ class AccountRepo:
                             id,
                         ],
                     )
-                    print(hashed_password)
                     record = db.fetchone()
-                    print(record)
                     if record is None:
                         raise Exception("User not found or no change made")
 
@@ -451,9 +422,8 @@ class AccountRepo:
 
                     return self.record_to_account_out(record)
 
-        except Exception as e:
-            print(f"Error updating user: {e}")
-            raise
+        except Exception:
+            return {"message": "Could not update user"}
 
 
 account_repo = AccountRepo()

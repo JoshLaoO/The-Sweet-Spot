@@ -63,10 +63,8 @@ async def create_account(
     repo: AccountRepo = Depends(),
 ):
     hashed_password = authenticator.hash_password(info.password)
-    print("here hashed_password", hashed_password)
     try:
         account = repo.create(info, hashed_password)
-        print("account from create method", account)
     except DuplicateAccountError:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -83,7 +81,6 @@ async def create_account(
 
     form = AccountForm(**form_data)
     token = await authenticator.login(response, request, form, repo)
-    print("token", token)
     return AccountToken(account=account, **token.dict())
 
 
@@ -107,7 +104,6 @@ def get_all_businesses(
     repo: AccountRepo = Depends(),
 ):
     businesses = repo.get_all_businesses()
-    print(businesses)
     return businesses
 
 
@@ -123,7 +119,6 @@ async def get_one_user(
     ),
 ):
     if account_data:
-        print(account_data)
         user = repo.get_one(user_id)
         if user is None:
             response.status_code = 404
