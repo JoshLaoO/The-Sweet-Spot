@@ -10,14 +10,13 @@ function CandyForm() {
     const [stock, setStock] = useState(0)
     const [submitted, setSubmitted] = useState(false)
     const token = useSelector((state) => state.token.token)
-    //console.log(token)
+
     const handleNameChange = (e) => {
         const value = e.target.value;
         setName(value);
     }
     const handleBusinessChange = (e) => {
         const value = e.target.value;
-        console.log(value)
         setBusiness(value)
     }
     const handlePictureURLChange = (e) => {
@@ -41,27 +40,12 @@ function CandyForm() {
         const response = await fetch(URL)
         if (response.ok) {
             const data = await response.json();
-            console.log(data)
             setBusinesses(data)
         }
     }
-    // const getToken = async () => {
-    //     const URL = 'http://localhost:8000/token'
-    //     const fetchConfig = {
-    //         method: "GET",
-    //         headers: { 'Content-Type': 'application/json' },
-    //         credentials: "include"
-    //     }
-    //     const response = await fetch(URL, fetchConfig)
-    //     if(response.ok){
-    //         const data = await response.json();
-    //         console.log(data)
-    //         setToken(data.access_token)
-    //     }
-    // }
+
 
     useEffect(() => {
-        //getToken();
         getBusinesses();
     }, []);
 
@@ -77,8 +61,6 @@ function CandyForm() {
             stock,
         }
 
-        console.log(data)
-        console.log(token)
         const candyURL = 'http://localhost:8000/candy'
         const fetchConfig = {
             method: "post",
@@ -93,12 +75,13 @@ function CandyForm() {
             const candyResponse = await fetch(candyURL, fetchConfig)
             if (candyResponse.ok) {
                 const candy = await candyResponse.json()
-                console.log(candy)
-                setName('')
-                setBusiness(0)
-                setPictureUrl('')
-                setDescription('')
-                setSubmitted(true)
+                if (candy) {
+                    setName('')
+                    setBusiness(0)
+                    setPictureUrl('')
+                    setDescription('')
+                    setSubmitted(true)
+                }
             }
         }
     }

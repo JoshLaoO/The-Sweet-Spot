@@ -19,28 +19,24 @@ function Header({ isLoggedIn, userType, userName }) {
         }
         const response = await fetch(url, fetchConfig);
         if (response.ok) {
-            // const data = await response.json()
             dispatch(changeToken(''))
         }
     }
 
     const navigateToMyPage = async () => {
-        console.log("HERE")
         const fetchUrl = await fetch('http://localhost:8000/token', {
             method: "GET",
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include'
         })
-        console.log("HERE!")
         const res = await fetchUrl.json()
         userId = res.account.id
-        console.log("USER ID: ", userId)
         setId(userId)
     }
 
     useEffect(() => {
         navigateToMyPage();
-    },);
+    }, );
 
     return (
         <div className="header-container">
