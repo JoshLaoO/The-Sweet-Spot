@@ -11,7 +11,7 @@ const LoginForm = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new URLSearchParams();
@@ -35,7 +35,7 @@ const LoginForm = () => {
             //setToken(data.data.access_token);
 
             dispatch(changeToken(data.access_token))
-
+            
             if (data.account && data.account.business) {
                 navigate('/business-profile');
             } else {
