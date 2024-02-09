@@ -7,6 +7,7 @@
 ## Get All Orders
 - **Path**: `/orders`
 - **Method**: GET
+
 Response:
 ```
 [
@@ -44,6 +45,7 @@ Response:
 ## Create An Order
 - **Path**: `/orders`
 - **Method**: POST
+
 Request body:
 ```
 {
@@ -52,6 +54,7 @@ Request body:
   "sold": false
 }
 ```
+
 Response:
 ```
 {
@@ -75,6 +78,7 @@ Response:
 - **Method**: GET
 
 order_id: 1
+
 Response:
 ```
 {
@@ -98,6 +102,7 @@ Response:
 - **Method**: POST
 
 order_id: 1
+
 Request body:
 ```
 {
@@ -129,6 +134,7 @@ Response:
 - **Method**: DELETE
 
 order_id: 1
+
 Response:
 ```
 true
