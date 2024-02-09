@@ -19,7 +19,7 @@ function ViewMyInfo(props) {
         try {
             const res = await fetch(url, config)
             if (res.ok) {
-                const data = res.json();
+                const data = await res.json();
                 setData(data)
                 setBusiness(data.business)
             }
@@ -30,7 +30,7 @@ function ViewMyInfo(props) {
         }
 
 
-    }
+    };
 
     useEffect(() => {
         fetchMyData();
