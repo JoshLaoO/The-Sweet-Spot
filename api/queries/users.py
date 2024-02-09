@@ -450,13 +450,7 @@ class AccountRepo:
                         )
 
                     return self.record_to_account_out(record)
-                    # return AccountOut(
-                    #     id=record[0],
-                    #     business=biz_info,
-                    #     email=record[2],
-                    #     picture_url=record[3],
-                    #     username=record[4],
-                    # )
+
         except Exception as e:
             print(f"Error updating user: {e}")
             raise
