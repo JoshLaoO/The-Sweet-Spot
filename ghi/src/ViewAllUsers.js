@@ -37,7 +37,7 @@ function ViewAllUsers() {
                 <div className='row'>
                     {users.map((user) => {
                         return (
-                            <div key={user.id} className="col-md-4  mb-3 d-flex justify-content-center">
+                            <div className="col-md-4  mb-3 d-flex justify-content-center">
                                 <div className="col mb-3 shadow" style={{ background: "darkorange" }}>
                                     <div className="p-3">
                                         <div className="text-center">

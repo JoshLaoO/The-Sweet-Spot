@@ -21,7 +21,8 @@ function ViewMyInfo(props) {
 
     useEffect(() => {
         fetchMyData();
-    })
+    },);
+
 
 
     return (
@@ -41,7 +42,7 @@ function ViewMyInfo(props) {
                             {business ? <h4 className='card-title' style={{ color: "white" }}>Business Email: {business.business_email}</h4>
                                 : null}
 
-                            <Link to={`/users/user/${routeParams.userId}/edit`} onClick={""} style={{ float: 'right'}}className="btn btn-info text-white m-2">Edit</Link>
+                            <Link to={`/users/user/${routeParams.userId}/edit`} style={{ float: 'right'}}className="btn btn-info text-white m-2">Edit</Link>
                         </div>
                     </div>
                 </div>
