@@ -8,11 +8,11 @@ function MyBusiness() {
         fetchData();
     }, []);
     const fetchData = async () => {
-        const userURL = `http://localhost:8000/users/${userID}`
+        const userURL = `${process.env.REACT_APP_API_HOST}/users/${userID}`
         const userResponse = await fetch(userURL);
         if (userResponse.ok) {
             const data = await userResponse.json()
-            const businessURL = `http://localhost:8000/businesses/${data.business.business_id}`
+            const businessURL = `${process.env.REACT_APP_API_HOST}/businesses/${data.business.business_id}`
             const businessResponse = await fetch(businessURL);
             if (businessResponse.ok) {
                 const data = await businessResponse.json()
@@ -20,7 +20,7 @@ function MyBusiness() {
             }
         }
 
-        const candyURL = `http://localhost:8000/candies`
+        const candyURL = `${process.env.REACT_APP_API_HOST}/candies`
         const candyResponse = await fetch(candyURL);
         if (candyResponse.ok) {
             const data = await candyResponse.json()
