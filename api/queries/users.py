@@ -66,7 +66,7 @@ class AccountUpdate(BaseModel):
     username: str
     email: str
     password: str
-    business: int
+    business: Optional[int] = None
 
 
 class AccountRepo:
@@ -401,7 +401,6 @@ class AccountRepo:
             print(e)
             return {"message": "could not get user information"}
 
-    # anna
     def update_user(
         self, id: int, hashed_password: str, user: AccountUpdate
     ) -> GetAccountOut:
@@ -451,13 +450,7 @@ class AccountRepo:
                         )
 
                     return self.record_to_account_out(record)
-                    # return AccountOut(
-                    #     id=record[0],
-                    #     business=biz_info,
-                    #     email=record[2],
-                    #     picture_url=record[3],
-                    #     username=record[4],
-                    # )
+
         except Exception as e:
             print(f"Error updating user: {e}")
             raise
