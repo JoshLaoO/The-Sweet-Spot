@@ -11,7 +11,7 @@ function Construct(props) {
 
   return (
     <div className="App">
-      <img src={candySaleImage} />
+      <img src={candySaleImage} alt="candy" />
     </div>
   );
 }
