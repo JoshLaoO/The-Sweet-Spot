@@ -34,7 +34,7 @@ function ViewMyInfo(props) {
 
     useEffect(() => {
         fetchMyData();
-    }, []);
+    },);
 
 
 
