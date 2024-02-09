@@ -19,7 +19,7 @@ function SignUpPage(props) {
     const dispatch = useDispatch();
     const handleUserSubmit = async (event) => {
         event.preventDefault();
-        const signUpUrl = 'http://localhost:8000/users';
+        const signUpUrl = `${process.env.REACT_APP_API_HOST}/users`;
         const userData = {
             email: email,
             username: username,
@@ -52,7 +52,7 @@ function SignUpPage(props) {
 
     const handleBusinessSubmit = async (event) => {
         event.preventDefault();
-        const businessSignUpUrl = 'http://localhost:8000/business';
+        const businessSignUpUrl = `${process.env.REACT_APP_API_HOST}/business`;
         const businessData = {
             business_name: businessName,
             business_email: businessEmail

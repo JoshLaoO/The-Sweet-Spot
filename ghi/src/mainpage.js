@@ -16,7 +16,7 @@ function MainPage() {
     const placeholderImage = "https://via.placeholder.com/1920x1080"; // 占位图片
 
     useEffect(() => {
-        fetch('http://localhost:8000/candy')
+        fetch(`${process.env.REACT_APP_API_HOST}/candy`)
             .then(response => response.json())
             .then(data => {
                 setCandies(data);
@@ -26,9 +26,9 @@ function MainPage() {
                 }, {});
                 setCandyQuantities(initialQuantities);
             })
-            .catch(error => console.error('Fetch error:', error));
+            .catch(error => console.error(`Fetch error:`, error));
 
-        fetch('http://localhost:8000/businesses')
+        fetch(`${process.env.REACT_APP_API_HOST}/businesses`)
             .then(response => response.json())
             .then(data => setBusinesses(data))
             .catch(error => console.error('Fetch error:', error));

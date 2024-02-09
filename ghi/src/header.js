@@ -11,7 +11,7 @@ function Header({ isLoggedIn, userType, userName }) {
     const token = useSelector((state) => state.token.token)
     const dispatch = useDispatch()
     const logout = async () => {
-        const url = 'http://localhost:8000/token'
+        const url = `${process.env.REACT_APP_API_HOST}/token`
         const fetchConfig = {
             method: 'DELETE',
             headeres: { 'Content-Type': 'application/json' },
@@ -26,7 +26,7 @@ function Header({ isLoggedIn, userType, userName }) {
 
     const navigateToMyPage = async () => {
         console.log("HERE")
-        const fetchUrl = await fetch('http://localhost:8000/token', {
+        const fetchUrl = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
             method: "GET",
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include'

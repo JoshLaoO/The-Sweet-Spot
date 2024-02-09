@@ -15,7 +15,7 @@ const CandyDetail = () => {
 
     useEffect(() => {
         if (!isNaN(candyId)) {
-            fetch(`http://localhost:8000/candy?candy_id=${candyId}`)
+            fetch(`${process.env.REACT_APP_API_HOST}/candy?candy_id=${candyId}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');

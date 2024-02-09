@@ -12,7 +12,7 @@ function UpdateMyInfo(props) {
     const [submitted, setSubmitted] = useState(false);
 
     const getBusinesses = async () => {
-        const bizUrl = await fetch('http://localhost:8000/businesses')
+        const bizUrl = await fetch(`${process.env.REACT_APP_API_HOST}/businesses`)
         if (bizUrl.ok) {
             const data = await bizUrl.json();
             setBusinesses(data)
@@ -61,7 +61,7 @@ function UpdateMyInfo(props) {
         console.log("THIS", data)
 
 
-        const userUpdateUrl = await fetch(`http://localhost:8000/user/${routeParams.userId}`, {
+        const userUpdateUrl = await fetch(`${process.env.REACT_APP_API_HOST}/user/${routeParams.userId}`, {
             method: "PUT",
             body: JSON.stringify(data),
             headers: { 'Content-Type': 'application/json' },

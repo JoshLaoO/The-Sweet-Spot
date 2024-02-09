@@ -5,7 +5,7 @@ function ViewAllUsers() {
     const [users, setUsers] = useState([[], [], []]);
 
     const getUsers = async () => {
-        const url = 'http://localhost:8000/users';
+        const url = `${process.env.REACT_APP_API_HOST}/users`;
 
         const config = {
             method: 'GET',
