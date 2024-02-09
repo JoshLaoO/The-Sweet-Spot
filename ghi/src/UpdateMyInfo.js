@@ -58,7 +58,6 @@ function UpdateMyInfo(props) {
             password: password,
             business: business
         }
-        console.log("THIS", data)
 
 
         const userUpdateUrl = await fetch(`http://localhost:8000/user/${routeParams.userId}`, {
@@ -69,15 +68,14 @@ function UpdateMyInfo(props) {
         })
 
         const res = await userUpdateUrl.json()
-        console.log(res)
-        console.log("RES", res)
-        setPictureUrl('')
-        setUsername('')
-        setEmail('')
-        setPassword('')
-        setBusiness('')
-        setSubmitted(true)
-
+        if (res) {
+            setPictureUrl('')
+            setUsername('')
+            setEmail('')
+            setPassword('')
+            setBusiness('')
+            setSubmitted(true)
+        }
 
     }
     const messageClasses = (!submitted) ? 'alert alert-success d-none mb-0' : 'alert alert-success mb-0';

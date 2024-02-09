@@ -29,3 +29,7 @@ Week 4: Week of Jan 29, 2024
     businesses.
 
 Week 5: Week of Feb 5, 2024
+    This week I figured out how to conditionally render an item on the page depending whether or
+    not it existed. It uses a ternary operator to check if the value exists and then returns the
+    info accordingly or null. I did have some problems getting the pipeline to pass because it was
+    complaining about the way I used useEffect. I removed the bracket and that seemed to do it.
