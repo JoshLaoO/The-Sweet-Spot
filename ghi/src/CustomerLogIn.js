@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-//import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 import backgroundImg from './images/background.png';
 import { changeToken } from './features/token/tokenSlice';
@@ -7,7 +6,6 @@ import { useDispatch } from 'react-redux';
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    //const { setToken } = useAuth();
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -32,10 +30,9 @@ const LoginForm = () => {
             }
 
             const data = await response.json();
-            //setToken(data.data.access_token);
 
             dispatch(changeToken(data.access_token))
-
+            
             if (data.account && data.account.business) {
                 navigate('/business-profile');
             } else {

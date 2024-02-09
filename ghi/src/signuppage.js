@@ -4,8 +4,10 @@ import backgroundImg from './images/background.png';
 import { useDispatch } from 'react-redux';
 import { changeToken } from './features/token/tokenSlice';
 
+import { useSelector } from 'react-redux';
+import { getId } from './features/users/userIdSlice';
 
-function SignUpPage(props) {
+function SignUpPage() {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -15,6 +17,7 @@ function SignUpPage(props) {
     const [isBusinessAccount, setIsBusinessAccount] = useState(false);
     const [signupError, setSignupError] = useState('');
     const [userToken, setUserToken] = useState('');
+    const userId = useSelector((state) => state.id.id)
 
     const dispatch = useDispatch();
     const handleUserSubmit = async (event) => {
@@ -38,10 +41,10 @@ function SignUpPage(props) {
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);
             }
-            //register(userData,signUpUrl)
             const responseData = await response.json();
-            // setTheId(responseData.account.id)
             dispatch(changeToken(responseData.access_token))
+            dispatch(getId(responseData.id))
+            console.log(userId)
             setUserToken(responseData.access_token);
             setIsUserRegistered(true);
         } catch (error) {

@@ -35,4 +35,26 @@ WEEK 3
     DAY 4
         completed the endpoints for orders table.
     DAY 5
-        
+WEEK 4
+    DAY 1
+        Did my unit tests for orders.
+    DAY 2
+        Created a Candy Form
+    DAY 3
+        Used RTK to get the token.
+    DAY 4
+        Fixed RTK errors and made the login/signup and
+        the other buttons when you are logged in, switch
+        if the token is fetched.
+    WEEK 5
+    DAY 1
+        Started on the Business view.
+    DAY 2
+        Tried to get users by username.
+        Discovered that it breaks brian's code (whoops)
+    DAY 3
+        scrapped the idea and reset my database and that worked.
+    DAY 4
+        Deployed the backend, and continued working on the Business view.
+    DAY 5
+        Updated the Journal, cleaned up the backend, and presented.

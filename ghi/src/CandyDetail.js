@@ -41,7 +41,6 @@ const CandyDetail = () => {
     const handleAddToCart = () => {
         if (candy) {
             dispatch(addToCart({ candyId: candy.id, quantity }));
-            console.log(`Added ${quantity} of ${candy.name} to cart.`);
         }
     };
 
