@@ -3,9 +3,7 @@ import './App.css';
 import backgroundImg from './images/background.png';
 import { useDispatch } from 'react-redux';
 import { changeToken } from './features/token/tokenSlice';
-
-import { useSelector } from 'react-redux';
-import { getId } from './features/users/userIdSlice';
+import useToken from '@galvanize-inc/jwtdown-for-react';
 
 function SignUpPage() {
     const [email, setEmail] = useState('');
@@ -17,7 +15,8 @@ function SignUpPage() {
     const [isBusinessAccount, setIsBusinessAccount] = useState(false);
     const [signupError, setSignupError] = useState('');
     const [userToken, setUserToken] = useState('');
-    const userId = useSelector((state) => state.id.id)
+    const { token } = useToken;
+
 
     const dispatch = useDispatch();
     const handleUserSubmit = async (event) => {
@@ -33,18 +32,17 @@ function SignUpPage() {
         try {
             const response = await fetch(signUpUrl, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json',
+                         Authorization: `Bearer ${token}` },
                 body: JSON.stringify(userData),
                 credentials: "include"
             });
-
+            console.log(response)
             if (!response.ok) {
                 throw new Error(`Error: ${response.status}`);
             }
             const responseData = await response.json();
             dispatch(changeToken(responseData.access_token))
-            dispatch(getId(responseData.id))
-            console.log(userId)
             setUserToken(responseData.access_token);
             setIsUserRegistered(true);
         } catch (error) {

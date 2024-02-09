@@ -8,20 +8,33 @@ function ViewMyInfo(props) {
 
 
     const fetchMyData = async () => {
-        const url = await fetch(`${process.env.REACT_APP_API_HOST}/users/${routeParams.userId}`, {
+        const url = `${process.env.REACT_APP_API_HOST}/users/${routeParams.userId}`;
+
+        const config = {
             method: "GET",
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include'
-        })
-        const res = await url.json()
-        setData(res)
-        setBusiness(res.business)
+        }
+
+        try {
+            const res = await fetch(url, config)
+            if (res.ok) {
+                const data = res.json();
+                setData(data)
+                setBusiness(data.business)
+            }
+
+        } catch (e) {
+            console.error(e)
+
+        }
+
 
     }
 
     useEffect(() => {
         fetchMyData();
-    },);
+    }, []);
 
 
 
