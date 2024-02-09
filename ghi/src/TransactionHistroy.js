@@ -7,7 +7,6 @@ function TransactionHistory() {
         const url = "http://localhost:8000/orders"
         const data = await fetch(url).then(response => response.json());
         setOrders(data);
-        console.log(data);
     }
 
     function calculateTotal(price, quantity) {

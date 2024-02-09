@@ -59,4 +59,4 @@ Created tests in test_user_business.py for business endpoints. Then I worked on 
 Week 5
 ---
 
-Created Transaction History page. Currently the fields on Orders needs to be updated to include a sold date if we would like that displayed on this page..
+Created Transaction History page. Currently the fields on Orders needs to be updated to include a sold date if we would like that displayed on this page. Deployed the front end and back end. Wrote up Readme and cleaned up code.
