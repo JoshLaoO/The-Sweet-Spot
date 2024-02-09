@@ -4,7 +4,7 @@ function TransactionHistory() {
     const [orders, setOrders] = useState([]);
 
     async function getOrders() {
-        const url = "http://localhost:8000/orders"
+        const url = `${process.env.REACT_APP_API_HOST}/orders`
         const data = await fetch(url).then(response => response.json());
         setOrders(data);
     }

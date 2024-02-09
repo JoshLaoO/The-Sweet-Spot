@@ -20,7 +20,7 @@ const LoginForm = () => {
         formData.append('password', password);
 
         try {
-            const response = await fetch('http://localhost:8000/token', {
+            const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData,
@@ -35,7 +35,7 @@ const LoginForm = () => {
             //setToken(data.data.access_token);
 
             dispatch(changeToken(data.access_token))
-            
+
             if (data.account && data.account.business) {
                 navigate('/business-profile');
             } else {

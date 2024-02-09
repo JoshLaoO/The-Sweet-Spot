@@ -37,7 +37,7 @@ function CandyForm() {
         setStock(value);
     }
     const getBusinesses = async () => {
-        const URL = 'http://localhost:8000/businesses'
+        const URL = `${process.env.REACT_APP_API_HOST}/businesses`
         const response = await fetch(URL)
         if (response.ok) {
             const data = await response.json();
@@ -79,7 +79,7 @@ function CandyForm() {
 
         console.log(data)
         console.log(token)
-        const candyURL = 'http://localhost:8000/candy'
+        const candyURL = `${process.env.REACT_APP_API_HOST}/candy`
         const fetchConfig = {
             method: "post",
             body: JSON.stringify(data),

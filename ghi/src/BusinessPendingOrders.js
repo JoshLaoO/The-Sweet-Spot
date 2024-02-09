@@ -5,7 +5,7 @@ function BusinessPendingOrders() {
     const [orders, setOrders] = useState([]);
 
     async function getOrders() {
-        const url = "http://localhost:8000/orders"
+        const url = `${process.env.REACT_APP_API_HOST}/orders`
         const data = await fetch(url).then(response => response.json());
         setOrders(data)
     }
@@ -15,7 +15,7 @@ function BusinessPendingOrders() {
     };
 
     async function changeOrderStatus(order_id, candy_id, quantity) {
-        const url = `http://localhost:8000/orders/${order_id}`;
+        const url = `${process.env.REACT_APP_API_HOST}/${order_id}`;
         const config = {
             method: 'PUT',
             headers: {
