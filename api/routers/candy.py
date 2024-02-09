@@ -19,7 +19,8 @@ async def create_candy(
             new_candy = repo.create(candy)
             return new_candy
 
-        except Exception:
+        except Exception as e:
+            print(e)
             response.status_code = 400
 
 
@@ -34,6 +35,7 @@ def get_all(
 def update_candy(
     candy_id: int,
     candy: CandyIn,
+    response: Response,
     repo: CandyRepository = Depends(),
     account_data: dict = Depends(authenticator.get_current_account_data),
 ) -> Union[Error, CandyOut]:

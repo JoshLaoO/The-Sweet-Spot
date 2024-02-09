@@ -44,6 +44,7 @@ def update_order(
     candy_repo: CandyRepository = Depends(),
 ):
     update = repo.update(order_id, order, candy_repo)
+    print(update)
     return update
 
 
