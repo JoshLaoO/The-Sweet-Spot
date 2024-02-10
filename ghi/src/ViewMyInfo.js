@@ -4,37 +4,36 @@ import { Link, useParams } from 'react-router-dom'
 function ViewMyInfo(props) {
     const routeParams = useParams(props.userId)
     const [data, setData] = useState([])
-    const [business, setBusiness] = useState()
-
-
-    const fetchMyData = async () => {
-        const url = `${process.env.REACT_APP_API_HOST}/users/${routeParams.userId}`;
-
-        const config = {
-            method: "GET",
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include'
-        }
-
-        try {
-            const res = await fetch(url, config)
-            if (res.ok) {
-                const data = await res.json();
-                setData(data)
-                setBusiness(data.business)
-            }
-
-        } catch (e) {
-            console.error(e)
-
-        }
-
-
-    };
+    const [business, setBusiness] = useState('')
 
     useEffect(() => {
+        async function fetchMyData() {
+                const url = `${process.env.REACT_APP_API_HOST}/users/${routeParams.userId}`;
+
+                const config = {
+                    method: "GET",
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include'
+                }
+
+                try {
+                    const res = await fetch(url, config)
+                    if (res.ok) {
+                        const d = await res.json();
+                        setData(d)
+                        setBusiness(d.business)
+                    }
+
+                } catch (e) {
+                    console.error(e)
+
+                }
+
+
+        };
+        console.log('hello')
         fetchMyData();
-    },);
+    }, [routeParams.userId])
 
 
 
