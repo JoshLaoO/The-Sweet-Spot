@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 function CandyForm() {
     const [name, setName] = useState('')
     const [businesses, setBusinesses] = useState([])
@@ -44,7 +45,9 @@ function CandyForm() {
         }
     }
 
+    const deleteCandy = async () => {
 
+    }
     useEffect(() => {
         getBusinesses();
     }, []);
@@ -125,7 +128,7 @@ function CandyForm() {
                     </form>
                 </div>
                 <div className={messageClasses} role="alert">
-                    Candy Created!
+                    Candy Created, <Link to="/mybusiness" className='alert-link'> Back to inventory</Link>!
                 </div>
             </div>
         </div>

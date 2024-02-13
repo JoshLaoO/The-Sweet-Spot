@@ -1,26 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 function MyBusiness() {
-    const userID = useSelector((state)=> state.id.id)
-    const [business,setBusiness] = useState()
-    const [candies,setCandies] = useState([])
+    const navigate = useNavigate()
+    const [business, setBusiness] = useState()
+    const [candies, setCandies] = useState([])
     useEffect(() => {
         fetchData();
     }, []);
     const fetchData = async () => {
-        const userURL = `${process.env.REACT_APP_API_HOST}/users/${userID}`
-        const userResponse = await fetch(userURL);
-        if (userResponse.ok) {
-            const data = await userResponse.json()
-            const businessURL = `${process.env.REACT_APP_API_HOST}/businesses/${data.business.business_id}`
-            const businessResponse = await fetch(businessURL);
-            if (businessResponse.ok) {
-                const data = await businessResponse.json()
-                setBusiness(data)
-            }
+        const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
+            method: "GET",
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
+        })
+        const data = await response.json()
+        console.log(data)
+        try {
+            setBusiness(data.account.business)
+        } catch (e) {
+            console.error(e)
+            navigate("/mainpage")
         }
 
-        const candyURL = `${process.env.REACT_APP_API_HOST}/candies`
+
+        const candyURL = `${process.env.REACT_APP_API_HOST}/candy`
         const candyResponse = await fetch(candyURL);
         if (candyResponse.ok) {
             const data = await candyResponse.json()
@@ -29,7 +34,8 @@ function MyBusiness() {
 
     }
     return (
-        <div>
+        <div className='container text-center'>
+            <Link to="/create-candy" className="col align-self-center btn btn-success text-white fw-bold">🍭 🍫 Create a Candy! 🍭 🍬</Link>
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -39,10 +45,13 @@ function MyBusiness() {
                         <th> Description </th>
                         <th> Price </th>
                         <th> Stock </th>
+                        <th>Update</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {
+
+                    {business !== null ?
                         candies.filter((candy) => candy.business === business.business_id).map(candy => {
                             return (
                                 <tr key={candy.id}>
@@ -52,9 +61,13 @@ function MyBusiness() {
                                     <td>{candy.description}</td>
                                     <td>{candy.price}</td>
                                     <td>{candy.stock}</td>
+                                    <td><button className='btn btn-outline-warning text-black'><i class="fa-solid fa-hammer"></i></button></td>
+                                    <td><button className='btn btn-outline-danger'><i class="fa-solid fa-trash"></i></button></td>
                                 </tr>
                             );
-                        })}
+                        }) :
+                        <div role='alert' className="position-rekative top-100  start-100  translate-middle alert alert-info text-center">Business not found!</div>
+                    }
                 </tbody>
             </table>
         </div>

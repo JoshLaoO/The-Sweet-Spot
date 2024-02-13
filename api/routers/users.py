@@ -46,7 +46,13 @@ router = APIRouter()
 async def get_token(
     request: Request,
     account: AccountOut = Depends(authenticator.try_get_current_account_data),
+    repo: AccountRepo = Depends(),
 ):
+    print("ACCOUNT: ",account)
+    print("BUSINESS: ",account["business"])
+    business = repo.get_business_data(account["business"])
+    print(business)
+    account["business"] = business
     if account and authenticator.cookie_name in request.cookies:
         return {
             "access_token": request.cookies[authenticator.cookie_name],
