@@ -24,7 +24,6 @@ function Header({ isLoggedIn, userType, userName }) {
     }
 
     const navigateToMyPage = async () => {
-        console.log("HERE")
         const fetchUrl = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
             method: "GET",
             headers: { 'Content-Type': 'application/json' },
