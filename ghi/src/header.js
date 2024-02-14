@@ -23,6 +23,9 @@ function Header({ isLoggedIn, userType, userName }) {
         const response = await fetch(url, fetchConfig);
         if (response.ok) {
             dispatch(changeToken(''))
+            setUsername('')
+            setId('')
+            setBusiness('')
             navigate("/mainpage")
         }
     }
@@ -35,8 +38,9 @@ function Header({ isLoggedIn, userType, userName }) {
         })
         const res = await fetchUrl.json()
         userId = res.account.id
-        console.log("DATA", res)
-        setBusiness(res.account.business.business_name)
+        if (res.account.business)
+            setBusiness(res.account.business.business_name)
+        
         setId(userId)
         setUsername(res.account.username)
     }
@@ -44,7 +48,7 @@ function Header({ isLoggedIn, userType, userName }) {
     useEffect(() => {
         navigateToMyPage();
     }, [token]);
-    /* eslint-enable */ 
+    /* eslint-enable */
     return (
         <div className="header-container">
             <div className="header-title">Sweet-Spot</div>

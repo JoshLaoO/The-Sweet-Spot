@@ -49,7 +49,7 @@ function MainPage() {
     return (
         <div>
             <div className="featured-candy">
-                <img src={candySaleImage} alt="Candy Sale" />
+                <img className='w-100' src={candySaleImage} alt="Candy Sale" />
             </div>
 
             <div><h2 className="centered-heading">All the Candies</h2></div>

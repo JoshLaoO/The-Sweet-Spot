@@ -63,7 +63,7 @@ function MyBusiness() {
                                     <td>{candy.business}</td>
                                     <td>{candy.picture_url}</td>
                                     <td>{candy.description}</td>
-                                    <td>{candy.price}</td>
+                                    <td type="decimal">{candy.price}</td>
                                     <td>{candy.stock}</td>
                                     <td><button className='btn btn-outline-warning text-black'><i className='fa-solid fa-hammer'></i></button></td>
                                     <td><button onClick={async () => {
