@@ -23,7 +23,7 @@ import { fetchCandies } from "./candiesActions";
 import { useDispatch } from "react-redux";
 import CandyDetail from "./CandyDetail.js";
 import TransactionHistory from "./TransactionHistroy.js";
-
+import MyBusiness from "./MyBusiness.js";
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
   const [error, setError] = useState(null);
@@ -94,6 +94,7 @@ function App() {
             path={`/users/user/:userId/edit`}
             element={<UpdateMyInfo />}
           />
+          <Route path="/mybusiness" element={<MyBusiness/>}/>
           <Route path="/shoppingcart" element={<CartPage />} />
           <Route path="/candy/:id/" element={<CandyDetail />} />
           <Route path="/cart/" element={<CartPage />} />
