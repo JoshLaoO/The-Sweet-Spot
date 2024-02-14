@@ -67,33 +67,32 @@ function Header() {
                 </form>
             </div>
 
-                {token.length > 0 ?
-                    <>
-                        <h1 className='honk-banner-name'>Hello, {username}</h1>
-                        <button onClick={logout} className="btn btn-danger m-2">Log Out</button>
-                        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                            <span className="navbar-toggler-icon"></span>
-                        </button>
-                        <Link to="/users" className="btn btn-info te    xt-white m-2">Connect!</Link>
-                        <Link to={`/users/user/${id}`} onClick={navigateToMyPage} className="btn btn-info text-white m-2">Me</Link>
-                        {business &&
-                            <Link to='/mybusiness' className="btn btn-success text-white m-2">Inventory</Link>
-                        }
-                    </> :
-                    <>
-                        <Link className="btn btn-info text-white m-2" to="/signup/">Sign Up</Link>
-                        <Link to="/login/" className="btn btn-info text-white m-2">Log In</Link>
-                    </>
-                }
-                <Link to="/orders" className="btn btn-info text-white m-2">Pending Orders</Link>
-                <Link to="/cart/" className="btn btn-info text-white">
-                    <i className="fa fa-shopping-cart"></i> Cart
-                </Link>
+            {token.length > 0 ?
+                <>
+                    <h1 className='honk-banner-name'>Hello, {username}</h1>
+                    <button onClick={logout} className="btn btn-danger m-2">Log Out</button>
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <Link to="/users" className="btn btn-info text-white m-2">Connect!</Link>
+                    <Link to={`/users/user/${id}`} onClick={navigateToMyPage} className="rounded-circle h-25 btn btn-info text-white p-4"><i className="fa-regular fa-user fa-2xl"></i></Link>
+                    {business &&
+                        <Link to='/mybusiness' className="btn btn-success text-white m-2">Inventory</Link>
+                    }
+                </> :
+                <>
+                    <Link className="btn btn-info text-white m-2" to="/signup/">Sign Up</Link>
+                    <Link to="/login/" className="btn btn-info text-white m-2">Log In</Link>
+                </>
+            }
+            <Link to="/cart/" className="btn btn-info text-white">
+                <i className="fa fa-shopping-cart"></i> Cart
+            </Link>
 
 
 
 
-            </div>
+        </div>
     );
 }
 
