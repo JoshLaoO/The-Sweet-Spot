@@ -7,32 +7,45 @@ function ViewMyInfo(props) {
     const [business, setBusiness] = useState()
 
 
-    const fetchMyData = async () => {
-        const url = `${process.env.REACT_APP_API_HOST}/users/${routeParams.userId}`;
-
-        const config = {
-            method: "GET",
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include'
+    const deleteMyAccount = ((routeParams) => {
+        console.log(routeParams)
+        if (window.confirm("Do you want to delete your account?")) {
+            fetch(`${process.env.REACT_APP_API_HOST}/users/${routeParams}`,
+                { method: "DELETE", credentials: 'include' }).then(() => {
+                    window.location.href = /mainpage/
+                }).catch((err) => {
+                    console.log(err.message)
+                })
         }
 
-        try {
-            const res = await fetch(url, config)
-            if (res.ok) {
-                const data = await res.json();
-                setData(data)
-                setBusiness(data.business)
-            }
-
-        } catch (e) {
-            console.error(e)
-
-        }
-
-
-    };
+    })
     /* eslint-disable */
     useEffect(() => {
+        async function fetchMyData() {
+            const url = `${process.env.REACT_APP_API_HOST}/users/${routeParams.userId}`;
+
+            const config = {
+                method: "GET",
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include'
+            }
+
+            try {
+                const res = await fetch(url, config)
+                if (res.ok) {
+                    const d = await res.json();
+                    setData(d)
+                    setBusiness(d.business)
+                }
+
+            } catch (e) {
+                console.error(e)
+
+            }
+
+
+        };
+        console.log('hello')
         fetchMyData();
     }, []);
 
@@ -51,13 +64,12 @@ function ViewMyInfo(props) {
                             <h4 className='card-title' style={{ color: "white" }}>Username: {data.username}</h4>
                             <h4 className='card-title' style={{ color: "white" }}>Email: {data.email}</h4>
                             {business ?
-                            <>
-                                <h4 className='card-title' style={{ color: "white" }}>Business: {business.business_name}</h4>
-                                <h4 className='card-title' style={{ color: "white" }}>Business Email: {business.business_email}</h4>
-                            </>
+                                <>
+                                    <h4 className='card-title' style={{ color: "white" }}>Business: {business.business_name}</h4>
+                                    <h4 className='card-title' style={{ color: "white" }}>Business Email: {business.business_email}</h4>
+                                </>
                                 : <h4 className='card-title' style={{ color: "white" }}>Customer Account</h4>}
-
-
+                            <button onClick={() => deleteMyAccount(routeParams.userId)} className="btn btn-danger m-2" style={{ float: 'right' }}>Delete</button>
                             <Link to={`/users/user/${routeParams.userId}/edit`} style={{ float: 'right' }} className="btn btn-info text-white m-2">Edit</Link>
                         </div>
                     </div>
