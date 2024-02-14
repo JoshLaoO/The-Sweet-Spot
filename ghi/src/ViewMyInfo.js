@@ -31,12 +31,12 @@ function ViewMyInfo(props) {
 
 
     };
-    {/* eslint-disable */ }
+    /* eslint-disable */
     useEffect(() => {
         fetchMyData();
     }, []);
 
-    {/* eslint-enable */ }
+    /* eslint-enable */
 
     return (
         <>

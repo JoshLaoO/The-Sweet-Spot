@@ -40,11 +40,11 @@ function Header({ isLoggedIn, userType, userName }) {
         setId(userId)
         setUsername(res.account.username)
     }
-    {/* eslint-disable */ }
+    /* eslint-disable */
     useEffect(() => {
         navigateToMyPage();
     }, [token]);
-    {/* eslint-enable */ }
+    /* eslint-enable */ 
     return (
         <div className="header-container">
             <div className="header-title">Sweet-Spot</div>

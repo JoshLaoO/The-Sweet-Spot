@@ -7,11 +7,11 @@ function MyBusiness() {
     const [business, setBusiness] = useState()
     const [candies, setCandies] = useState([])
     //const [wasDeleted, toggleWasDeleted] = useState(false)
-    {/* eslint-disable */ }
+    /* eslint-disable */
     useEffect(() => {
         fetchData();
     }, []);
-    {/* eslint-enabled */ }
+    /* eslint-enabled */
     const fetchData = async () => {
         const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
             method: 'GET',
