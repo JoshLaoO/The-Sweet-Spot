@@ -59,11 +59,12 @@ function UpdateCandy() {
             setStock(data.stock)
         }
     }
+    /* eslint-disable */
     useEffect(() => {
         getBusinesses();
         getCandy()
     }, []);
-
+    /* eslint-enable */
     const handleSubmit = async (e) => {
         e.preventDefault();
 
