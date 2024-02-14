@@ -51,7 +51,8 @@ class CandyRepository:
                     record = result.fetchone()
                     return self.record_to_candy_out(record)
 
-        except Exception:
+        except Exception as e:
+            print("ERROR", e)
             return {"message": "Could not get candy"}
 
     def delete_candy(self, candy_id: int) -> bool:

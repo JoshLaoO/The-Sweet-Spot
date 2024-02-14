@@ -4,8 +4,10 @@ import { Link, useParams } from 'react-router-dom'
 function ViewMyInfo(props) {
     const routeParams = useParams(props.userId)
     const [data, setData] = useState([])
-    const [business, setBusiness] = useState('')
+    const [business, setBusiness] = useState()
 
+
+    /* eslint-disable */
     useEffect(() => {
         async function fetchMyData() {
                 const url = `${process.env.REACT_APP_API_HOST}/users/${routeParams.userId}`;
@@ -33,9 +35,9 @@ function ViewMyInfo(props) {
         };
         console.log('hello')
         fetchMyData();
-    }, [routeParams.userId])
+    }, []);
 
-
+    /* eslint-enable */
 
     return (
         <>
@@ -49,12 +51,15 @@ function ViewMyInfo(props) {
                         <div className="card-body">
                             <h4 className='card-title' style={{ color: "white" }}>Username: {data.username}</h4>
                             <h4 className='card-title' style={{ color: "white" }}>Email: {data.email}</h4>
-                            {business ? <h4 className='card-title' style={{ color: "white" }}>Business: {business.business_name}</h4>
-                             : null }
-                            {business ? <h4 className='card-title' style={{ color: "white" }}>Business Email: {business.business_email}</h4>
-                                : null}
+                            {business ?
+                            <>
+                                <h4 className='card-title' style={{ color: "white" }}>Business: {business.business_name}</h4>
+                                <h4 className='card-title' style={{ color: "white" }}>Business Email: {business.business_email}</h4>
+                            </>
+                                : <h4 className='card-title' style={{ color: "white" }}>Customer Account</h4>}
 
-                            <Link to={`/users/user/${routeParams.userId}/edit`} style={{ float: 'right'}}className="btn btn-info text-white m-2">Edit</Link>
+
+                            <Link to={`/users/user/${routeParams.userId}/edit`} style={{ float: 'right' }} className="btn btn-info text-white m-2">Edit</Link>
                         </div>
                     </div>
                 </div>
