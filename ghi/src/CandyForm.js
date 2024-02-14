@@ -44,10 +44,6 @@ function CandyForm() {
             setBusinesses(data)
         }
     }
-
-    const deleteCandy = async () => {
-
-    }
     useEffect(() => {
         getBusinesses();
     }, []);
