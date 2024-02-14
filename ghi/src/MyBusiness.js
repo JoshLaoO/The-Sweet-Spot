@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+//import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 function MyBusiness() {
     const navigate = useNavigate()
     const [business, setBusiness] = useState()
     const [candies, setCandies] = useState([])
-    const [wasDeleted, toggleWasDeleted] = useState(false)
+    //const [wasDeleted, toggleWasDeleted] = useState(false)
+    {/*eslint disabled*/}
     useEffect(() => {
         fetchData();
-    }, [wasDeleted]);
+    }, []);
+    {/*eslint enabled*/ }
     const fetchData = async () => {
         const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
             method: 'GET',
