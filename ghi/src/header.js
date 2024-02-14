@@ -13,6 +13,7 @@ function Header({ isLoggedIn, userType, userName }) {
     const token = useSelector((state) => state.token.token)
     const [business, setBusiness] = useState()
     const dispatch = useDispatch()
+    const [search, setSearch] = useState('');
     const logout = async () => {
         const url = `${process.env.REACT_APP_API_HOST}/token`
         const fetchConfig = {
@@ -44,6 +45,13 @@ function Header({ isLoggedIn, userType, userName }) {
         setId(userId)
         setUsername(res.account.username)
     }
+    const handleSearch = async (e) => {
+        e.preventDefault()
+        if (search.length > 0)
+            navigate(`/search/${search}`)
+        else
+            alert("Search term cannot be blank")
+    }
     /* eslint-disable */
     useEffect(() => {
         navigateToMyPage();
@@ -53,8 +61,10 @@ function Header({ isLoggedIn, userType, userName }) {
         <div className="header-container">
             <div className="header-title">Sweet-Spot</div>
             <div className="w-25 p-2">
-                <i className="fa-solid fa-magnifying-glass m-1"></i>
-                <input type="text" className="search-box" placeholder="Search for candies" />
+                <form onSubmit={handleSearch} className="d-flex" role="search">
+                    <i className="fa-solid fa-magnifying-glass m-2"></i>
+                    <input onChange={(e) => setSearch(e.target.value)} type="text" className="form-control me-2" placeholder="Search by candy name" aria-label="Search" />
+                </form>
             </div>
             <div className="nav-buttons">
                 <Link to="/mainpage/" className="btn btn-info text-white m-2">Sweet Home</Link>
@@ -93,6 +103,8 @@ function Header({ isLoggedIn, userType, userName }) {
                 <Link to="/cart/" className="btn btn-info text-white">
                     <i className="fa fa-shopping-cart"></i> Cart
                 </Link>
+
+
 
 
             </div>
