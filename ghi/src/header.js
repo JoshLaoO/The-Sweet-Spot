@@ -40,7 +40,7 @@ function Header({ isLoggedIn, userType, userName }) {
         userId = res.account.id
         if (res.account.business)
             setBusiness(res.account.business.business_name)
-        
+
         setId(userId)
         setUsername(res.account.username)
     }
@@ -90,7 +90,6 @@ function Header({ isLoggedIn, userType, userName }) {
                     </>
                 )}
                 <Link to={`/users/user/${id}`} onClick={navigateToMyPage} className="btn btn-info text-white m-2">Me</Link>
-                <Link to="/orders" className="btn btn-info text-white m-2">Pending Orders</Link>
                 <Link to="/cart/" className="btn btn-info text-white">
                     <i className="fa fa-shopping-cart"></i> Cart
                 </Link>

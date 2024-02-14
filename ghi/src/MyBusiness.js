@@ -36,6 +36,7 @@ function MyBusiness() {
     return (
         <div className='container text-center'>
             <Link to='/create-candy' className='col align-self-center btn btn-success text-white fw-bold'>🍭 🍫 Create a Candy! 🍭 🍬</Link>
+            <Link to="/orders" className="btn btn-warning text-white m-2"><i class="fa-regular fa-clock"></i> Pending Orders</Link>
             <table className='table table-striped'>
                 <thead>
                     <tr>

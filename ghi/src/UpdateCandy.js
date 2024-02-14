@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-function UpdateCandy({ id }) {
-    const candyId = id
-    console.log(id)
+import { Link, useParams } from 'react-router-dom';
+function UpdateCandy() {
+    const { id } = useParams()
     const [name, setName] = useState('')
     const [businesses, setBusinesses] = useState([])
     const [business, setBusiness] = useState(0)
@@ -47,11 +46,17 @@ function UpdateCandy({ id }) {
         }
     }
     const getCandy = async () => {
-        const URL = `${process.env.REACT_APP_API_HOST}/candy/${candyId}`
+        const URL = `${process.env.REACT_APP_API_HOST}/candy/candy?candy_id=${id}`
         const response = await fetch(URL)
         if (response.ok) {
             const data = await response.json();
             console.log(data)
+            setName(data.name)
+            setBusiness(data.business)
+            setPictureUrl(data.picture_url)
+            setDescription(data.description)
+            setPrice(data.price)
+            setStock(data.stock)
         }
     }
     useEffect(() => {
@@ -70,9 +75,9 @@ function UpdateCandy({ id }) {
             price,
             stock,
         }
-        const candyURL = `${process.env.REACT_APP_API_HOST}/candy`
+        const candyURL = `${process.env.REACT_APP_API_HOST}/candy/candy?candy_id=${id}`
         const fetchConfig = {
-            method: "post",
+            method: "PUT",
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
@@ -103,7 +108,7 @@ function UpdateCandy({ id }) {
                     <form onSubmit={handleSubmit} id="create-hat-form">
                         <div className="form-floating mb-3">
                             <input onChange={handleNameChange} value={name} placeholder="Candy Name" required type="text" name="name" id="name" className="form-control" />
-                            <label htmlFor="name">Candy Name</label>
+                            <label htmlFor="name">Update Candy</label>
                         </div>
                         <div className="mb-3">
                             <select onChange={handleBusinessChange} value={business} required name="business" id="business" className="form-select">
@@ -131,11 +136,11 @@ function UpdateCandy({ id }) {
                             <input onChange={handleStockChange} value={stock} placeholder="Stock" required type="number" name="stock" id="stock" className="form-control" />
                             <label htmlFor="stock">Stock</label>
                         </div>
-                        <button className="btn btn-info text-white">Add Candy</button>
+                        <button className="btn btn-info text-white">Update</button>
                     </form>
                 </div>
                 <div className={messageClasses} role="alert">
-                    Candy Created, <Link to="/mybusiness" className='alert-link'> Back to inventory</Link>!
+                    Candy Updated, <Link to="/mybusiness" className='alert-link'> back to inventory</Link>!
                 </div>
             </div>
         </div>
