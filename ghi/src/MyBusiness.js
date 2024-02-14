@@ -6,7 +6,6 @@ function MyBusiness() {
     const navigate = useNavigate()
     const [business, setBusiness] = useState()
     const [candies, setCandies] = useState([])
-    //const [wasDeleted, toggleWasDeleted] = useState(false)
     /* eslint-disable */
     useEffect(() => {
         fetchData();
@@ -19,15 +18,12 @@ function MyBusiness() {
             credentials: 'include'
         });
         const data = await response.json();
-        console.log(data);
         try {
             setBusiness(data.account.business);
         } catch (e) {
             console.error(e);
             navigate('/mainpage');
         }
-
-
         const candyURL = `${process.env.REACT_APP_API_HOST}/candy`;
         const candyResponse = await fetch(candyURL);
         if (candyResponse.ok) {
@@ -40,6 +36,7 @@ function MyBusiness() {
     return (
         <div className='container text-center'>
             <Link to='/create-candy' className='col align-self-center btn btn-success text-white fw-bold'>🍭 🍫 Create a Candy! 🍭 🍬</Link>
+            <Link to="/orders" className="btn btn-warning text-white m-2"><i class="fa-regular fa-clock"></i> Pending Orders</Link>
             <table className='table table-striped'>
                 <thead>
                     <tr>
@@ -55,7 +52,7 @@ function MyBusiness() {
                 </thead>
                 <tbody>
 
-                    {business !== null ?
+                    {business ?
                         candies.filter((candy) => candy.business === business.business_id).map(candy => {
                             return (
                                 <tr key={candy.id}>
@@ -65,21 +62,22 @@ function MyBusiness() {
                                     <td>{candy.description}</td>
                                     <td type="decimal">{candy.price}</td>
                                     <td>{candy.stock}</td>
-                                    <td><button className='btn btn-outline-warning text-black'><i className='fa-solid fa-hammer'></i></button></td>
+                                    <td><Link to={`/update-candy/${candy.id}`} className='btn btn-outline-warning'><i className='fa-solid fa-hammer'></i></Link></td>
                                     <td><button onClick={async () => {
-                                        console.log("This will get deleted: ", candy.name)
-                                        // const url = process.env.REACT_APP_API_HOST + '/candy/' + candy.id;
-                                        // console.log(url)
-                                        // await fetch(url, { method: "DELETE", credentials: "include", headers: { "Content-Type": "application/json" } })
-                                        //     .then((response) => {
-                                        //         if (!response.ok) {
 
-                                        //         }
-                                        //         toggleWasDeleted(!wasDeleted);
-                                        //     })
-                                        //     .catch((e) => {
-                                        //         console.log(e)
-                                        //     });
+                                        const url = process.env.REACT_APP_API_HOST + '/candy/candy?candy_id=' + candy.id;
+                                        await fetch(url, { method: "DELETE", credentials: "include", headers: { "Content-Type": "application/json" } })
+                                            .then(async (response) => {
+                                                const data = await response.json()
+                                                console.log(data)
+                                                if (!response.ok) {
+                                                    console.error("Something went wrong")
+                                                }
+                                            })
+                                            .catch((e) => {
+                                                console.log(e)
+                                            });
+                                        fetchData();
                                     }} className='btn btn-outline-danger'><i className='fa-solid fa-trash'></i></button></td>
                                 </tr>
                             );
