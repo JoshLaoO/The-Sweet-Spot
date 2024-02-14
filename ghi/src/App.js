@@ -24,6 +24,8 @@ import { useDispatch } from "react-redux";
 import CandyDetail from "./CandyDetail.js";
 import TransactionHistory from "./TransactionHistroy.js";
 import MyBusiness from "./MyBusiness.js";
+import UpdateCandy from "./UpdateCandy.js";
+import CandySearch from "./CandySearch.js";
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
   const [error, setError] = useState(null);
@@ -81,10 +83,12 @@ function App() {
         />
         <ErrorNotification error={error} />
         <Routes>
+          <Route path="/search/:search" element={<CandySearch/>}/>
           <Route path="/signup/" element={<SignUpPage />} />
           <Route path="/login/" element={<LoginPage login={login} />} />
           <Route path="/mainpage/" element={<MainPage />} />
           <Route path="/create-candy" element={<CandyForm />} />
+          <Route path="/update-candy/:id" element={<UpdateCandy/>}/>
           <Route path="/orders" element={<BusinessPendingOrders />} />
           <Route path="/history" element={<TransactionHistory />} />
           <Route path="/" element={<Construct info={launchInfo} />} />

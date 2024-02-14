@@ -13,6 +13,7 @@ function Header() {
     const token = useSelector((state) => state.token.token)
     const [business, setBusiness] = useState()
     const dispatch = useDispatch()
+    const [search, setSearch] = useState('');
     const logout = async () => {
         const url = `${process.env.REACT_APP_API_HOST}/token`
         const fetchConfig = {
@@ -44,6 +45,13 @@ function Header() {
         setId(userId)
         setUsername(res.account.username)
     }
+    const handleSearch = async (e) => {
+        e.preventDefault()
+        if (search.length > 0)
+            navigate(`/search/${search}`)
+        else
+            alert("Search term cannot be blank")
+    }
     /* eslint-disable */
     useEffect(() => {
         navigateToMyPage();
@@ -53,8 +61,10 @@ function Header() {
         <div className="header-container">
             <Link to="/mainpage/" className="btn btn-info header-title pacifico-regular">TheSweetSpot</Link>
             <div className="w-25 p-2">
-                <i className="fa-solid fa-magnifying-glass m-1"></i>
-                <input type="text" className="search-box" placeholder="Search for candies" />
+                <form onSubmit={handleSearch} className="d-flex" role="search">
+                    <i className="fa-solid fa-magnifying-glass m-2"></i>
+                    <input onChange={(e) => setSearch(e.target.value)} type="text" className="form-control me-2" placeholder="Search by candy name" aria-label="Search" />
+                </form>
             </div>
 
                 {token.length > 0 ?
@@ -79,6 +89,8 @@ function Header() {
                 <Link to="/cart/" className="btn btn-info text-white">
                     <i className="fa fa-shopping-cart"></i> Cart
                 </Link>
+
+
 
 
             </div>
