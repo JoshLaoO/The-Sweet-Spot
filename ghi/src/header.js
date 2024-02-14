@@ -51,19 +51,15 @@ function Header() {
     /* eslint-enable */
     return (
         <div className="header-container">
-            <div className="header-title">Sweet-Spot</div>
+            <Link to="/mainpage/" className="btn btn-info header-title pacifico-regular">TheSweetSpot</Link>
             <div className="w-25 p-2">
                 <i className="fa-solid fa-magnifying-glass m-1"></i>
                 <input type="text" className="search-box" placeholder="Search for candies" />
             </div>
-            <div className="nav-buttons">
-                <Link to="/mainpage/" className="btn btn-info text-white m-2">Sweet Home</Link>
-
-
 
                 {token.length > 0 ?
                     <>
-                        <h3>Hello, {username}</h3>
+                        <h1 className='honk-banner-name'>Hello, {username}</h1>
                         <button onClick={logout} className="btn btn-danger m-2">Log Out</button>
                         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
@@ -86,7 +82,6 @@ function Header() {
 
 
             </div>
-        </div>
     );
 }
 

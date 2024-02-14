@@ -19,17 +19,6 @@ function UpdateMyInfo(props) {
         }
     }
 
-    const deleteMyAccount=((userId)=>{
-        if (window.confirm("Do you want to delete your account?")){
-            fetch(`${process.env.REACT_APP_API_HOST}/${userId}`,
-            {method:"DELETE"}).then(()=>{
-                window.location.reload();
-            }).catch((err)=>{
-                console.log(err.message)
-            })
-        }
-    })
-
     const handlePictureURLChange = (e) => {
         const value = e.target.value;
         setPictureUrl(value);
@@ -94,7 +83,6 @@ function UpdateMyInfo(props) {
             <div className="offset-3 col-6">
                 <div className="shadow p-4 mt-4">
                     <h1>Update Profile</h1>
-                    <button onClick={() => deleteMyAccount(routeParams.userId)} className="btn btn-danger m-2" style={{ float: 'right' }}>Delete</button>
                     <form onSubmit={handleSubmit}  id="create-update-form">
                         <div className="form-floating mb-3">
                             <input onChange={handlePictureURLChange} value={pictureUrl} placeholder="Picture url" required type="url" name="pictureUrl" id="pictureUrl" className="form-control" />
