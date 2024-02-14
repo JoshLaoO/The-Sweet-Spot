@@ -43,7 +43,6 @@ function UpdateMyInfo(props) {
         setBusiness(value)
     }
 
-
     useEffect(() => {
         getBusinesses();
     }, [])
