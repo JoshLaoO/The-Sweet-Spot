@@ -6,37 +6,39 @@ function MyBusiness() {
     const navigate = useNavigate()
     const [business, setBusiness] = useState()
     const [candies, setCandies] = useState([])
+    const [wasDeleted, toggleWasDeleted] = useState(false)
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [wasDeleted]);
     const fetchData = async () => {
         const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
-            method: "GET",
+            method: 'GET',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include'
-        })
-        const data = await response.json()
-        console.log(data)
+        });
+        const data = await response.json();
+        console.log(data);
         try {
-            setBusiness(data.account.business)
+            setBusiness(data.account.business);
         } catch (e) {
-            console.error(e)
-            navigate("/mainpage")
+            console.error(e);
+            navigate('/mainpage');
         }
 
 
-        const candyURL = `${process.env.REACT_APP_API_HOST}/candy`
+        const candyURL = `${process.env.REACT_APP_API_HOST}/candy`;
         const candyResponse = await fetch(candyURL);
         if (candyResponse.ok) {
-            const data = await candyResponse.json()
-            setCandies(data)
+            const data = await candyResponse.json();
+            setCandies(data);
         }
 
     }
+
     return (
         <div className='container text-center'>
-            <Link to="/create-candy" className="col align-self-center btn btn-success text-white fw-bold">🍭 🍫 Create a Candy! 🍭 🍬</Link>
-            <table className="table table-striped">
+            <Link to='/create-candy' className='col align-self-center btn btn-success text-white fw-bold'>🍭 🍫 Create a Candy! 🍭 🍬</Link>
+            <table className='table table-striped'>
                 <thead>
                     <tr>
                         <th> Candy Name </th>
@@ -61,12 +63,26 @@ function MyBusiness() {
                                     <td>{candy.description}</td>
                                     <td>{candy.price}</td>
                                     <td>{candy.stock}</td>
-                                    <td><button className='btn btn-outline-warning text-black'><i class="fa-solid fa-hammer"></i></button></td>
-                                    <td><button className='btn btn-outline-danger'><i class="fa-solid fa-trash"></i></button></td>
+                                    <td><button className='btn btn-outline-warning text-black'><i className='fa-solid fa-hammer'></i></button></td>
+                                    <td><button onClick={async () => {
+                                        console.log("This will get deleted: ", candy.name)
+                                        // const url = process.env.REACT_APP_API_HOST + '/candy/' + candy.id;
+                                        // console.log(url)
+                                        // await fetch(url, { method: "DELETE", credentials: "include", headers: { "Content-Type": "application/json" } })
+                                        //     .then((response) => {
+                                        //         if (!response.ok) {
+
+                                        //         }
+                                        //         toggleWasDeleted(!wasDeleted);
+                                        //     })
+                                        //     .catch((e) => {
+                                        //         console.log(e)
+                                        //     });
+                                    }} className='btn btn-outline-danger'><i className='fa-solid fa-trash'></i></button></td>
                                 </tr>
                             );
                         }) :
-                        <div role='alert' className="position-rekative top-100  start-100  translate-middle alert alert-info text-center">Business not found!</div>
+                        <div role='alert' className='position-rekative top-100  start-100  translate-middle alert alert-info text-center'>Business not found!</div>
                     }
                 </tbody>
             </table>

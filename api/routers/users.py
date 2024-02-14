@@ -48,8 +48,8 @@ async def get_token(
     account: AccountOut = Depends(authenticator.try_get_current_account_data),
     repo: AccountRepo = Depends(),
 ):
-    print("ACCOUNT: ",account)
-    print("BUSINESS: ",account["business"])
+    print("ACCOUNT: ", account)
+    print("BUSINESS: ", account["business"])
     business = repo.get_business_data(account["business"])
     print(business)
     account["business"] = business
