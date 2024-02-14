@@ -40,11 +40,11 @@ function Header({ isLoggedIn, userType, userName }) {
         setId(userId)
         setUsername(res.account.username)
     }
-
+    {/* eslint-disable */ }
     useEffect(() => {
         navigateToMyPage();
     }, [token]);
-
+    {/* eslint-enable */ }
     return (
         <div className="header-container">
             <div className="header-title">Sweet-Spot</div>
@@ -65,7 +65,7 @@ function Header({ isLoggedIn, userType, userName }) {
                             <span className="navbar-toggler-icon"></span>
                         </button>
                         <Link to="/users" className="btn btn-info te    xt-white m-2">Connect!</Link>
-                        { business &&
+                        {business &&
                             <Link to='/mybusiness' className="btn btn-success text-white m-2">Inventory</Link>
                         }
                     </> :
