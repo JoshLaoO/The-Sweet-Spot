@@ -105,11 +105,11 @@ function UpdateCandy() {
         <div className="row m-5">
             <div className="offset-3 col-6">
                 <div className="shadow p-4 mt-4">
-                    <h1>Create a candy</h1>
+                    <h1>Update Candy</h1>
                     <form onSubmit={handleSubmit} id="create-hat-form">
                         <div className="form-floating mb-3">
                             <input onChange={handleNameChange} value={name} placeholder="Candy Name" required type="text" name="name" id="name" className="form-control" />
-                            <label htmlFor="name">Update Candy</label>
+                            <label htmlFor="name">Name</label>
                         </div>
                         <div className="mb-3">
                             <select onChange={handleBusinessChange} value={business} required name="business" id="business" className="form-select">
