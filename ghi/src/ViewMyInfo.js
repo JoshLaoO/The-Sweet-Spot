@@ -33,6 +33,8 @@ function ViewMyInfo(props) {
 
 
         };
+
+        
         console.log('hello')
         fetchMyData();
     }, []);
