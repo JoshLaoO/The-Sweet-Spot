@@ -31,12 +31,12 @@ function ViewMyInfo(props) {
 
 
     };
-
+    /* eslint-disable */
     useEffect(() => {
         fetchMyData();
-    },);
+    }, []);
 
-
+    /* eslint-enable */
 
     return (
         <>
@@ -50,12 +50,15 @@ function ViewMyInfo(props) {
                         <div className="card-body">
                             <h4 className='card-title' style={{ color: "white" }}>Username: {data.username}</h4>
                             <h4 className='card-title' style={{ color: "white" }}>Email: {data.email}</h4>
-                            {business ? <h4 className='card-title' style={{ color: "white" }}>Business: {business.business_name}</h4>
-                             : null }
-                            {business ? <h4 className='card-title' style={{ color: "white" }}>Business Email: {business.business_email}</h4>
-                                : null}
+                            {business ?
+                            <>
+                                <h4 className='card-title' style={{ color: "white" }}>Business: {business.business_name}</h4>
+                                <h4 className='card-title' style={{ color: "white" }}>Business Email: {business.business_email}</h4>
+                            </>
+                                : <h4 className='card-title' style={{ color: "white" }}>Customer Account</h4>}
 
-                            <Link to={`/users/user/${routeParams.userId}/edit`} style={{ float: 'right'}}className="btn btn-info text-white m-2">Edit</Link>
+
+                            <Link to={`/users/user/${routeParams.userId}/edit`} style={{ float: 'right' }} className="btn btn-info text-white m-2">Edit</Link>
                         </div>
                     </div>
                 </div>
