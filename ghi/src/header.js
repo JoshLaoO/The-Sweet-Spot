@@ -69,7 +69,7 @@ function Header() {
 
             {token.length > 0 ?
                 <>
-                    <h1 className='honk-banner-name'>Hello, {username}</h1>
+                    <h2 className='pacifico-regular'>Hello, {username}</h2>
                     <button onClick={logout} className="btn btn-danger m-2">Log Out</button>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
