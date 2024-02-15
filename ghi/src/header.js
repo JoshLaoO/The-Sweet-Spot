@@ -77,7 +77,7 @@ function Header() {
                     <Link to="/users" className="btn btn-info text-white m-2">Connect!</Link>
                     <Link to={`/users/user/${id}`} onClick={navigateToMyPage} className="rounded-circle h-25 btn btn-info text-white p-4"><i className="fa-regular fa-user fa-2xl"></i></Link>
                     {business &&
-                        <Link to='/mybusiness' className="btn btn-success text-white m-2">Inventory</Link>
+                        <Link to='/mybusiness' className="btn btn-success text-white m-2"><i class="fa-solid fa-warehouse"></i> Inventory</Link>
                     }
                 </> :
                 <>
