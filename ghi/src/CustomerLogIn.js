@@ -16,7 +16,6 @@ const LoginForm = () => {
         formData.append('grant_type', 'password');
         formData.append('username', email);
         formData.append('password', password);
-
         try {
             const response = await fetch(`${process.env.REACT_APP_API_HOST}/token`, {
                 method: 'POST',
@@ -32,7 +31,7 @@ const LoginForm = () => {
             const data = await response.json();
 
             dispatch(changeToken(data.access_token))
-            
+
             if (data.account && data.account.business) {
                 navigate('/business-profile');
             } else {
